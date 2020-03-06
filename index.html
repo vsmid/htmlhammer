@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AccountInfo example</title>
+</head>
+
+<body>
+    <script type="module">
+        import { div, h2, br, style, table, th, tr, td, label, input, setRef, ref } from "./esm/index.js";
+
+        const accountData = {
+            iban: 'HR23600011001224234',
+            balance: 235.45,
+            currency: 'HRK',
+            transactions: [
+                { date: new Date(), amount: 0.11, currency: 'HRK', purpose: 'Toy-Toy' },
+                { date: new Date(), amount: 11.19, currency: 'HRK', purpose: 'Plush rabbit' },
+                { date: new Date(), amount: 12.33, currency: 'HRK', purpose: 'Coca-Cola, 2l' },
+                { date: new Date(), amount: 34.23, currency: 'EUR', purpose: 'A4 paper bundle' },
+                { date: new Date(), amount: 0.21, currency: 'EUR', purpose: 'Coffee can' }
+            ]
+        }
+
+        const AccountInfo = (data) =>
+            div({ onclick: e => alert(1)},
+                style({},
+                    `
+                    .accountInfo {
+                        font-family: helvetica;
+                        font-size: 18px;
+                        padding: 4px;
+                    }
+
+                    .accountInfo label {
+                        font-weight: lighter;
+                    }
+
+                    .accountInfo input {
+                        font-size: 18px;
+                        outline: none;
+                        border: none;
+                    }
+
+                    .accountInfo td {
+                        font-size: 14px;
+                        text-align: center;
+                    }
+                    `
+                ),
+                div({ class: 'accountInfo' },
+                    h2({}, 'Account info'),
+                    label({ for: 'iban' }, 'IBAN:'),
+                    input({ id: 'iban', readonly: true, value: data.iban }),
+                    br(),
+                    label({ for: 'bal' }, 'Balance:'),
+                    input({ id: 'bal', readonly: true, value: data.balance }),
+                    br(),
+                    label({ for: 'curr' }, 'Currency:'),
+                    input({ id: 'curr', readonly: true, value: data.currency }),
+                    br(),
+                    h2({}, 'Transactions'),
+                    table({ $ref: setRef(data.transactions) },
+                        tr({},
+                            th({}, 'Date'),
+                            th({}, 'Amount'),
+                            th({}, 'Currency'),
+                            th({}, 'Purpose'),
+                        ),
+                        tr({ $for: data.transactions, $if: trx => trx.amount > 0.2, $ref: setRef }, trx => [
+                            td({}, trx.date.toISOString()),
+                            td({ style: { textAlign: 'right' } }, trx.amount),
+                            td({}, trx.currency),
+                            td({}, trx.purpose)
+                        ]),
+                    ),
+                )
+            );
+
+        document.body.append(AccountInfo(accountData));
+
+    </script>
+</body>
+
+</html>
