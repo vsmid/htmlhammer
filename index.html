@@ -9,47 +9,38 @@
 
 <body>
     <script type="module">
-        import { div, h2, br, style, table, th, tr, td, label, input, setRef, ref } from "./esm/index.js";
+        import { div, h2, br, style, table, th, tr, td, label, input, button, setRef, ref } from "./esm/index.js";
 
-        const accountData = {
-            iban: 'HR23600011001224234',
-            balance: 235.45,
-            currency: 'HRK',
-            transactions: [
-                { date: new Date(), amount: 0.11, currency: 'HRK', purpose: 'Toy-Toy' },
-                { date: new Date(), amount: 11.19, currency: 'HRK', purpose: 'Plush rabbit' },
-                { date: new Date(), amount: 12.33, currency: 'HRK', purpose: 'Coca-Cola, 2l' },
-                { date: new Date(), amount: 34.23, currency: 'EUR', purpose: 'A4 paper bundle' },
-                { date: new Date(), amount: 0.21, currency: 'EUR', purpose: 'Coffee can' }
-            ]
-        }
+        document.head.append(style({},
+            `
+            .accountInfo {
+                font-family: helvetica;
+                font-size: 18px;
+                padding: 4px;
+            }
+
+            .accountInfo label {
+                font-weight: lighter;
+            }
+
+            .accountInfo input {
+                font-size: 18px;
+                outline: none;
+                border: none;
+            }
+
+            .accountInfo td {
+                font-size: 14px;
+                text-align: center;
+            }
+            `
+        ));
+
+        const SpentButton = (trxs, currency) =>
+            button({ onclick: () => alert("Total amount spent: " + trxs.reduce((acc, trx) => acc + trx.amount, 0) + ` ${currency}`) }, 'Total amount spent');
 
         const AccountInfo = (data) =>
-            div({ onclick: e => alert(1)},
-                style({},
-                    `
-                    .accountInfo {
-                        font-family: helvetica;
-                        font-size: 18px;
-                        padding: 4px;
-                    }
-
-                    .accountInfo label {
-                        font-weight: lighter;
-                    }
-
-                    .accountInfo input {
-                        font-size: 18px;
-                        outline: none;
-                        border: none;
-                    }
-
-                    .accountInfo td {
-                        font-size: 14px;
-                        text-align: center;
-                    }
-                    `
-                ),
+            div({},
                 div({ class: 'accountInfo' },
                     h2({}, 'Account info'),
                     label({ for: 'iban' }, 'IBAN:'),
@@ -66,18 +57,30 @@
                         tr({},
                             th({}, 'Date'),
                             th({}, 'Amount'),
-                            th({}, 'Currency'),
                             th({}, 'Purpose'),
                         ),
                         tr({ $for: data.transactions, $if: trx => trx.amount > 0.2, $ref: setRef }, trx => [
                             td({}, trx.date.toISOString()),
                             td({ style: { textAlign: 'right' } }, trx.amount),
-                            td({}, trx.currency),
                             td({}, trx.purpose)
                         ]),
                     ),
+                    SpentButton(data.transactions, data.currency)
                 )
             );
+
+        const accountData = {
+            iban: 'HR23600011001224234',
+            balance: 235.45,
+            currency: 'EUR',
+            transactions: [
+                { date: new Date(), amount: 0.11, purpose: 'Toy-Toy' },
+                { date: new Date(), amount: 11.19, purpose: 'Plush rabbit' },
+                { date: new Date(), amount: 12.33, purpose: 'Coca-Cola, 2l' },
+                { date: new Date(), amount: 34.23, purpose: 'A4 paper bundle' },
+                { date: new Date(), amount: 0.21, purpose: 'Coffee can' }
+            ]
+        }
 
         document.body.append(AccountInfo(accountData));
 
