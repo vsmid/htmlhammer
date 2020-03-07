@@ -1,7 +1,7 @@
 {
   "name": "htmlhammer",
   "version": "1.0.0",
-  "description": "HTML templates with JavaScript using real HTML tags.",
+  "description": "Write HTML with JavaScript using real HTML tag names.",
   "main": "cjs/index.js",
   "module": "esm/index.js",
   "scripts": {
@@ -14,7 +14,7 @@
     "template",
     "htmlhammer"
   ],
-  "author": "vedansmid@yeti-it.hr",
+  "author": "vedransmid@yeti-it.hr",
   "license": "MIT",
   "devDependencies": {
     "@babel/cli": "^7.8.4",
