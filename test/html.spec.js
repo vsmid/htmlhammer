@@ -634,6 +634,15 @@ o.spec("HTML", () => {
             o(elements.childNodes[0].textContent).equals("2");
             o(ref(items[1])).equals(elements);
         });
+
+        o("Should create element without children", () => {
+            let divFn = define("div");
+
+            let elements = divFn({});
+
+            o(elements.childNodes.length).equals(0);
+        });
+
     });
 });
 
