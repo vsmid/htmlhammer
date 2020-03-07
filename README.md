@@ -74,7 +74,7 @@ let items = [{value: 1}, {value: 2}];
 document.body.append(
   div({style: { color: "red" }},
     h1({}, "I am the title"),
-    a({href: "#"}, "Click me!").
+    a({href: "#"}, "Click me!"),
     table({},
       tr({$for: items}, item => 
         td({}, item.value)
@@ -100,7 +100,7 @@ div({$if: true}, "I am created");
 div({$if: () => true}, "I am created");
 
 // Create only items whith value > 2
-div({$for: [1,2,3], $if: item => item > 2}, item => item);
+div({$for: [1, 2, 3], $if: item => item > 2}, item => item);
 ```
 
 #### $ref - reference created element
@@ -131,13 +131,13 @@ element = div({ $for: [{v: 1}, {v: 2}, {v: 3}], $ref: setRef}, "Hello World!");
 ### Setting on-event actions
 Event names are case sensitive. For each event use corresponding element's attribute name.
 ```javascript
-div({onclick: e => alert(1)}, "Click me.");
+a({onclick: e => alert("Clicked!")}, "Click me");
 ```
 
 ### Setting inline CSS
 Inline CSS is given in the form of JSON object.
 ```javascript
-div({style: {color: red, fontSize: "12px"}, "Hello World!"};
+div({style: {color: "red", fontSize: "12px"}}, "Hello World!");
 ```
 ## Run tests
 `npm test`
