@@ -22,7 +22,7 @@ o.spec("Ref", () => {
 
             setRef(ob, "dummy")(el);
 
-            o(ref(ob)["dummy"]).equals(el);
+            o(ref(ob, "dummy")).equals(el);
         });
 
         o("Should return null if object is null", () => {
@@ -42,6 +42,18 @@ o.spec("Ref", () => {
             setRef(ob)(el2);
 
             o(ref(ob)).equals(el2);
+        });
+
+        o("Should override value for existing key and id", () => {
+            let ob = {};
+            let el1 = document.createElement("div");
+            let el2 = document.createElement("div");
+
+            setRef(ob, "id")(el1);
+            o(ref(ob, "id")).equals(el1);
+
+            setRef(ob, "id")(el2);
+            o(ref(ob, "id")).equals(el2);
         });
 
     });
