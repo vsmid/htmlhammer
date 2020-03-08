@@ -88,13 +88,13 @@ For more complex and complete example check [index.html](./index.html).
 
 ### Reserved element attributes
 
-#### $for - creating multiple elements of the same type
+#### `$for` - creating multiple elements of the same type
 ```javascript
 // Creates three elements of type div, <div>1</div>, <div>2</div>, <div>3</div>
 div({$for: [1, 2, 3]}, item => item);
 ```
 
-#### $if - conditionally create element
+#### `$if` - conditionally create element
 ```javascript
 div({$if: true}, "I am created");
 div({$if: () => true}, "I am created");
@@ -103,7 +103,7 @@ div({$if: () => true}, "I am created");
 div({$for: [1, 2, 3], $if: item => item > 2}, item => item);
 ```
 
-#### $ref - reference created element
+#### `$ref` - reference created element
 A key under which element will be stored must be an object!
 ```javascript
 const {div, ref, setRef} = htmlhammer;
