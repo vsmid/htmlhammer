@@ -8,7 +8,7 @@
     "build": "babel ./esm --delete-dir-on-start -D -d ./cjs && npm test && npm run coverage:file && rm htmlhammer.js htmlhammer.min.js || true && rollup -c",
     "test": "ospec test/**/*.spec.js",
     "coverage": "nyc ospec test/**/*.spec.js report",
-    "coverage:file": "nyc ospec test/**/*.spec.js report > test-coverage.txt"
+    "coverage:file": "nyc ospec test/**/*.spec.js report > test-coverage-report.txt"
   },
   "keywords": [
     "html",
