@@ -104,7 +104,7 @@ div({$for: [1, 2, 3]}, item => item);
 div({$if: true}, "I am created");
 div({$if: () => true}, "I am created");
 
-// Create only items whith value > 2
+// Create only items with value > 2
 div({$for: [1, 2, 3], $if: item => item > 2}, item => item);
 ```
 
