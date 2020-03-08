@@ -143,7 +143,11 @@ a({onclick: e => alert("Clicked!")}, "Click me");
 CSS is given in the form of JSON object when using element's style attribute or HTMLStyleElement when using HTML tag style.
 ```javascript
 // Global, using HTMLStyleElement
-document.head.append(style({fontSize: "12px"}));
+document.head.append(style({},`
+    body {
+      font-size: 12px;
+    }
+`));
 
 // Inline, using style attribute
 div({style: {color: "red", fontSize: "12px"}}, "Hello World!");
