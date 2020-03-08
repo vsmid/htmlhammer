@@ -22,6 +22,15 @@ Write HTML with JavaScript using real HTML tag names.
 #### npmjs
 `npm i htmlhammer`
 
+#### unpkg
+```html
+<script src="https://unpkg.com/htmlhammer"></script>
+<script type="module">
+    import {div} from 'https://unpkg.com/htmlhammer?module';
+</script>
+<script src="https://unpkg.com/htmlhammer/htmlhammer.min.js"></script>
+```
+
 ### Manual download
 * Download latest single JavaScript file:
 [htmlhammer.js](./htmlhammer.js)
