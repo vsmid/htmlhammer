@@ -11,11 +11,16 @@ Write HTML with JavaScript using real HTML tag names.
 ## Install
 
 ### NPM
+
+#### github
 * Latest version:
 `npm install git+https://github.com/vsmid/htmlhammer.git --save`
 
 * Specific version:
 `npm install git+https://github.com/vsmid/htmlhammer.git\#1.0.0 --save`
+
+#### npmjs
+`npm i htmlhammer`
 
 ### Manual download
 * Download latest single JavaScript file:
