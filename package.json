@@ -5,8 +5,10 @@
   "main": "cjs/index.js",
   "module": "esm/index.js",
   "scripts": {
-    "build": "babel ./esm --delete-dir-on-start -D -d ./cjs && npm test && rm htmlhammer.js htmlhammer.min.js || true && rollup -c",
-    "test": "ospec test/**/*.spec.js"
+    "build": "babel ./esm --delete-dir-on-start -D -d ./cjs && npm test && npm run coverage:file && rm htmlhammer.js htmlhammer.min.js || true && rollup -c",
+    "test": "ospec test/**/*.spec.js",
+    "coverage": "nyc ospec test/**/*.spec.js report",
+    "coverage:file": "nyc ospec test/**/*.spec.js report > test-coverage.txt"
   },
   "keywords": [
     "html",
@@ -21,6 +23,7 @@
     "@babel/core": "^7.8.6",
     "@babel/preset-env": "^7.8.6",
     "basichtml": "^2.0.2",
+    "nyc": "^15.0.0",
     "ospec": "^4.0.1",
     "rollup": "^1.32.0",
     "rollup-plugin-babel": "^4.3.3",
