@@ -139,8 +139,27 @@ Inline CSS is given in the form of JSON object.
 ```javascript
 div({style: {color: "red", fontSize: "12px"}}, "Hello World!");
 ```
-## Run tests
-`npm test`
 
-## Build
-`npm run build`
+## Project's NPM scripts
+
+### `test` - run tests
+```script 
+npm test
+```
+
+### `coverage` - create and print test coverage report to console
+```script
+npm run coverage
+```
+
+### `coverage:file` - create and print test coverage report to test-coverage.txt file
+```script
+npm run coverage
+```
+
+### `build` - build project
+```script
+npm run build
+```
+
+## [Current version test coverage report](./test-coverage.txt)
