@@ -1,9 +1,9 @@
-export class BluePrint {
-    constructor(t = null, o = null, a = {}, c = []) {
-        this.t = t;
-        this.o = o;
-        this.a = a;
-        this.c = c;
+export class Blueprint {
+    constructor(tag = null, object = null, attributes = {}, children = []) {
+        this.tag = tag;
+        this.object = object;
+        this.attributes = attributes;
+        this.children = children;
     }
 }
 
@@ -55,9 +55,9 @@ export const AttributeHandler = {
     $for: (value) => {
         let blueprints = [];
         if (!value || type(value) !== 'array') {
-            blueprints.push(new BluePrint());
+            blueprints.push(new Blueprint());
         } else {
-            value.forEach(o => blueprints.push(new BluePrint(null, o)));
+            value.forEach(o => blueprints.push(new Blueprint(null, o)));
         }
         return blueprints;
     },
@@ -78,9 +78,9 @@ export const AttributeHandler = {
 };
 
 export const createElement = (blueprint) => {
-    let element = document.createElement(blueprint.t);
-    Object.keys(blueprint.a).forEach(name => attachAttribute(name, blueprint.a[name], element));
-    blueprint.c.forEach(child => appendChild(child, element, blueprint.o));
+    let element = document.createElement(blueprint.tag);
+    Object.keys(blueprint.attributes).forEach(name => attachAttribute(name, blueprint.attributes[name], element));
+    blueprint.children.forEach(child => appendChild(child, element, blueprint.object));
     return element;
 };
 
@@ -89,15 +89,15 @@ export const define = (tag) => (attributes = {}, ...children) => {
 
     let elements = AttributeHandler
         .$for($for)
-        .filter(bp => AttributeHandler.$if($if, bp.o))
+        .filter(bp => AttributeHandler.$if($if, bp.object))
         .map(bp => {
-            bp.t = tag;
-            Object.assign(bp.a, attributes);
-            if(children) {
-                bp.c.push(...children);
+            bp.tag = tag;
+            Object.assign(bp.attributes, attributes);
+            if (children) {
+                bp.children.push(...children);
             }
             let e = createElement(bp);
-            AttributeHandler.$ref($ref, bp.o, e);
+            AttributeHandler.$ref($ref, bp.object, e);
             return e;
         });
 

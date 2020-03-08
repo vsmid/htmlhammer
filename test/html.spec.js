@@ -162,17 +162,17 @@ o.spec("HTML", () => {
         });
     });
 
-    o.spec("BluePrint", () => {
+    o.spec("Blueprint", () => {
 
-        const BluePrint = require("../cjs/html.js").BluePrint;
+        const Blueprint = require("../cjs/html.js").Blueprint;
 
         o("Should set default values", () => {
-            let bp = new BluePrint();
+            let bp = new Blueprint();
 
-            o(bp.t).equals(null);
-            o(bp.o).equals(null);
-            o(JSON.stringify(bp.a)).equals("{}");
-            o(JSON.stringify(bp.c)).equals("[]");
+            o(bp.tag).equals(null);
+            o(bp.object).equals(null);
+            o(JSON.stringify(bp.attributes)).equals("{}");
+            o(JSON.stringify(bp.children)).equals("[]");
         });
 
         o("Should set given values", () => {
@@ -180,12 +180,12 @@ o.spec("HTML", () => {
             let attr = { id: 1 };
             let children = ["Hello"];
 
-            let bp = new BluePrint("div", ob, attr, children);
+            let bp = new Blueprint("div", ob, attr, children);
 
-            o(bp.t).equals("div");
-            o(bp.o).equals(ob);
-            o(bp.a).equals(attr);
-            o(bp.c).equals(children);
+            o(bp.tag).equals("div");
+            o(bp.object).equals(ob);
+            o(bp.attributes).equals(attr);
+            o(bp.children).equals(children);
         });
 
     });
@@ -444,45 +444,45 @@ o.spec("HTML", () => {
     o.spec("AttributeHandler", () => {
 
         const AttributeHandler = require("../cjs/html.js").AttributeHandler;
-        const BluePrint = require("../cjs/html.js").BluePrint;
+        const Blueprint = require("../cjs/html.js").Blueprint;
 
         o.spec("$for", () => {
 
-            o("Should create sinle empty blueprint if $for is not goven or not an array", () => {
+            o("Should create sinle empty Blueprint if $for is not goven or not an array", () => {
                 let bps = AttributeHandler.$for(null);
                 o(bps.length).equals(1);
-                o(bps[0] instanceof BluePrint).equals(true);
+                o(bps[0] instanceof Blueprint).equals(true);
 
                 bps = AttributeHandler.$for(undefined);
                 o(bps.length).equals(1);
-                o(bps[0] instanceof BluePrint).equals(true);
+                o(bps[0] instanceof Blueprint).equals(true);
 
                 bps = AttributeHandler.$for("Hello");
                 o(bps.length).equals(1);
-                o(bps[0] instanceof BluePrint).equals(true);
+                o(bps[0] instanceof Blueprint).equals(true);
 
                 bps = AttributeHandler.$for(2);
                 o(bps.length).equals(1);
-                o(bps[0] instanceof BluePrint).equals(true);
+                o(bps[0] instanceof Blueprint).equals(true);
             });
 
-            o("Should create an array of BluePrint instances", () => {
+            o("Should create an array of Blueprint instances", () => {
                 let items = [{ count: 1 }, { count: 2 }];
                 let bps = AttributeHandler.$for(items);
 
                 o(bps.length).equals(2);
 
-                o(bps[0] instanceof BluePrint).equals(true);
-                o(bps[0].t).equals(null);
-                o(bps[0].o).equals(items[0]);
-                o(JSON.stringify(bps[0].a)).equals("{}");
-                o(JSON.stringify(bps[0].c)).equals("[]");
+                o(bps[0] instanceof Blueprint).equals(true);
+                o(bps[0].tag).equals(null);
+                o(bps[0].object).equals(items[0]);
+                o(JSON.stringify(bps[0].attributes)).equals("{}");
+                o(JSON.stringify(bps[0].children)).equals("[]");
 
-                o(bps[1] instanceof BluePrint).equals(true);
-                o(bps[1].t).equals(null);
-                o(bps[1].o).equals(items[1]);
-                o(JSON.stringify(bps[0].a)).equals("{}");
-                o(JSON.stringify(bps[0].c)).equals("[]");
+                o(bps[1] instanceof Blueprint).equals(true);
+                o(bps[1].tag).equals(null);
+                o(bps[1].object).equals(items[1]);
+                o(JSON.stringify(bps[0].attributes)).equals("{}");
+                o(JSON.stringify(bps[0].children)).equals("[]");
             });
         });
 
@@ -540,10 +540,10 @@ o.spec("HTML", () => {
     o.spec("#createElement", () => {
 
         const createElement = require("../cjs/html.js").createElement;
-        const BluePrint = require("../cjs/html.js").BluePrint;
+        const Blueprint = require("../cjs/html.js").Blueprint;
 
         o("Should create basic element", () => {
-            let bp = new BluePrint("div");
+            let bp = new Blueprint("div");
 
             let element = createElement(bp);
 
@@ -551,8 +551,8 @@ o.spec("HTML", () => {
             o(element.nodeName).equals("div");
         });
 
-        o("Should create element based on BluePrint", () => {
-            let bp = new BluePrint("div", null, { id: "myDiv" }, ["Hello!"]);
+        o("Should create element based on Blueprint", () => {
+            let bp = new Blueprint("div", null, { id: "myDiv" }, ["Hello!"]);
 
             let element = createElement(bp);
 
@@ -562,8 +562,8 @@ o.spec("HTML", () => {
             o(element.id).equals("myDiv");
         });
 
-        o("Should create element based on BluePrint which has object set", () => {
-            let bp = new BluePrint("div", { name: "Lena" }, { id: "myDiv" }, [person => person.name]);
+        o("Should create element based on Blueprint which has object set", () => {
+            let bp = new Blueprint("div", { name: "Lena" }, { id: "myDiv" }, [person => person.name]);
             let element = createElement(bp);
 
             o(element instanceof HTMLElement).equals(true);
@@ -573,7 +573,7 @@ o.spec("HTML", () => {
         });
 
         o("Should create element without children", () => {
-            let bp = new BluePrint("div", null, { id: "myDiv" });
+            let bp = new Blueprint("div", null, { id: "myDiv" });
 
             let element = createElement(bp);
 
