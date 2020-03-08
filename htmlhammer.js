@@ -7,18 +7,18 @@ var htmlhammer = (function (exports) {
     }
   }
 
-  var BluePrint = function BluePrint() {
-    var t = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
-    var o = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
-    var a = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
-    var c = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : [];
+  var Blueprint = function Blueprint() {
+    var tag = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
+    var object = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
+    var attributes = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+    var children = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : [];
 
-    _classCallCheck(this, BluePrint);
+    _classCallCheck(this, Blueprint);
 
-    this.t = t;
-    this.o = o;
-    this.a = a;
-    this.c = c;
+    this.tag = tag;
+    this.object = object;
+    this.attributes = attributes;
+    this.children = children;
   };
   var type = function type(v) {
     return (v === undefined ? 'undefined' : v === null ? 'null' : v instanceof HTMLElement ? 'HTMLElement' : v.constructor.name).toLowerCase();
@@ -73,10 +73,10 @@ var htmlhammer = (function (exports) {
       var blueprints = [];
 
       if (!value || type(value) !== 'array') {
-        blueprints.push(new BluePrint());
+        blueprints.push(new Blueprint());
       } else {
         value.forEach(function (o) {
-          return blueprints.push(new BluePrint(null, o));
+          return blueprints.push(new Blueprint(null, o));
         });
       }
 
@@ -96,12 +96,12 @@ var htmlhammer = (function (exports) {
     }
   };
   var createElement = function createElement(blueprint) {
-    var element = document.createElement(blueprint.t);
-    Object.keys(blueprint.a).forEach(function (name) {
-      return attachAttribute(name, blueprint.a[name], element);
+    var element = document.createElement(blueprint.tag);
+    Object.keys(blueprint.attributes).forEach(function (name) {
+      return attachAttribute(name, blueprint.attributes[name], element);
     });
-    blueprint.c.forEach(function (child) {
-      return appendChild(child, element, blueprint.o);
+    blueprint.children.forEach(function (child) {
+      return appendChild(child, element, blueprint.object);
     });
     return element;
   };
@@ -117,19 +117,19 @@ var htmlhammer = (function (exports) {
           $if = attributes.$if,
           $ref = attributes.$ref;
       var elements = AttributeHandler.$for($for).filter(function (bp) {
-        return AttributeHandler.$if($if, bp.o);
+        return AttributeHandler.$if($if, bp.object);
       }).map(function (bp) {
-        bp.t = tag;
-        Object.assign(bp.a, attributes);
+        bp.tag = tag;
+        Object.assign(bp.attributes, attributes);
 
         if (children) {
-          var _bp$c;
+          var _bp$children;
 
-          (_bp$c = bp.c).push.apply(_bp$c, children);
+          (_bp$children = bp.children).push.apply(_bp$children, children);
         }
 
         var e = createElement(bp);
-        AttributeHandler.$ref($ref, bp.o, e);
+        AttributeHandler.$ref($ref, bp.object, e);
         return e;
       });
       return elements.length === 1 ? elements[0] : elements;
