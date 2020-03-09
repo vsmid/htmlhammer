@@ -24,21 +24,14 @@ Write HTML with JavaScript using real HTML tag names.
 
 #### unpkg
 ```html
+<!-- Latest version -->
 <script src="https://unpkg.com/htmlhammer"></script>
 <script type="module">
     import {div} from 'https://unpkg.com/htmlhammer?module';
 </script>
+<script src="https://unpkg.com/htmlhammer/htmlhammer.js"></script>
 <script src="https://unpkg.com/htmlhammer/htmlhammer.min.js"></script>
 ```
-
-### Manual download
-* Download latest single JavaScript file:
-[htmlhammer.js](./htmlhammer.js)
-
-* Download latest minified single JavaScript file:
-[htmlhammer.min.js](./htmlhammer.min.js)
-
-For other, specific versions look under tags.
 
 ## Including htmlhammer
 
@@ -98,7 +91,7 @@ document.body.append(
 );
 ```
 
-For more complex and complete example check [index.html](./index.html).
+For more complex and complete example check [index.html](https://github.com/vsmid/htmlhammer/blob/master/index.html).
 
 ### Reserved element attributes
 
@@ -186,4 +179,4 @@ npm run coverage
 npm run build
 ```
 
-## [Current version test coverage report](./test-coverage-report.txt)
+## [Current version test coverage report](https://github.com/vsmid/htmlhammer/blob/master/test-coverage-report.txt)
