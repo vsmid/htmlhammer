@@ -10,28 +10,36 @@ Write HTML with JavaScript using real HTML tag names.
 
 ## Install
 
-### NPM
-
-#### github
+### github
 * Latest version:
 `npm install git+https://github.com/vsmid/htmlhammer.git --save`
 
 * Specific version:
 `npm install git+https://github.com/vsmid/htmlhammer.git\#1.0.0 --save`
 
-#### npmjs
+### npmjs
 `npm i htmlhammer`
 
-#### unpkg
+### unpkg
 ```html
-<!-- Latest version -->
+<!-- Latest version CJS -->
 <script src="https://unpkg.com/htmlhammer"></script>
+
+<!-- Version 1.0.1 CJS -->
+<script src="https://unpkg.com/htmlhammer@1.0.1"></script>
+
+<!-- Latest version ESM -->
 <script type="module">
     import {div} from 'https://unpkg.com/htmlhammer?module';
 </script>
+
+<!-- Latest version single file IIFE -->
 <script src="https://unpkg.com/htmlhammer/htmlhammer.js"></script>
+
+<!-- Latest version minified single file IIFE -->
 <script src="https://unpkg.com/htmlhammer/htmlhammer.min.js"></script>
 ```
+For specific versions use url format: unpkg.com/:package@:version/:file. See [UNPKG](https://unpkg.com/) for more info.
 
 ## Including htmlhammer
 
