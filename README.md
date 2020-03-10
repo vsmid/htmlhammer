@@ -136,8 +136,8 @@ let person = new Person("Lena", 0);
 div({ $ref: setRef(person, "name")}, person.name);
 div({ $ref: setRef(person, "age")}, person.age);
 
-console.log(ref(person)["name"]);
-console.log(ref(person)["age"]);
+console.log(ref(person, "name"));
+console.log(ref(person, "age"));
 
 // If used in combination with $for do not set object reference manually because it will automatically be set to the list item value
 element = div({ $for: [{v: 1}, {v: 2}, {v: 3}], $ref: setRef}, "Hello World!");
