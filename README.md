@@ -82,7 +82,7 @@ Parameters:
 Returns:
 * An array of HTMLElement or a single HTMLElement.
 
-### How it looks?
+### Code sample
 ```javascript
 let items = [{value: 1}, {value: 2}];
 
