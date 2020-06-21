@@ -16,7 +16,7 @@ export const {
     br, cite, code, data, dfn,
     em, i, kbd, mark, q,
     rb, rp, rt, rtc, ruby,
-    s, samp, strong, sub, sup,
+    s, samp, small, span, strong, sub, sup,
     time, u, variable, wbr,
     area, audio, img, map, track,
     video,

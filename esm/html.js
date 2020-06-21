@@ -127,7 +127,7 @@ export default (() => {
         'br', 'cite', 'code', 'data', 'dfn',
         'em', 'i', 'kbd', 'mark', 'q',
         'rb', 'rp', 'rt', 'rtc', 'ruby',
-        's', 'samp', 'strong', 'sub', 'sup',
+        's', 'samp', 'small', 'span', 'strong', 'sub', 'sup',
         'time', 'u', 'variable', 'wbr',
         // Image and multimedia
         'area', 'audio', 'img', 'map', 'track',
