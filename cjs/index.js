@@ -3,8 +3,8 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.meter = exports.legend = exports.label = exports.input = exports.form = exports.fieldset = exports.datalist = exports.button = exports.tr = exports.thead = exports.th = exports.tfoot = exports.td = exports.tbody = exports.table = exports.colgroup = exports.col = exports.caption = exports.ins = exports.del = exports.script = exports.noscript = exports.canvas = exports.source = exports.picture = exports.param = exports.object = exports.iframe = exports.embed = exports.video = exports.track = exports.map = exports.img = exports.audio = exports.area = exports.wbr = exports.variable = exports.u = exports.time = exports.sup = exports.sub = exports.strong = exports.samp = exports.s = exports.ruby = exports.rtc = exports.rt = exports.rp = exports.rb = exports.q = exports.mark = exports.kbd = exports.i = exports.em = exports.dfn = exports.data = exports.code = exports.cite = exports.br = exports.bdo = exports.bdi = exports.b = exports.abbr = exports.a = exports.ul = exports.pre = exports.p = exports.ol = exports.li = exports.hr = exports.figure = exports.figcaption = exports.dt = exports.dl = exports.div = exports.dd = exports.blockquote = exports.section = exports.nav = exports.main = exports.hggroup = exports.h6 = exports.h5 = exports.h4 = exports.h3 = exports.h2 = exports.h1 = exports.header = exports.footer = exports.aside = exports.article = exports.address = exports.body = exports.title = exports.style = exports.meta = exports.link = exports.head = exports.base = exports.html = void 0;
-exports.setRef = exports.ref = exports.template = exports.slot = exports.summary = exports.menu = exports.dialog = exports.details = exports.textarea = exports.select = exports.progress = exports.output = exports.option = exports.oprgroup = void 0;
+exports.label = exports.input = exports.form = exports.fieldset = exports.datalist = exports.button = exports.tr = exports.thead = exports.th = exports.tfoot = exports.td = exports.tbody = exports.table = exports.colgroup = exports.col = exports.caption = exports.ins = exports.del = exports.script = exports.noscript = exports.canvas = exports.source = exports.picture = exports.param = exports.object = exports.iframe = exports.embed = exports.video = exports.track = exports.map = exports.img = exports.audio = exports.area = exports.wbr = exports.variable = exports.u = exports.time = exports.sup = exports.sub = exports.strong = exports.span = exports.small = exports.samp = exports.s = exports.ruby = exports.rtc = exports.rt = exports.rp = exports.rb = exports.q = exports.mark = exports.kbd = exports.i = exports.em = exports.dfn = exports.data = exports.code = exports.cite = exports.br = exports.bdo = exports.bdi = exports.b = exports.abbr = exports.a = exports.ul = exports.pre = exports.p = exports.ol = exports.li = exports.hr = exports.figure = exports.figcaption = exports.dt = exports.dl = exports.div = exports.dd = exports.blockquote = exports.section = exports.nav = exports.main = exports.hggroup = exports.h6 = exports.h5 = exports.h4 = exports.h3 = exports.h2 = exports.h1 = exports.header = exports.footer = exports.aside = exports.article = exports.address = exports.body = exports.title = exports.style = exports.meta = exports.link = exports.head = exports.base = exports.html = void 0;
+exports.setRef = exports.ref = exports.template = exports.slot = exports.summary = exports.menu = exports.dialog = exports.details = exports.textarea = exports.select = exports.progress = exports.output = exports.option = exports.oprgroup = exports.meter = exports.legend = void 0;
 
 var _html = _interopRequireDefault(require("./html.js"));
 
@@ -70,6 +70,8 @@ var html = _html["default"].html,
     ruby = _html["default"].ruby,
     s = _html["default"].s,
     samp = _html["default"].samp,
+    small = _html["default"].small,
+    span = _html["default"].span,
     strong = _html["default"].strong,
     sub = _html["default"].sub,
     sup = _html["default"].sup,
@@ -178,6 +180,8 @@ exports.time = time;
 exports.sup = sup;
 exports.sub = sub;
 exports.strong = strong;
+exports.span = span;
+exports.small = small;
 exports.samp = samp;
 exports.s = s;
 exports.ruby = ruby;

@@ -162,7 +162,7 @@ var _default = function () {
   'body', // Content sectioning
   'address', 'article', 'aside', 'footer', 'header', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'hggroup', 'main', 'nav', 'section', // Text content
   'blockquote', 'dd', 'div', 'dl', 'dt', 'figcaption', 'figure', 'hr', 'li', 'ol', 'p', 'pre', 'ul', // Inline text semantics
-  'a', 'abbr', 'b', 'bdi', 'bdo', 'br', 'cite', 'code', 'data', 'dfn', 'em', 'i', 'kbd', 'mark', 'q', 'rb', 'rp', 'rt', 'rtc', 'ruby', 's', 'samp', 'strong', 'sub', 'sup', 'time', 'u', 'variable', 'wbr', // Image and multimedia
+  'a', 'abbr', 'b', 'bdi', 'bdo', 'br', 'cite', 'code', 'data', 'dfn', 'em', 'i', 'kbd', 'mark', 'q', 'rb', 'rp', 'rt', 'rtc', 'ruby', 's', 'samp', 'small', 'span', 'strong', 'sub', 'sup', 'time', 'u', 'variable', 'wbr', // Image and multimedia
   'area', 'audio', 'img', 'map', 'track', 'video', // Embedded content
   'embed', 'iframe', 'object', 'param', 'picture', 'source', // Scripting
   'canvas', 'noscript', 'script', // Demarcating edits

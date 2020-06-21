@@ -1,5 +1,5 @@
 ––––––
-All 245 assertions passed in 32ms  
+All 245 assertions passed in 86ms  
 ----------|---------|----------|---------|---------|-------------------
 File      | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s 
 ----------|---------|----------|---------|---------|-------------------
