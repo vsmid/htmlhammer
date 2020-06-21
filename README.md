@@ -179,7 +179,7 @@ npm run coverage
 
 ### `coverage:file` - create and print test coverage report to test-coverage-report.txt file
 ```script
-npm run coverage
+npm run coverage:file
 ```
 
 ### `build` - build project
