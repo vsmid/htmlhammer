@@ -99,6 +99,17 @@ document.body.append(
 );
 ```
 
+#### Treat string content as HTML
+If element child is given as a string but you would like to add it to element as HTML you should use HTMLString class.
+This is useful if you fetch HTML content from external resource such as REST service.
+```javascript
+import { div, HTMLString } from "./esm/index.js";
+
+document.body.append(
+    div({}, new HTMLString("<h1>Hello World!</h1>"))
+);
+```
+
 For more complex and complete example check [index.html](https://github.com/vsmid/htmlhammer/blob/master/index.html).
 
 ### Reserved element attributes

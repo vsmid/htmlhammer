@@ -277,6 +277,7 @@ o.spec("HTML", () => {
 
     o.spec("#appendChild", () => {
         const appendChild = require("../cjs/html.js").appendChild;
+        const HTMLString = require("../cjs/helper.js").HTMLString;
 
         o('Should not append null children', () => {
             let element = document.createElement("div");
@@ -324,6 +325,16 @@ o.spec("HTML", () => {
             o(element.childNodes.length).equals(1);
             o(element.childNodes[0].nodeName).equals("#text");
             o(element.childNodes[0].textContent).equals("Hello");
+        });
+
+        o("Should append string as inner html", () => {
+            let element = document.createElement("div");
+
+            appendChild(new HTMLString("<h1>Hello!</h1>"), element);
+
+            o(element.childNodes.length).equals(1);
+            o(element.childNodes[0].nodeName).equals("h1");
+            o(element.childNodes[0].textContent).equals("Hello!");
         });
 
         o("Should append number as text node", () => {
@@ -396,6 +407,16 @@ o.spec("HTML", () => {
                 o(element.childNodes.length).equals(2);
                 o(element.childNodes[0]).equals(child1);
                 o(element.childNodes[1]).equals(child2);
+            });
+
+            o("Function which returns string as inner html", () => {
+                let element = document.createElement("div");
+    
+                appendChild(() => new HTMLString("<h1>Hello!</h1>"), element);
+    
+                o(element.childNodes.length).equals(1);
+                o(element.childNodes[0].nodeName).equals("h1");
+                o(element.childNodes[0].textContent).equals("Hello!");
             });
 
             o("Function which returns string as text node", () => {

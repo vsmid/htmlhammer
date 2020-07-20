@@ -9,7 +9,7 @@
 
 <body>
     <script type="module">
-        import { div, h2, br, style, table, th, tr, td, label, input, button, setRef, ref } from "./esm/index.js";
+        import { div, h2, br, style, table, th, tr, td, label, input, button, setRef, ref, HTMLString } from "./esm/index.js";
 
         document.head.append(style({},
             `
@@ -82,8 +82,12 @@
             ]
         }
 
-        document.body.append(AccountInfo(accountData));
-
+        document.body.append(
+            div({},
+                new HTMLString("<h1>Showcase application</h1>"),
+                AccountInfo(accountData)
+            )
+        );
     </script>
 </body>
 

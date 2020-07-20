@@ -33,3 +33,5 @@ export const {
     slot, template
 } = HTML;
 export const { ref, setRef } = REF;
+
+export * from './helper.js';

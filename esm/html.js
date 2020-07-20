@@ -45,6 +45,9 @@ export const appendChild = (child, element, object) => {
         case 'function':
             appendChild(object ? child(object) : child(), element, object);
             break;
+        case 'htmlstring':
+            element.innerHTML += child.content;
+            break;
         default:
             element.append(document.createTextNode(child.toString()));
             break;
