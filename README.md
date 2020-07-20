@@ -99,13 +99,15 @@ document.body.append(
 );
 ```
 
-#### Treat string content as HTML
-If element's child is given as a string and you would like to add it to element as HTML you should use HTMLString helper class. This is useful if you want to fetch HTML content from external resource such as REST service.
+### String as HTML
+If you have HTML in string format and you would like for it to be added to element as HTML you should wrap it in `HTMLString` class. This is useful when you want to inject already generated HTML in string format to an element (e.g. HTML content received from REST service).
 ```javascript
 import { div, HTMLString } from "./esm/index.js";
 
+const html = "<h1>Hello World!</h1>";
+
 document.body.append(
-    div({}, new HTMLString("<h1>Hello World!</h1>"))
+    div({}, new HTMLString(html)) // Without HTMLString wrapper, html content would be treated as text content hence text node would be created
 );
 ```
 
