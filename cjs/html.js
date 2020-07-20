@@ -72,6 +72,10 @@ var appendChild = function appendChild(child, element, object) {
       appendChild(object ? child(object) : child(), element, object);
       break;
 
+    case 'htmlstring':
+      element.innerHTML += child.content;
+      break;
+
     default:
       element.append(document.createTextNode(child.toString()));
       break;

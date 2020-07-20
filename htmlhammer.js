@@ -63,6 +63,10 @@ var htmlhammer = (function (exports) {
         appendChild(object ? child(object) : child(), element, object);
         break;
 
+      case 'htmlstring':
+        element.innerHTML += child.content;
+        break;
+
       default:
         element.append(document.createTextNode(child.toString()));
         break;
@@ -191,6 +195,12 @@ var htmlhammer = (function (exports) {
     };
   })();
 
+  var HTMLString = function HTMLString(content) {
+    _classCallCheck(this, HTMLString);
+
+    this.content = content;
+  };
+
   var html = HTML.html,
       base = HTML.base,
       head = HTML.head,
@@ -308,6 +318,7 @@ var htmlhammer = (function (exports) {
   var ref = REF.ref,
       setRef = REF.setRef;
 
+  exports.HTMLString = HTMLString;
   exports.a = a;
   exports.abbr = abbr;
   exports.address = address;

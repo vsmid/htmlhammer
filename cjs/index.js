@@ -3,12 +3,143 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+var _exportNames = {
+  html: true,
+  base: true,
+  head: true,
+  link: true,
+  meta: true,
+  style: true,
+  title: true,
+  body: true,
+  address: true,
+  article: true,
+  aside: true,
+  footer: true,
+  header: true,
+  h1: true,
+  h2: true,
+  h3: true,
+  h4: true,
+  h5: true,
+  h6: true,
+  hggroup: true,
+  main: true,
+  nav: true,
+  section: true,
+  blockquote: true,
+  dd: true,
+  div: true,
+  dl: true,
+  dt: true,
+  figcaption: true,
+  figure: true,
+  hr: true,
+  li: true,
+  ol: true,
+  p: true,
+  pre: true,
+  ul: true,
+  a: true,
+  abbr: true,
+  b: true,
+  bdi: true,
+  bdo: true,
+  br: true,
+  cite: true,
+  code: true,
+  data: true,
+  dfn: true,
+  em: true,
+  i: true,
+  kbd: true,
+  mark: true,
+  q: true,
+  rb: true,
+  rp: true,
+  rt: true,
+  rtc: true,
+  ruby: true,
+  s: true,
+  samp: true,
+  small: true,
+  span: true,
+  strong: true,
+  sub: true,
+  sup: true,
+  time: true,
+  u: true,
+  variable: true,
+  wbr: true,
+  area: true,
+  audio: true,
+  img: true,
+  map: true,
+  track: true,
+  video: true,
+  embed: true,
+  iframe: true,
+  object: true,
+  param: true,
+  picture: true,
+  source: true,
+  canvas: true,
+  noscript: true,
+  script: true,
+  del: true,
+  ins: true,
+  caption: true,
+  col: true,
+  colgroup: true,
+  table: true,
+  tbody: true,
+  td: true,
+  tfoot: true,
+  th: true,
+  thead: true,
+  tr: true,
+  button: true,
+  datalist: true,
+  fieldset: true,
+  form: true,
+  input: true,
+  label: true,
+  legend: true,
+  meter: true,
+  oprgroup: true,
+  option: true,
+  output: true,
+  progress: true,
+  select: true,
+  textarea: true,
+  details: true,
+  dialog: true,
+  menu: true,
+  summary: true,
+  slot: true,
+  template: true,
+  ref: true,
+  setRef: true
+};
 exports.label = exports.input = exports.form = exports.fieldset = exports.datalist = exports.button = exports.tr = exports.thead = exports.th = exports.tfoot = exports.td = exports.tbody = exports.table = exports.colgroup = exports.col = exports.caption = exports.ins = exports.del = exports.script = exports.noscript = exports.canvas = exports.source = exports.picture = exports.param = exports.object = exports.iframe = exports.embed = exports.video = exports.track = exports.map = exports.img = exports.audio = exports.area = exports.wbr = exports.variable = exports.u = exports.time = exports.sup = exports.sub = exports.strong = exports.span = exports.small = exports.samp = exports.s = exports.ruby = exports.rtc = exports.rt = exports.rp = exports.rb = exports.q = exports.mark = exports.kbd = exports.i = exports.em = exports.dfn = exports.data = exports.code = exports.cite = exports.br = exports.bdo = exports.bdi = exports.b = exports.abbr = exports.a = exports.ul = exports.pre = exports.p = exports.ol = exports.li = exports.hr = exports.figure = exports.figcaption = exports.dt = exports.dl = exports.div = exports.dd = exports.blockquote = exports.section = exports.nav = exports.main = exports.hggroup = exports.h6 = exports.h5 = exports.h4 = exports.h3 = exports.h2 = exports.h1 = exports.header = exports.footer = exports.aside = exports.article = exports.address = exports.body = exports.title = exports.style = exports.meta = exports.link = exports.head = exports.base = exports.html = void 0;
 exports.setRef = exports.ref = exports.template = exports.slot = exports.summary = exports.menu = exports.dialog = exports.details = exports.textarea = exports.select = exports.progress = exports.output = exports.option = exports.oprgroup = exports.meter = exports.legend = void 0;
 
 var _html = _interopRequireDefault(require("./html.js"));
 
 var _ref = _interopRequireDefault(require("./ref.js"));
+
+var _helper = require("./helper.js");
+
+Object.keys(_helper).forEach(function (key) {
+  if (key === "default" || key === "__esModule") return;
+  if (Object.prototype.hasOwnProperty.call(_exportNames, key)) return;
+  Object.defineProperty(exports, key, {
+    enumerable: true,
+    get: function get() {
+      return _helper[key];
+    }
+  });
+});
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
