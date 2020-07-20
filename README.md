@@ -100,8 +100,7 @@ document.body.append(
 ```
 
 #### Treat string content as HTML
-If element child is given as a string but you would like to add it to element as HTML you should use HTMLString class.
-This is useful if you fetch HTML content from external resource such as REST service.
+If element's child is given as a string and you would like to add it to element as HTML you should use HTMLString helper class. This is useful if you want to fetch HTML content from external resource such as REST service.
 ```javascript
 import { div, HTMLString } from "./esm/index.js";
 
