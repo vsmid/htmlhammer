@@ -277,7 +277,7 @@ o.spec("HTML", () => {
 
     o.spec("#appendChild", () => {
         const appendChild = require("../cjs/html.js").appendChild;
-        const HTMLString = require("../cjs/helper.js").HTMLString;
+        const HTMLString = require("../cjs/types.js").HTMLString;
 
         o('Should not append null children', () => {
             let element = document.createElement("div");

@@ -32,6 +32,7 @@ export const {
     details, dialog, menu, summary,
     slot, template
 } = HTML;
+
 export const { ref, setRef } = REF;
 
-export * from './helper.js';
+export * from './types.js';
