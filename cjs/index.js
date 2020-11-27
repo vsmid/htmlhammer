@@ -128,15 +128,16 @@ var _html = _interopRequireDefault(require("./html.js"));
 
 var _ref = _interopRequireDefault(require("./ref.js"));
 
-var _helper = require("./helper.js");
+var _types = require("./types.js");
 
-Object.keys(_helper).forEach(function (key) {
+Object.keys(_types).forEach(function (key) {
   if (key === "default" || key === "__esModule") return;
   if (Object.prototype.hasOwnProperty.call(_exportNames, key)) return;
+  if (key in exports && exports[key] === _types[key]) return;
   Object.defineProperty(exports, key, {
     enumerable: true,
     get: function get() {
-      return _helper[key];
+      return _types[key];
     }
   });
 });

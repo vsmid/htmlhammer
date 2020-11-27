@@ -1,6 +1,6 @@
 {
   "name": "htmlhammer",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "Write HTML with JavaScript using real HTML tag names.",
   "main": "cjs/index.js",
   "module": "esm/index.js",
