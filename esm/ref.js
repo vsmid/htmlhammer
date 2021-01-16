@@ -8,14 +8,14 @@ export default (() => {
                     if (id) {
                         refs.get(o)[id] = e;
                     } else {
-                        refs.set(o, e);
+                        refs.set(o, [...refs.get(o), e]);
                     }
                 } else {
                     let val = {};
                     if (id) {
                         val[id] = e;
                     } else {
-                        val = e;
+                        val = [e];
                     }
                     refs.set(o, val);
                 }

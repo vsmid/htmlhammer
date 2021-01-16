@@ -545,7 +545,7 @@ o.spec("HTML", () => {
 
                 AttributeHandler.$ref(setRef(ob), null, element);
 
-                o(ref(ob)).equals(element);
+                o(ref(ob)[0]).equals(element);
             });
 
             o("Should reference given element by array object", () => {
@@ -554,7 +554,7 @@ o.spec("HTML", () => {
 
                 AttributeHandler.$ref(setRef, ob, element);
 
-                o(ref(ob)).equals(element);
+                o(ref(ob)[0]).equals(element);
             });
         });
 
@@ -655,7 +655,7 @@ o.spec("HTML", () => {
             o(Array.isArray(elements)).equals(false);
             o(elements.nodeName).equals("div");
             o(elements.childNodes[0].textContent).equals("2");
-            o(ref(items[1])).equals(elements);
+            o(ref(items[1])[0]).equals(elements);
         });
 
         o("Should create element without children", () => {

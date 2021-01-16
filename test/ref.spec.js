@@ -7,13 +7,37 @@ o.spec("Ref", () => {
 
         const { ref, setRef } = require("../cjs/ref.js").default;
 
+        o("Should return ref in an array", () => {
+            let ob = {};
+            let el = document.createElement("div");
+
+            setRef(ob)(el);
+
+            o(Array.isArray(ref(ob))).equals(true);
+        });
+
+
+        o("Should store multiple objects for the same ref object", () => {
+            let ob = {};
+            let el1 = document.createElement("div");
+            let el2 = document.createElement("div");
+
+            setRef(ob)(el1);
+            setRef(ob)(el2);
+
+            o(Array.isArray(ref(ob))).equals(true);
+
+            o(ref(ob)[0]).equals(el1);
+            o(ref(ob)[1]).equals(el2);
+        });
+
         o("Should set ref without id", () => {
             let ob = {};
             let el = document.createElement("div");
 
             setRef(ob)(el);
 
-            o(ref(ob)).equals(el);
+            o(ref(ob)[0]).equals(el);
         });
 
         o("Should set ref with id", () => {
@@ -22,6 +46,7 @@ o.spec("Ref", () => {
 
             setRef(ob, "dummy")(el);
 
+            // When id is set, elements are stored in an object and not array
             o(ref(ob, "dummy")).equals(el);
         });
 
@@ -41,7 +66,8 @@ o.spec("Ref", () => {
             setRef(ob)(el1);
             setRef(ob)(el2);
 
-            o(ref(ob)).equals(el2);
+            o(ref(ob)[0]).equals(el1);
+            o(ref(ob)[1]).equals(el2);
         });
 
         o("Should override value for existing key and id", () => {
