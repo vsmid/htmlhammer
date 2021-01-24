@@ -1,18 +1,35 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>AccountInfo example</title>
-</head>
+  </head>
 
-<body>
+  <body>
     <script type="module">
-        import { div, h2, br, style, table, th, tr, td, label, input, button, setRef, ref, HTMLString } from "./esm/index.js";
+      import {
+        div,
+        h2,
+        br,
+        style,
+        table,
+        th,
+        tr,
+        td,
+        label,
+        input,
+        button,
+        setRef,
+        ref,
+        HtmlString,
+        ChildAppender,
+      } from "./esm/index.js";
 
-        document.head.append(style({},
-            `
+      document.head.append(
+        style(
+          {},
+          `
             .accountInfo {
                 font-family: helvetica;
                 font-size: 18px;
@@ -34,61 +51,82 @@
                 text-align: center;
             }
             `
-        ));
+        )
+      );
 
-        const SpentButton = (trxs, currency) =>
-            button({ onclick: () => alert("Total amount spent: " + trxs.reduce((acc, trx) => acc + trx.amount, 0) + ` ${currency}`) }, 'Total amount spent');
-
-        const AccountInfo = (data) =>
-            div({},
-                div({ class: 'accountInfo' },
-                    h2({}, 'Account info'),
-                    label({ for: 'iban' }, 'IBAN:'),
-                    input({ id: 'iban', readonly: true, value: data.iban }),
-                    br(),
-                    label({ for: 'bal' }, 'Balance:'),
-                    input({ id: 'bal', readonly: true, value: data.balance }),
-                    br(),
-                    label({ for: 'curr' }, 'Currency:'),
-                    input({ id: 'curr', readonly: true, value: data.currency }),
-                    br(),
-                    h2({}, 'Transactions'),
-                    table({ $ref: setRef(data.transactions) },
-                        tr({},
-                            th({}, 'Date'),
-                            th({}, 'Amount'),
-                            th({}, 'Purpose'),
-                        ),
-                        tr({ $for: data.transactions, $if: trx => trx.amount > 0.2, $ref: setRef }, trx => [
-                            td({}, trx.date.toISOString()),
-                            td({ style: { textAlign: 'right' } }, trx.amount),
-                            td({}, trx.purpose)
-                        ]),
-                    ),
-                    SpentButton(data.transactions, data.currency)
-                )
-            );
-
-        const accountData = {
-            iban: 'HR23600011001224234',
-            balance: 235.45,
-            currency: 'EUR',
-            transactions: [
-                { date: new Date(), amount: 0.11, purpose: 'Toy-Toy' },
-                { date: new Date(), amount: 11.19, purpose: 'Plush rabbit' },
-                { date: new Date(), amount: 12.33, purpose: 'Coca-Cola, 2l' },
-                { date: new Date(), amount: 34.23, purpose: 'A4 paper bundle' },
-                { date: new Date(), amount: 0.21, purpose: 'Coffee can' }
-            ]
-        }
-
-        document.body.append(
-            div({},
-                new HTMLString("<h1>Showcase application</h1>"),
-                AccountInfo(accountData)
-            )
+      const SpentButton = (trxs, currency) =>
+        button(
+          {
+            onclick: () =>
+              alert(
+                "Total amount spent: " +
+                  trxs.reduce((acc, trx) => acc + trx.amount, 0) +
+                  ` ${currency}`
+              ),
+          },
+          "Total amount spent"
         );
-    </script>
-</body>
 
+      const AccountInfo = (data) =>
+        div(
+          {},
+          div(
+            { class: "accountInfo" },
+            h2({}, "Account info"),
+            label({ for: "iban" }, "IBAN:"),
+            input({ id: "iban", readonly: true, value: data.iban }),
+            br(),
+            label({ for: "bal" }, "Balance:"),
+            input({ id: "bal", readonly: true, value: data.balance }),
+            br(),
+            label({ for: "curr" }, "Currency:"),
+            input({ id: "curr", readonly: true, value: data.currency }),
+            br(),
+            h2({}, "Transactions"),
+            table(
+              { $ref: setRef(data.transactions) },
+              tr({}, th({}, "Date"), th({}, "Amount"), th({}, "Purpose")),
+              tr(
+                {
+                  $for: data.transactions,
+                  $if: (trx) => trx.amount > 0.2,
+                  $ref: setRef,
+                },
+                (trx) => [
+                  td({}, trx.date.toISOString()),
+                  td({ style: { textAlign: "right" } }, trx.amount),
+                  td({}, trx.purpose),
+                ]
+              )
+            ),
+            SpentButton(data.transactions, data.currency)
+          )
+        );
+
+      const accountData = {
+        iban: "HR23600011001224234",
+        balance: 235.45,
+        currency: "EUR",
+        transactions: [
+          { date: new Date(), amount: 0.11, purpose: "Toy-Toy" },
+          { date: new Date(), amount: 11.19, purpose: "Plush rabbit" },
+          { date: new Date(), amount: 12.33, purpose: "Coca-Cola, 2l" },
+          { date: new Date(), amount: 34.23, purpose: "A4 paper bundle" },
+          { date: new Date(), amount: 0.21, purpose: "Coffee can" },
+        ],
+      };
+
+      document.body.append(
+        div(
+          {},
+          new HtmlString("<h1>Showcase application</h1>"),
+          new HtmlString((underline) => underline, "____"),
+          AccountInfo(accountData)
+        )
+      );
+
+      // Refs
+      console.log(ref(accountData.transactions));
+    </script>
+  </body>
 </html>

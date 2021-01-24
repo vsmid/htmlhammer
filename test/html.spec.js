@@ -277,7 +277,7 @@ o.spec("HTML", () => {
 
     o.spec("#appendChild", () => {
         const appendChild = require("../cjs/html.js").appendChild;
-        const HTMLString = require("../cjs/types.js").HTMLString;
+        const HtmlString = require("../cjs/appenders.js").HtmlString;
 
         o('Should not append null children', () => {
             let element = document.createElement("div");
@@ -327,14 +327,49 @@ o.spec("HTML", () => {
             o(element.childNodes[0].textContent).equals("Hello");
         });
 
-        o("Should append string as inner html", () => {
-            let element = document.createElement("div");
+        o.spec("HtmlString", () => {
 
-            appendChild(new HTMLString("<h1>Hello!</h1>"), element);
+            o("Should append string as inner html", () => {
+                let element = document.createElement("div");
 
-            o(element.childNodes.length).equals(1);
-            o(element.childNodes[0].nodeName).equals("h1");
-            o(element.childNodes[0].textContent).equals("Hello!");
+                // Mock function
+                let mock = o.spy();
+                element.insertAdjacentHTML = mock;
+
+                appendChild(new HtmlString("<h1>Hello!</h1>"), element);
+
+                o(mock.callCount).equals(1);
+                o(mock.args[0]).equals("beforeend");
+                o(mock.args[1]).equals("<h1>Hello!</h1>");
+            });
+
+            o("Should append string as inner html when given as function with arbitrary number of params", () => {
+                let element = document.createElement("div");
+
+                // Mock function
+                let mock = o.spy();
+                element.insertAdjacentHTML = mock;
+
+                appendChild(new HtmlString((p1, p2) => `<h1>${p1} ${p2}!</h1>`, "Hello", "Lena"), element);
+
+                o(mock.callCount).equals(1);
+                o(mock.args[0]).equals("beforeend");
+                o(mock.args[1]).equals("<h1>Hello Lena!</h1>");
+            });
+
+            o("Should append number as inner html", () => {
+                let element = document.createElement("div");
+
+                // Mock function
+                let mock = o.spy();
+                element.insertAdjacentHTML = mock;
+
+                appendChild(new HtmlString(1), element);
+
+                o(mock.callCount).equals(1);
+                o(mock.args[0]).equals("beforeend");
+                o(mock.args[1]).equals("1");
+            });
         });
 
         o("Should append number as text node", () => {
@@ -411,12 +446,15 @@ o.spec("HTML", () => {
 
             o("Function which returns string as inner html", () => {
                 let element = document.createElement("div");
-    
-                appendChild(() => new HTMLString("<h1>Hello!</h1>"), element);
-    
-                o(element.childNodes.length).equals(1);
-                o(element.childNodes[0].nodeName).equals("h1");
-                o(element.childNodes[0].textContent).equals("Hello!");
+
+                let mock = o.spy();
+                element.insertAdjacentHTML = mock;
+
+                appendChild(() => new HtmlString("<h1>Hello!</h1>"), element);
+
+                o(mock.callCount).equals(1);
+                o(mock.args[0]).equals("beforeend");
+                o(mock.args[1]).equals("<h1>Hello!</h1>");
             });
 
             o("Function which returns string as text node", () => {
