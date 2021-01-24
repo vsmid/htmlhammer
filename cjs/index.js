@@ -128,16 +128,15 @@ var _html = _interopRequireDefault(require("./html.js"));
 
 var _ref = _interopRequireDefault(require("./ref.js"));
 
-var _types = require("./types.js");
+var _appenders = require("./appenders.js");
 
-Object.keys(_types).forEach(function (key) {
+Object.keys(_appenders).forEach(function (key) {
   if (key === "default" || key === "__esModule") return;
   if (Object.prototype.hasOwnProperty.call(_exportNames, key)) return;
-  if (key in exports && exports[key] === _types[key]) return;
   Object.defineProperty(exports, key, {
     enumerable: true,
     get: function get() {
-      return _types[key];
+      return _appenders[key];
     }
   });
 });

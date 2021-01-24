@@ -5,6 +5,8 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports["default"] = exports.define = exports.createElement = exports.AttributeHandler = exports.appendChild = exports.attachAttribute = exports.type = exports.Blueprint = void 0;
 
+var _appenders = require("./appenders.js");
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 var Blueprint = function Blueprint() {
@@ -23,8 +25,8 @@ var Blueprint = function Blueprint() {
 
 exports.Blueprint = Blueprint;
 
-var type = function type(v) {
-  return (v === undefined ? 'undefined' : v === null ? 'null' : v instanceof HTMLElement ? 'HTMLElement' : v.constructor.name).toLowerCase();
+var type = function type(value) {
+  return (value === undefined ? "undefined" : value === null ? "null" : value instanceof HTMLElement ? "HTMLElement" : value instanceof _appenders.ChildAppender ? "ChildAppender" : value.constructor.name).toLowerCase();
 };
 
 exports.type = type;
@@ -34,13 +36,13 @@ var attachAttribute = function attachAttribute(name, value, element) {
     case Object.keys(AttributeHandler).includes(name):
       break;
 
-    case name === 'style':
+    case name === "style":
       Object.keys(value).forEach(function (key) {
         element.style[key] = value[key];
       });
       break;
 
-    case name.startsWith('on') && element[name] === null:
+    case name.startsWith("on") && element[name] === null:
       element[name] = value;
       break;
 
@@ -54,26 +56,26 @@ exports.attachAttribute = attachAttribute;
 
 var appendChild = function appendChild(child, element, object) {
   switch (type(child)) {
-    case 'array':
+    case "array":
       child.forEach(function (_) {
         return appendChild(_, element, object);
       });
       break;
 
-    case 'null':
-    case 'undefined':
+    case "null":
+    case "undefined":
       break;
 
-    case 'htmlelement':
+    case "htmlelement":
       element.append(child);
       break;
 
-    case 'function':
-      appendChild(object ? child(object) : child(), element, object);
+    case "childappender":
+      child.append(element);
       break;
 
-    case 'htmlstring':
-      element.innerHTML += child.content;
+    case "function":
+      appendChild(object ? child(object) : child(), element, object);
       break;
 
     default:
@@ -83,11 +85,11 @@ var appendChild = function appendChild(child, element, object) {
 };
 
 exports.appendChild = appendChild;
-var AttributeHandler = {
+var AttributeHandler = Object.freeze({
   $for: function $for(value) {
     var blueprints = [];
 
-    if (!value || type(value) !== 'array') {
+    if (!value || type(value) !== "array") {
       blueprints.push(new Blueprint());
     } else {
       value.forEach(function (o) {
@@ -98,7 +100,7 @@ var AttributeHandler = {
     return blueprints;
   },
   $if: function $if(value, object) {
-    return value === null || value === undefined ? true : type(value) === 'function' ? value(object) : !!value;
+    return value === null || value === undefined ? true : type(value) === "function" ? value(object) : !!value;
   },
   $ref: function $ref(value, object, element) {
     if (value) {
@@ -109,7 +111,7 @@ var AttributeHandler = {
       }
     }
   }
-};
+});
 exports.AttributeHandler = AttributeHandler;
 
 var createElement = function createElement(blueprint) {
@@ -161,20 +163,20 @@ exports.define = define;
 var _default = function () {
   var tags = {};
   [// Main root
-  'html', // Document metadata
-  'base', 'head', 'link', 'meta', 'style', 'title', // Sectioning root
-  'body', // Content sectioning
-  'address', 'article', 'aside', 'footer', 'header', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'hggroup', 'main', 'nav', 'section', // Text content
-  'blockquote', 'dd', 'div', 'dl', 'dt', 'figcaption', 'figure', 'hr', 'li', 'ol', 'p', 'pre', 'ul', // Inline text semantics
-  'a', 'abbr', 'b', 'bdi', 'bdo', 'br', 'cite', 'code', 'data', 'dfn', 'em', 'i', 'kbd', 'mark', 'q', 'rb', 'rp', 'rt', 'rtc', 'ruby', 's', 'samp', 'small', 'span', 'strong', 'sub', 'sup', 'time', 'u', 'variable', 'wbr', // Image and multimedia
-  'area', 'audio', 'img', 'map', 'track', 'video', // Embedded content
-  'embed', 'iframe', 'object', 'param', 'picture', 'source', // Scripting
-  'canvas', 'noscript', 'script', // Demarcating edits
-  'del', 'ins', // Table content
-  'caption', 'col', 'colgroup', 'table', 'tbody', 'td', 'tfoot', 'th', 'thead', 'tr', // Forms
-  'button', 'datalist', 'fieldset', 'form', 'input', 'label', 'legend', 'meter', 'oprgroup', 'option', 'output', 'progress', 'select', 'textarea', // Interactive elements
-  'details', 'dialog', 'menu', 'summary', // Web Components
-  'slot', 'template'].forEach(function (tag) {
+  "html", // Document metadata
+  "base", "head", "link", "meta", "style", "title", // Sectioning root
+  "body", // Content sectioning
+  "address", "article", "aside", "footer", "header", "h1", "h2", "h3", "h4", "h5", "h6", "hggroup", "main", "nav", "section", // Text content
+  "blockquote", "dd", "div", "dl", "dt", "figcaption", "figure", "hr", "li", "ol", "p", "pre", "ul", // Inline text semantics
+  "a", "abbr", "b", "bdi", "bdo", "br", "cite", "code", "data", "dfn", "em", "i", "kbd", "mark", "q", "rb", "rp", "rt", "rtc", "ruby", "s", "samp", "small", "span", "strong", "sub", "sup", "time", "u", "variable", "wbr", // Image and multimedia
+  "area", "audio", "img", "map", "track", "video", // Embedded content
+  "embed", "iframe", "object", "param", "picture", "source", // Scripting
+  "canvas", "noscript", "script", // Demarcating edits
+  "del", "ins", // Table content
+  "caption", "col", "colgroup", "table", "tbody", "td", "tfoot", "th", "thead", "tr", // Forms
+  "button", "datalist", "fieldset", "form", "input", "label", "legend", "meter", "oprgroup", "option", "output", "progress", "select", "textarea", // Interactive elements
+  "details", "dialog", "menu", "summary", // Web Components
+  "slot", "template"].forEach(function (tag) {
     tags[tag] = define(tag);
   });
   return tags;

@@ -7,6 +7,175 @@ var htmlhammer = (function (exports) {
     }
   }
 
+  function _defineProperties(target, props) {
+    for (var i = 0; i < props.length; i++) {
+      var descriptor = props[i];
+      descriptor.enumerable = descriptor.enumerable || false;
+      descriptor.configurable = true;
+      if ("value" in descriptor) descriptor.writable = true;
+      Object.defineProperty(target, descriptor.key, descriptor);
+    }
+  }
+
+  function _createClass(Constructor, protoProps, staticProps) {
+    if (protoProps) _defineProperties(Constructor.prototype, protoProps);
+    if (staticProps) _defineProperties(Constructor, staticProps);
+    return Constructor;
+  }
+
+  function _inherits(subClass, superClass) {
+    if (typeof superClass !== "function" && superClass !== null) {
+      throw new TypeError("Super expression must either be null or a function");
+    }
+
+    subClass.prototype = Object.create(superClass && superClass.prototype, {
+      constructor: {
+        value: subClass,
+        writable: true,
+        configurable: true
+      }
+    });
+    if (superClass) _setPrototypeOf(subClass, superClass);
+  }
+
+  function _getPrototypeOf(o) {
+    _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) {
+      return o.__proto__ || Object.getPrototypeOf(o);
+    };
+    return _getPrototypeOf(o);
+  }
+
+  function _setPrototypeOf(o, p) {
+    _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) {
+      o.__proto__ = p;
+      return o;
+    };
+
+    return _setPrototypeOf(o, p);
+  }
+
+  function _isNativeReflectConstruct() {
+    if (typeof Reflect === "undefined" || !Reflect.construct) return false;
+    if (Reflect.construct.sham) return false;
+    if (typeof Proxy === "function") return true;
+
+    try {
+      Date.prototype.toString.call(Reflect.construct(Date, [], function () {}));
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  function _assertThisInitialized(self) {
+    if (self === void 0) {
+      throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
+    }
+
+    return self;
+  }
+
+  function _possibleConstructorReturn(self, call) {
+    if (call && (typeof call === "object" || typeof call === "function")) {
+      return call;
+    }
+
+    return _assertThisInitialized(self);
+  }
+
+  function _createSuper(Derived) {
+    var hasNativeReflectConstruct = _isNativeReflectConstruct();
+
+    return function _createSuperInternal() {
+      var Super = _getPrototypeOf(Derived),
+          result;
+
+      if (hasNativeReflectConstruct) {
+        var NewTarget = _getPrototypeOf(this).constructor;
+
+        result = Reflect.construct(Super, arguments, NewTarget);
+      } else {
+        result = Super.apply(this, arguments);
+      }
+
+      return _possibleConstructorReturn(this, result);
+    };
+  }
+
+  function _toConsumableArray(arr) {
+    return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread();
+  }
+
+  function _arrayWithoutHoles(arr) {
+    if (Array.isArray(arr)) return _arrayLikeToArray(arr);
+  }
+
+  function _iterableToArray(iter) {
+    if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter);
+  }
+
+  function _unsupportedIterableToArray(o, minLen) {
+    if (!o) return;
+    if (typeof o === "string") return _arrayLikeToArray(o, minLen);
+    var n = Object.prototype.toString.call(o).slice(8, -1);
+    if (n === "Object" && o.constructor) n = o.constructor.name;
+    if (n === "Map" || n === "Set") return Array.from(o);
+    if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen);
+  }
+
+  function _arrayLikeToArray(arr, len) {
+    if (len == null || len > arr.length) len = arr.length;
+
+    for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i];
+
+    return arr2;
+  }
+
+  function _nonIterableSpread() {
+    throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
+  }
+
+  var ChildAppender = /*#__PURE__*/function () {
+    function ChildAppender(element) {
+      _classCallCheck(this, ChildAppender);
+
+      this.element = element;
+    }
+
+    _createClass(ChildAppender, [{
+      key: "append",
+      value: function append(parentElement) {}
+    }]);
+
+    return ChildAppender;
+  }();
+  var HtmlString = /*#__PURE__*/function (_ChildAppender) {
+    _inherits(HtmlString, _ChildAppender);
+
+    var _super = _createSuper(HtmlString);
+
+    function HtmlString(element) {
+      _classCallCheck(this, HtmlString);
+
+      for (var _len = arguments.length, params = new Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+        params[_key - 1] = arguments[_key];
+      }
+
+      return _super.call(this, element.constructor.name === "Function" ? element.apply(void 0, params) : element);
+    }
+
+    _createClass(HtmlString, [{
+      key: "append",
+      value: function append(parentElement) {
+        if (this.element) {
+          parentElement.insertAdjacentHTML("beforeend", this.element.constructor.name === "String" ? this.element : this.element.toString());
+        }
+      }
+    }]);
+
+    return HtmlString;
+  }(ChildAppender);
+
   var Blueprint = function Blueprint() {
     var tag = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
     var object = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
@@ -20,21 +189,21 @@ var htmlhammer = (function (exports) {
     this.attributes = attributes;
     this.children = children;
   };
-  var type = function type(v) {
-    return (v === undefined ? 'undefined' : v === null ? 'null' : v instanceof HTMLElement ? 'HTMLElement' : v.constructor.name).toLowerCase();
+  var type = function type(value) {
+    return (value === undefined ? "undefined" : value === null ? "null" : value instanceof HTMLElement ? "HTMLElement" : value instanceof ChildAppender ? "ChildAppender" : value.constructor.name).toLowerCase();
   };
   var attachAttribute = function attachAttribute(name, value, element) {
     switch (true) {
       case Object.keys(AttributeHandler).includes(name):
         break;
 
-      case name === 'style':
+      case name === "style":
         Object.keys(value).forEach(function (key) {
           element.style[key] = value[key];
         });
         break;
 
-      case name.startsWith('on') && element[name] === null:
+      case name.startsWith("on") && element[name] === null:
         element[name] = value;
         break;
 
@@ -45,26 +214,26 @@ var htmlhammer = (function (exports) {
   };
   var appendChild = function appendChild(child, element, object) {
     switch (type(child)) {
-      case 'array':
+      case "array":
         child.forEach(function (_) {
           return appendChild(_, element, object);
         });
         break;
 
-      case 'null':
-      case 'undefined':
+      case "null":
+      case "undefined":
         break;
 
-      case 'htmlelement':
+      case "htmlelement":
         element.append(child);
         break;
 
-      case 'function':
-        appendChild(object ? child(object) : child(), element, object);
+      case "childappender":
+        child.append(element);
         break;
 
-      case 'htmlstring':
-        element.innerHTML += child.content;
+      case "function":
+        appendChild(object ? child(object) : child(), element, object);
         break;
 
       default:
@@ -72,11 +241,11 @@ var htmlhammer = (function (exports) {
         break;
     }
   };
-  var AttributeHandler = {
+  var AttributeHandler = Object.freeze({
     $for: function $for(value) {
       var blueprints = [];
 
-      if (!value || type(value) !== 'array') {
+      if (!value || type(value) !== "array") {
         blueprints.push(new Blueprint());
       } else {
         value.forEach(function (o) {
@@ -87,7 +256,7 @@ var htmlhammer = (function (exports) {
       return blueprints;
     },
     $if: function $if(value, object) {
-      return value === null || value === undefined ? true : type(value) === 'function' ? value(object) : !!value;
+      return value === null || value === undefined ? true : type(value) === "function" ? value(object) : !!value;
     },
     $ref: function $ref(value, object, element) {
       if (value) {
@@ -98,7 +267,7 @@ var htmlhammer = (function (exports) {
         }
       }
     }
-  };
+  });
   var createElement = function createElement(blueprint) {
     var element = document.createElement(blueprint.tag);
     Object.keys(blueprint.attributes).forEach(function (name) {
@@ -142,20 +311,20 @@ var htmlhammer = (function (exports) {
   var HTML = (function () {
     var tags = {};
     [// Main root
-    'html', // Document metadata
-    'base', 'head', 'link', 'meta', 'style', 'title', // Sectioning root
-    'body', // Content sectioning
-    'address', 'article', 'aside', 'footer', 'header', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'hggroup', 'main', 'nav', 'section', // Text content
-    'blockquote', 'dd', 'div', 'dl', 'dt', 'figcaption', 'figure', 'hr', 'li', 'ol', 'p', 'pre', 'ul', // Inline text semantics
-    'a', 'abbr', 'b', 'bdi', 'bdo', 'br', 'cite', 'code', 'data', 'dfn', 'em', 'i', 'kbd', 'mark', 'q', 'rb', 'rp', 'rt', 'rtc', 'ruby', 's', 'samp', 'small', 'span', 'strong', 'sub', 'sup', 'time', 'u', 'variable', 'wbr', // Image and multimedia
-    'area', 'audio', 'img', 'map', 'track', 'video', // Embedded content
-    'embed', 'iframe', 'object', 'param', 'picture', 'source', // Scripting
-    'canvas', 'noscript', 'script', // Demarcating edits
-    'del', 'ins', // Table content
-    'caption', 'col', 'colgroup', 'table', 'tbody', 'td', 'tfoot', 'th', 'thead', 'tr', // Forms
-    'button', 'datalist', 'fieldset', 'form', 'input', 'label', 'legend', 'meter', 'oprgroup', 'option', 'output', 'progress', 'select', 'textarea', // Interactive elements
-    'details', 'dialog', 'menu', 'summary', // Web Components
-    'slot', 'template'].forEach(function (tag) {
+    "html", // Document metadata
+    "base", "head", "link", "meta", "style", "title", // Sectioning root
+    "body", // Content sectioning
+    "address", "article", "aside", "footer", "header", "h1", "h2", "h3", "h4", "h5", "h6", "hggroup", "main", "nav", "section", // Text content
+    "blockquote", "dd", "div", "dl", "dt", "figcaption", "figure", "hr", "li", "ol", "p", "pre", "ul", // Inline text semantics
+    "a", "abbr", "b", "bdi", "bdo", "br", "cite", "code", "data", "dfn", "em", "i", "kbd", "mark", "q", "rb", "rp", "rt", "rtc", "ruby", "s", "samp", "small", "span", "strong", "sub", "sup", "time", "u", "variable", "wbr", // Image and multimedia
+    "area", "audio", "img", "map", "track", "video", // Embedded content
+    "embed", "iframe", "object", "param", "picture", "source", // Scripting
+    "canvas", "noscript", "script", // Demarcating edits
+    "del", "ins", // Table content
+    "caption", "col", "colgroup", "table", "tbody", "td", "tfoot", "th", "thead", "tr", // Forms
+    "button", "datalist", "fieldset", "form", "input", "label", "legend", "meter", "oprgroup", "option", "output", "progress", "select", "textarea", // Interactive elements
+    "details", "dialog", "menu", "summary", // Web Components
+    "slot", "template"].forEach(function (tag) {
       tags[tag] = define(tag);
     });
     return tags;
@@ -174,7 +343,7 @@ var htmlhammer = (function (exports) {
               if (id) {
                 refs.get(o)[id] = e;
               } else {
-                refs.set(o, e);
+                refs.set(o, [].concat(_toConsumableArray(refs.get(o)), [e]));
               }
             } else {
               var val = {};
@@ -182,7 +351,7 @@ var htmlhammer = (function (exports) {
               if (id) {
                 val[id] = e;
               } else {
-                val = e;
+                val = [e];
               }
 
               refs.set(o, val);
@@ -194,12 +363,6 @@ var htmlhammer = (function (exports) {
       }
     };
   })();
-
-  var HTMLString = function HTMLString(content) {
-    _classCallCheck(this, HTMLString);
-
-    this.content = content;
-  };
 
   var html = HTML.html,
       base = HTML.base,
@@ -318,7 +481,8 @@ var htmlhammer = (function (exports) {
   var ref = REF.ref,
       setRef = REF.setRef;
 
-  exports.HTMLString = HTMLString;
+  exports.ChildAppender = ChildAppender;
+  exports.HtmlString = HtmlString;
   exports.a = a;
   exports.abbr = abbr;
   exports.address = address;
