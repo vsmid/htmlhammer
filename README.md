@@ -127,6 +127,16 @@ document.body.append(
   div({}, new HTMLString(html)) // Without HTMLString wrapper, html content would be treated as text content hence text node would be created
 );
 ```
+Version 2.1.0 introduced a new attribute handler `$apply` which alows you to create element inline in any way you like. 
+```javascript
+const RawHtml = (data) => (el) => (el.innerHTML = data);
+
+document.body.append(
+  div({},
+    span({ $apply: RawHtml("<h1>Hello World!</h1>") })
+  )
+);
+```
 
 For more complex and complete example check [index.html](https://github.com/vsmid/htmlhammer/blob/master/index.html).
 
@@ -178,6 +188,20 @@ element = div(
   "Hello World!"
 );
 ```
+#### `$apply` - apply anything to an element
+
+Use this attribute to apply anything to an element. This gives you the full power of JavaScript Element API mixed within `htmlhammer's` inline element creation. This can also be ideal for sharing style, logic, event handlers etc. across multiple components/elements.
+$apply can be given as a function which receives element or an array of such functions.
+```javascript
+const RedText = (el) => (el.style.color = "red");
+
+// Function which can replace new HtmlString("<h1>Hello</h1>")
+const HTMLContent = (data) => (el) => (el.innerHTML = data);
+
+// Valid usages
+div({ $apply: RedText });
+div({ $apply: [RedText, HTMLContent("<h1>Hello</h1>")] } );
+```
 
 ### Setting on-event actions
 
@@ -215,7 +239,7 @@ When setting style attribute values, use corresponding JavaScript CSS property n
 Version 2.0.0 introduced option to provide a custom way of how child element is appended to parent element.
 Use case for this can be seen in `HtmlString` appender where raw html in the form of string needs to inserted to DOM element.
 For this to happen, element's `insertAdjacentHTML` method is used instead of default `append` method.
-See how HtmlString appender is implemented in [appenders.js](./esm/appenders.js).
+See how HtmlString appender is implemented in [appenders.js](https://github.com/vsmid/htmlhammer/blob/master/esm/appenders.js).
 
 ## Project's NPM scripts
 
