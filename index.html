@@ -9,6 +9,7 @@
   <body>
     <script type="module">
       import {
+        span,
         div,
         h2,
         br,
@@ -116,10 +117,13 @@
         ],
       };
 
+      const Red = (el) => (el.style.color = "red");
+      const RawHtml = (data) => (el) => (el.innerHTML = data);
+
       document.body.append(
         div(
           {},
-          new HtmlString("<h1>Showcase application</h1>"),
+          span({ $apply: [Red, RawHtml("<h1>Showcase application</h1>")] }),
           new HtmlString((underline) => underline, "____"),
           AccountInfo(accountData)
         )

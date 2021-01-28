@@ -596,6 +596,27 @@ o.spec("HTML", () => {
             });
         });
 
+        o.spec("$apply", () => {
+           o("Should apply custom function to the given element", () =>{
+               const el = document.createElement();
+               const redText = (el) => (el.style.color = "red");
+
+               AttributeHandler.$apply(el, redText);
+
+               o(el.style.color).equals("red");
+           }); 
+
+           o("Should apply an array of custom functions to the given element", () =>{
+                const el = document.createElement();
+                const redText = (el) => (el.style.color = "red");
+                const textContent = (el) => (el.innerHTML = "<h1>Hello!</h1>");
+
+                AttributeHandler.$apply(el, [redText, textContent]);
+
+                o(el.style.color).equals("red");
+                o(el.innerHTML).equals("<h1>Hello!</h1>");
+            }); 
+        });
     });
 
     o.spec("#createElement", () => {

@@ -13,12 +13,12 @@ export const type = (value) =>
   (value === undefined
     ? "undefined"
     : value === null
-      ? "null"
-      : value instanceof HTMLElement
-        ? "HTMLElement"
-        : value instanceof ChildAppender
-          ? "ChildAppender"
-          : value.constructor.name
+    ? "null"
+    : value instanceof HTMLElement
+    ? "HTMLElement"
+    : value instanceof ChildAppender
+    ? "ChildAppender"
+    : value.constructor.name
   ).toLowerCase();
 
 export const attachAttribute = (name, value, element) => {
@@ -42,7 +42,7 @@ export const attachAttribute = (name, value, element) => {
 export const appendChild = (child, element, object) => {
   switch (type(child)) {
     case "array":
-      child.forEach(_ => appendChild(_, element, object));
+      child.forEach((_) => appendChild(_, element, object));
       break;
     case "null":
     case "undefined":
@@ -76,14 +76,23 @@ export const AttributeHandler = Object.freeze({
     value === null || value === undefined
       ? true
       : type(value) === "function"
-        ? value(object)
-        : !!value,
+      ? value(object)
+      : !!value,
   $ref: (value, object, element) => {
     if (value) {
       if (object) {
         value(object)(element);
       } else {
         value(element);
+      }
+    }
+  },
+  $apply: (el, apply) => {
+    if (apply) {
+      if (Array.isArray(apply)) {
+        apply.filter(Boolean).forEach((t) => t(el));
+      } else {
+        apply(el);
       }
     }
   },
@@ -101,7 +110,7 @@ export const createElement = (blueprint) => {
 };
 
 export const define = (tag) => (attributes = {}, ...children) => {
-  let { $for, $if, $ref } = attributes;
+  const { $for, $if, $ref, $apply } = attributes;
 
   let elements = AttributeHandler.$for($for)
     .filter((bp) => AttributeHandler.$if($if, bp.object))
@@ -112,6 +121,7 @@ export const define = (tag) => (attributes = {}, ...children) => {
         bp.children.push(...children);
       }
       let e = createElement(bp);
+      AttributeHandler.$apply(e, $apply);
       AttributeHandler.$ref($ref, bp.object, e);
       return e;
     });
