@@ -110,6 +110,17 @@ var AttributeHandler = Object.freeze({
         value(element);
       }
     }
+  },
+  $apply: function $apply(el, apply) {
+    if (apply) {
+      if (Array.isArray(apply)) {
+        apply.filter(Boolean).forEach(function (t) {
+          return t(el);
+        });
+      } else {
+        apply(el);
+      }
+    }
   }
 });
 exports.AttributeHandler = AttributeHandler;
@@ -137,7 +148,8 @@ var define = function define(tag) {
 
     var $for = attributes.$for,
         $if = attributes.$if,
-        $ref = attributes.$ref;
+        $ref = attributes.$ref,
+        $apply = attributes.$apply;
     var elements = AttributeHandler.$for($for).filter(function (bp) {
       return AttributeHandler.$if($if, bp.object);
     }).map(function (bp) {
@@ -151,6 +163,7 @@ var define = function define(tag) {
       }
 
       var e = createElement(bp);
+      AttributeHandler.$apply(e, $apply);
       AttributeHandler.$ref($ref, bp.object, e);
       return e;
     });
