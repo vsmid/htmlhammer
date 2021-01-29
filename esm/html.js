@@ -112,7 +112,31 @@ export const createElement = (blueprint) => {
   return element;
 };
 
-export const define = (tag) => (attributes = {}, ...children) => {
+export const extract = (...parts) => {
+  let attributes = {};
+  let children = [];
+
+  if (parts && parts.length > 0) {
+    if (parts.length > 1) {
+      if (type(parts[0]) === "object") {
+        attributes = parts[0];
+        children = parts.slice(1);
+      } else {
+        children = parts;
+      }
+    } else if (parts.length === 1) {
+      if (type(parts[0]) !== "object") {
+        children = parts;
+      } else {
+        attributes = parts[0];
+      }
+    }
+  }
+  return { attributes, children };
+};
+
+export const define = (tag) => (...parts) => {
+  const { attributes, children } = extract(...parts);
   const { $for, $if, $ref, $apply } = attributes;
 
   let elements = AttributeHandler.$for($for)
@@ -121,7 +145,7 @@ export const define = (tag) => (attributes = {}, ...children) => {
       bp.tag = tag;
       Object.assign(bp.attributes, attributes);
       if (children) {
-        bp.children.push(...children);
+        bp.children.push([...children]);
       }
       let e = createElement(bp);
       AttributeHandler.$apply(e, $apply);

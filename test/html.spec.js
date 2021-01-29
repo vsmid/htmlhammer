@@ -733,6 +733,37 @@ o.spec("HTML", () => {
 
             o(elements.childNodes.length).equals(0);
         });
+    });
+
+
+    o.spec("#extract", () => {
+        const extract = require("../cjs/html.js").extract;
+
+        o("Should extract parts based on input", () => {
+            let parts = extract();
+            
+            o(Object.keys(parts).length).equals(2);
+            o(JSON.stringify(parts.attributes)).equals("{}");
+            o(JSON.stringify(parts.children)).equals("[]");
+
+            parts = extract({id:1});
+
+            o(Object.keys(parts).length).equals(2);
+            o(JSON.stringify(parts.attributes)).equals('{"id":1}');
+            o(JSON.stringify(parts.children)).equals("[]");
+
+            parts = extract("1", 2);
+
+            o(Object.keys(parts).length).equals(2);
+            o(JSON.stringify(parts.attributes)).equals("{}");
+            o(JSON.stringify(parts.children)).equals('["1",2]');
+
+            parts = extract({id: 1}, "1", 2);
+
+            o(Object.keys(parts).length).equals(2);
+            o(JSON.stringify(parts.attributes)).equals('{"id":1}');
+            o(JSON.stringify(parts.children)).equals('["1",2]');
+        });
 
     });
 });

@@ -84,6 +84,7 @@ Tags/elements marked as obsolete/deprecated are not supported.
 
 ```javascript
 // Function name htmltagname is one of supported HTML tag/elements, e.g. div, a, h1, table etc.
+// Since version 2.3.0 attributes parameter is optional
 htmltagname((attributes = {}), ...children);
 ```
 
