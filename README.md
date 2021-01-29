@@ -127,7 +127,7 @@ document.body.append(
   div({}, new HTMLString(html)) // Without HTMLString wrapper, html content would be treated as text content hence text node would be created
 );
 ```
-Version 2.1.0 introduced a new attribute handler `$apply` which alows you to create element inline in any way you like. 
+Version 2.1.0 introduced a new attribute handler `$apply` which allows you to create inline element in any way you like. 
 ```javascript
 const RawHtml = (data) => (el) => (el.innerHTML = data);
 
