@@ -176,6 +176,40 @@ var htmlhammer = (function (exports) {
     return HtmlString;
   }(ChildAppender);
 
+  var REF = (function () {
+    var refs = new WeakMap();
+    return {
+      ref: function ref(o, id) {
+        return o ? id ? refs.get(o)[id] : refs.get(o) : null;
+      },
+      setRef: function setRef(o, id) {
+        return function (e) {
+          if (o) {
+            if (refs.has(o)) {
+              if (id) {
+                refs.get(o)[id] = e;
+              } else {
+                refs.set(o, [].concat(_toConsumableArray(refs.get(o)), [e]));
+              }
+            } else {
+              var val = {};
+
+              if (id) {
+                val[id] = e;
+              } else {
+                val = [e];
+              }
+
+              refs.set(o, val);
+            }
+          } else {
+            return null;
+          }
+        };
+      }
+    };
+  })();
+
   var Blueprint = function Blueprint() {
     var tag = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
     var object = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
@@ -242,39 +276,41 @@ var htmlhammer = (function (exports) {
     }
   };
   var AttributeHandler = Object.freeze({
-    $for: function $for(value) {
+    $for: function $for(attributeValue) {
       var blueprints = [];
 
-      if (!value || type(value) !== "array") {
+      if (!attributeValue || type(attributeValue) !== "array") {
         blueprints.push(new Blueprint());
       } else {
-        value.forEach(function (o) {
+        attributeValue.forEach(function (o) {
           return blueprints.push(new Blueprint(null, o));
         });
       }
 
       return blueprints;
     },
-    $if: function $if(value, object) {
-      return value === null || value === undefined ? true : type(value) === "function" ? value(object) : !!value;
+    $if: function $if(attributeValue, callbackInput) {
+      return attributeValue === null || attributeValue === undefined ? true : type(attributeValue) === "function" ? attributeValue(callbackInput) : !!attributeValue;
     },
-    $ref: function $ref(value, object, element) {
-      if (value) {
-        if (object) {
-          value(object)(element);
+    $ref: function $ref(attributeValue, callbackInput, element) {
+      if (typeof attributeValue === "function") {
+        if (callbackInput) {
+          attributeValue(callbackInput)(element);
         } else {
-          value(element);
+          attributeValue(element);
         }
+      } else {
+        REF.setRef(attributeValue)(element);
       }
     },
-    $apply: function $apply(el, apply) {
-      if (apply) {
-        if (Array.isArray(apply)) {
-          apply.filter(Boolean).forEach(function (t) {
-            return t(el);
+    $apply: function $apply(element, applyCallback) {
+      if (applyCallback) {
+        if (Array.isArray(applyCallback)) {
+          applyCallback.filter(Boolean).forEach(function (t) {
+            return t(element);
           });
         } else {
-          apply(el);
+          applyCallback(element);
         }
       }
     }
@@ -341,40 +377,6 @@ var htmlhammer = (function (exports) {
       tags[tag] = define(tag);
     });
     return tags;
-  })();
-
-  var REF = (function () {
-    var refs = new WeakMap();
-    return {
-      ref: function ref(o, id) {
-        return o ? id ? refs.get(o)[id] : refs.get(o) : null;
-      },
-      setRef: function setRef(o, id) {
-        return function (e) {
-          if (o) {
-            if (refs.has(o)) {
-              if (id) {
-                refs.get(o)[id] = e;
-              } else {
-                refs.set(o, [].concat(_toConsumableArray(refs.get(o)), [e]));
-              }
-            } else {
-              var val = {};
-
-              if (id) {
-                val[id] = e;
-              } else {
-                val = [e];
-              }
-
-              refs.set(o, val);
-            }
-          } else {
-            return null;
-          }
-        };
-      }
-    };
   })();
 
   var html = HTML.html,

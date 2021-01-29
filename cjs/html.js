@@ -7,6 +7,10 @@ exports["default"] = exports.define = exports.createElement = exports.AttributeH
 
 var _appenders = require("./appenders.js");
 
+var _ref = _interopRequireDefault(require("./ref.js"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 var Blueprint = function Blueprint() {
@@ -86,39 +90,41 @@ var appendChild = function appendChild(child, element, object) {
 
 exports.appendChild = appendChild;
 var AttributeHandler = Object.freeze({
-  $for: function $for(value) {
+  $for: function $for(attributeValue) {
     var blueprints = [];
 
-    if (!value || type(value) !== "array") {
+    if (!attributeValue || type(attributeValue) !== "array") {
       blueprints.push(new Blueprint());
     } else {
-      value.forEach(function (o) {
+      attributeValue.forEach(function (o) {
         return blueprints.push(new Blueprint(null, o));
       });
     }
 
     return blueprints;
   },
-  $if: function $if(value, object) {
-    return value === null || value === undefined ? true : type(value) === "function" ? value(object) : !!value;
+  $if: function $if(attributeValue, callbackInput) {
+    return attributeValue === null || attributeValue === undefined ? true : type(attributeValue) === "function" ? attributeValue(callbackInput) : !!attributeValue;
   },
-  $ref: function $ref(value, object, element) {
-    if (value) {
-      if (object) {
-        value(object)(element);
+  $ref: function $ref(attributeValue, callbackInput, element) {
+    if (typeof attributeValue === "function") {
+      if (callbackInput) {
+        attributeValue(callbackInput)(element);
       } else {
-        value(element);
+        attributeValue(element);
       }
+    } else {
+      _ref["default"].setRef(attributeValue)(element);
     }
   },
-  $apply: function $apply(el, apply) {
-    if (apply) {
-      if (Array.isArray(apply)) {
-        apply.filter(Boolean).forEach(function (t) {
-          return t(el);
+  $apply: function $apply(element, applyCallback) {
+    if (applyCallback) {
+      if (Array.isArray(applyCallback)) {
+        applyCallback.filter(Boolean).forEach(function (t) {
+          return t(element);
         });
       } else {
-        apply(el);
+        applyCallback(element);
       }
     }
   }
