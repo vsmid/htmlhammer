@@ -3,13 +3,25 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports["default"] = exports.define = exports.createElement = exports.AttributeHandler = exports.appendChild = exports.attachAttribute = exports.type = exports.Blueprint = void 0;
+exports["default"] = exports.define = exports.extract = exports.createElement = exports.AttributeHandler = exports.appendChild = exports.attachAttribute = exports.type = exports.Blueprint = void 0;
 
 var _appenders = require("./appenders.js");
 
 var _ref = _interopRequireDefault(require("./ref.js"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
+
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -144,13 +156,44 @@ var createElement = function createElement(blueprint) {
 
 exports.createElement = createElement;
 
+var extract = function extract() {
+  var attributes = {};
+  var children = [];
+
+  for (var _len = arguments.length, parts = new Array(_len), _key = 0; _key < _len; _key++) {
+    parts[_key] = arguments[_key];
+  }
+
+  if (parts && parts.length > 0) {
+    if (parts.length > 1) {
+      if (type(parts[0]) === "object") {
+        attributes = parts[0];
+        children = parts.slice(1);
+      } else {
+        children = parts;
+      }
+    } else if (parts.length === 1) {
+      if (type(parts[0]) !== "object") {
+        children = parts;
+      } else {
+        attributes = parts[0];
+      }
+    }
+  }
+
+  return {
+    attributes: attributes,
+    children: children
+  };
+};
+
+exports.extract = extract;
+
 var define = function define(tag) {
   return function () {
-    var attributes = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-
-    for (var _len = arguments.length, children = new Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
-      children[_key - 1] = arguments[_key];
-    }
+    var _extract = extract.apply(void 0, arguments),
+        attributes = _extract.attributes,
+        children = _extract.children;
 
     var $for = attributes.$for,
         $if = attributes.$if,
@@ -163,9 +206,7 @@ var define = function define(tag) {
       Object.assign(bp.attributes, attributes);
 
       if (children) {
-        var _bp$children;
-
-        (_bp$children = bp.children).push.apply(_bp$children, children);
+        bp.children.push(_toConsumableArray(children));
       }
 
       var e = createElement(bp);

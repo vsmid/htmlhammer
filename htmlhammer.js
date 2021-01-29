@@ -325,13 +325,41 @@ var htmlhammer = (function (exports) {
     });
     return element;
   };
+  var extract = function extract() {
+    var attributes = {};
+    var children = [];
+
+    for (var _len = arguments.length, parts = new Array(_len), _key = 0; _key < _len; _key++) {
+      parts[_key] = arguments[_key];
+    }
+
+    if (parts && parts.length > 0) {
+      if (parts.length > 1) {
+        if (type(parts[0]) === "object") {
+          attributes = parts[0];
+          children = parts.slice(1);
+        } else {
+          children = parts;
+        }
+      } else if (parts.length === 1) {
+        if (type(parts[0]) !== "object") {
+          children = parts;
+        } else {
+          attributes = parts[0];
+        }
+      }
+    }
+
+    return {
+      attributes: attributes,
+      children: children
+    };
+  };
   var define = function define(tag) {
     return function () {
-      var attributes = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-
-      for (var _len = arguments.length, children = new Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
-        children[_key - 1] = arguments[_key];
-      }
+      var _extract = extract.apply(void 0, arguments),
+          attributes = _extract.attributes,
+          children = _extract.children;
 
       var $for = attributes.$for,
           $if = attributes.$if,
@@ -344,9 +372,7 @@ var htmlhammer = (function (exports) {
         Object.assign(bp.attributes, attributes);
 
         if (children) {
-          var _bp$children;
-
-          (_bp$children = bp.children).push.apply(_bp$children, children);
+          bp.children.push(_toConsumableArray(children));
         }
 
         var e = createElement(bp);
