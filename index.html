@@ -85,7 +85,7 @@
             br(),
             h2({}, "Transactions"),
             table(
-              { $ref: setRef(data.transactions) },
+              { $ref: data.transactions },
               tr({}, th({}, "Date"), th({}, "Amount"), th({}, "Purpose")),
               tr(
                 {

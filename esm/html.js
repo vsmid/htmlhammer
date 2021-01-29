@@ -1,4 +1,5 @@
 import { ChildAppender } from "./appenders.js";
+import REF from "./ref.js";
 
 export class Blueprint {
   constructor(tag = null, object = null, attributes = {}, children = []) {
@@ -63,36 +64,38 @@ export const appendChild = (child, element, object) => {
 };
 
 export const AttributeHandler = Object.freeze({
-  $for: (value) => {
+  $for: (attributeValue) => {
     let blueprints = [];
-    if (!value || type(value) !== "array") {
+    if (!attributeValue || type(attributeValue) !== "array") {
       blueprints.push(new Blueprint());
     } else {
-      value.forEach((o) => blueprints.push(new Blueprint(null, o)));
+      attributeValue.forEach((o) => blueprints.push(new Blueprint(null, o)));
     }
     return blueprints;
   },
-  $if: (value, object) =>
-    value === null || value === undefined
+  $if: (attributeValue, callbackInput) =>
+    attributeValue === null || attributeValue === undefined
       ? true
-      : type(value) === "function"
-      ? value(object)
-      : !!value,
-  $ref: (value, object, element) => {
-    if (value) {
-      if (object) {
-        value(object)(element);
+      : type(attributeValue) === "function"
+      ? attributeValue(callbackInput)
+      : !!attributeValue,
+  $ref: (attributeValue, callbackInput, element) => {
+    if (typeof attributeValue === "function") {
+      if (callbackInput) {
+        attributeValue(callbackInput)(element);
       } else {
-        value(element);
+        attributeValue(element);
       }
+    } else {
+      REF.setRef(attributeValue)(element);
     }
   },
-  $apply: (el, apply) => {
-    if (apply) {
-      if (Array.isArray(apply)) {
-        apply.filter(Boolean).forEach((t) => t(el));
+  $apply: (element, applyCallback) => {
+    if (applyCallback) {
+      if (Array.isArray(applyCallback)) {
+        applyCallback.filter(Boolean).forEach((t) => t(element));
       } else {
-        apply(el);
+        applyCallback(element);
       }
     }
   },

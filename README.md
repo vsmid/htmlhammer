@@ -169,7 +169,11 @@ const { div, ref, setRef } = htmlhammer;
 // Reference by object
 let obj = {};
 
+// Prior to 2.1.1
 let element = div({ $ref: setRef(obj) }, "Hello World!");
+
+// Version 2.1.1 allows ref to be set just by passing an object reference
+let element = div({ $ref: obj }, "Hello World!");
 
 console.log(ref(obj) === element);
 

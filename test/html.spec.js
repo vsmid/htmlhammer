@@ -586,6 +586,15 @@ o.spec("HTML", () => {
                 o(ref(ob)[0]).equals(element);
             });
 
+            o("Should reference given element without using setRef", () => {
+                let element = document.createElement("div");
+                let ob = {};
+
+                AttributeHandler.$ref(ob, null, element);
+               
+                o(ref(ob)[0]).equals(element);
+            });
+
             o("Should reference given element by array object", () => {
                 let element = document.createElement("div");
                 let ob = {};
