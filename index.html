@@ -25,6 +25,7 @@
         ref,
         HtmlString,
         ChildAppender,
+        app
       } from "./esm/index.js";
 
       document.head.append(
@@ -120,12 +121,10 @@
       const Red = (el) => (el.style.color = "red");
       const RawHtml = (data) => (el) => (el.innerHTML = data);
 
-      document.body.append(
-        div(
-          span({ $apply: [Red, RawHtml("<h1>Showcase application</h1>")] }),
-          new HtmlString((underline) => underline, "____"),
-          AccountInfo(accountData)
-        )
+      app(
+        span({ $apply: [Red, RawHtml("<h1>Showcase application</h1>")] }),
+        new HtmlString((underline) => underline, "____"),
+        AccountInfo(accountData)
       );
 
       // Refs
