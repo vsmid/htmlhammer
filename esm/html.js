@@ -48,6 +48,7 @@ export const appendChild = (child, element, object) => {
     case "null":
     case "undefined":
       break;
+    case "comment":
     case "htmlelement":
       element.append(child);
       break;

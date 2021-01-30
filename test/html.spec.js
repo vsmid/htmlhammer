@@ -295,6 +295,16 @@ o.spec("HTML", () => {
             o(element.childNodes.length).equals(0);
         });
 
+        o('Should append Comment', () => {
+            let element = document.createElement("div");
+            let child = document.createComment("Hello!");
+
+            appendChild(child, element);
+
+            o(element.childNodes.length).equals(1);
+            o(element.childNodes[0]).equals(child);
+        });
+
         o('Should append HTMLElement', () => {
             let element = document.createElement("div");
             let child = document.createElement("a");
