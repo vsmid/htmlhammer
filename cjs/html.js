@@ -82,6 +82,7 @@ var appendChild = function appendChild(child, element, object) {
     case "undefined":
       break;
 
+    case "comment":
     case "htmlelement":
       element.append(child);
       break;
