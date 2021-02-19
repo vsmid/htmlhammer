@@ -2,7 +2,10 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0"
+    />
     <title>AccountInfo example</title>
   </head>
 
@@ -25,7 +28,6 @@
         ref,
         HtmlString,
         ChildAppender,
-        app
       } from "./esm/index.js";
 
       document.head.append(
@@ -62,7 +64,11 @@
             onclick: () =>
               alert(
                 "Total amount spent: " +
-                  trxs.reduce((acc, trx) => acc + trx.amount, 0) +
+                  trxs.reduce(
+                    (acc, trx) =>
+                      acc + trx.amount,
+                    0
+                  ) +
                   ` ${currency}`
               ),
           },
@@ -76,18 +82,35 @@
             { class: "accountInfo" },
             h2({}, "Account info"),
             label({ for: "iban" }, "IBAN:"),
-            input({ id: "iban", readonly: true, value: data.iban }),
+            input({
+              id: "iban",
+              readonly: true,
+              value: data.iban,
+            }),
             br(),
             label({ for: "bal" }, "Balance:"),
-            input({ id: "bal", readonly: true, value: data.balance }),
+            input({
+              id: "bal",
+              readonly: true,
+              value: data.balance,
+            }),
             br(),
             label({ for: "curr" }, "Currency:"),
-            input({ id: "curr", readonly: true, value: data.currency }),
+            input({
+              id: "curr",
+              readonly: true,
+              value: data.currency,
+            }),
             br(),
             h2({}, "Transactions"),
             table(
               { $ref: data.transactions },
-              tr({}, th({}, "Date"), th({}, "Amount"), th({}, "Purpose")),
+              tr(
+                {},
+                th({}, "Date"),
+                th({}, "Amount"),
+                th({}, "Purpose")
+              ),
               tr(
                 {
                   $for: data.transactions,
@@ -96,12 +119,22 @@
                 },
                 (trx) => [
                   td({}, trx.date.toISOString()),
-                  td({ style: { textAlign: "right" } }, trx.amount),
+                  td(
+                    {
+                      style: {
+                        textAlign: "right",
+                      },
+                    },
+                    trx.amount
+                  ),
                   td({}, trx.purpose),
                 ]
               )
             ),
-            SpentButton(data.transactions, data.currency)
+            SpentButton(
+              data.transactions,
+              data.currency
+            )
           )
         );
 
@@ -110,21 +143,55 @@
         balance: 235.45,
         currency: "EUR",
         transactions: [
-          { date: new Date(), amount: 0.11, purpose: "Toy-Toy" },
-          { date: new Date(), amount: 11.19, purpose: "Plush rabbit" },
-          { date: new Date(), amount: 12.33, purpose: "Coca-Cola, 2l" },
-          { date: new Date(), amount: 34.23, purpose: "A4 paper bundle" },
-          { date: new Date(), amount: 0.21, purpose: "Coffee can" },
+          {
+            date: new Date(),
+            amount: 0.11,
+            purpose: "Toy-Toy",
+          },
+          {
+            date: new Date(),
+            amount: 11.19,
+            purpose: "Plush rabbit",
+          },
+          {
+            date: new Date(),
+            amount: 12.33,
+            purpose: "Coca-Cola, 2l",
+          },
+          {
+            date: new Date(),
+            amount: 34.23,
+            purpose: "A4 paper bundle",
+          },
+          {
+            date: new Date(),
+            amount: 0.21,
+            purpose: "Coffee can",
+          },
         ],
       };
 
-      const Red = (el) => (el.style.color = "red");
-      const RawHtml = (data) => (el) => (el.innerHTML = data);
+      const Red = (el) =>
+        (el.style.color = "red");
+      const RawHtml = (data) => (el) =>
+        (el.innerHTML = data);
 
-      app(
-        span({ $apply: [Red, RawHtml("<h1>Showcase application</h1>")] }),
-        new HtmlString((underline) => underline, "____"),
-        AccountInfo(accountData)
+      document.body.append(
+        div(
+          span({
+            $apply: [
+              Red,
+              RawHtml(
+                "<h1>Showcase application</h1>"
+              ),
+            ],
+          }),
+          new HtmlString(
+            (underline) => underline,
+            "<h2>____</h2>"
+          ),
+          AccountInfo(accountData)
+        )
       );
 
       // Refs
