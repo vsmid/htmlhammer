@@ -1,3 +1,7 @@
+## 3.0.0
+* Removed webtools module - not exactly what this lib is about
+* Added prettierrc
+
 ## 2.4.0
 Created separate module(webtools.js) for web development. It will contain helper functions.
 First two helper functions:
