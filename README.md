@@ -47,30 +47,16 @@ Write HTML with JavaScript using real HTML tag names.
 
 For specific versions use url format: unpkg.com/:package@:version/:file. See [UNPKG](https://unpkg.com/) for more info.
 
-## Including htmlhammer
-
-### Script tag
-
-```html
-<script src="./htmlhammer.js"></script>
-<!-- script src="./htmlhammer.min.js"></script -->
-<script>
-  const { div, a, h1 } = htmlhammer;
-</script>
-```
-
-### Import as cjs
+## Importing and using htmlhammer
 
 ```javascript
+// In html
+<script src="./htmlhammer.js"></script>
+const { div } = htmlhammer;
+
+// In modules
+const { div, a, h1 } = require("htmlhammer").default;
 import { div, a, h1 } from "htmlhammer";
-```
-
-### Import as esm
-
-```html
-<script type="module">
-  import { div, a, h1 } from "./node_modules/htmlhammer/esm/index.js";
-</script>
 ```
 
 ## Using htmlhammer
