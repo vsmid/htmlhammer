@@ -7,18 +7,14 @@ export class ChildAppender {
 
 export class HtmlString extends ChildAppender {
     constructor(element, ...params) {
-        super(
-            element.constructor.name === "Function"
-                ? element(...params)
-                : element
-        );
+        super(typeof element === "function" ? element(...params) : element);
     }
 
     append(parentElement) {
         if (this.element) {
             parentElement.insertAdjacentHTML(
                 "beforeend",
-                this.element.constructor.name === "String"
+                typeof this.element === "string"
                     ? this.element
                     : this.element.toString()
             );
