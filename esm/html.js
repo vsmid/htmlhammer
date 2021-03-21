@@ -61,7 +61,7 @@ export const appendChild = (child, element, object) => {
 export const AttributeHandler = Object.freeze({
   $for: (attributeValue) => {
     let blueprints = [];
-    if (!attributeValue || type(attributeValue) !== "array") {
+    if (!attributeValue || !Array.isArray(attributeValue)) {
       blueprints.push(new Blueprint());
     } else {
       attributeValue.forEach((o) => blueprints.push(new Blueprint(null, o)));
@@ -71,11 +71,11 @@ export const AttributeHandler = Object.freeze({
   $if: (attributeValue, callbackInput) =>
     attributeValue === null || attributeValue === undefined
       ? true
-      : type(attributeValue) === "function"
+      : typeof attributeValue === "function"
       ? attributeValue(callbackInput)
       : !!attributeValue,
   $ref: (attributeValue, callbackInput, element) => {
-    if (type(attributeValue) === "function") {
+    if (typeof attributeValue === "function") {
       if (callbackInput) {
         attributeValue(callbackInput)(element);
       } else {
@@ -112,15 +112,16 @@ export const extract = (...parts) => {
   let children = [];
 
   if (parts && parts.length > 0) {
+    let isObject = parts[0].constructor.name === "Object";
     if (parts.length > 1) {
-      if (type(parts[0]) === "object") {
+      if (isObject) {
         attributes = parts[0];
         children = parts.slice(1);
       } else {
         children = parts;
       }
     } else if (parts.length === 1) {
-      if (type(parts[0]) !== "object") {
+      if (!isObject) {
         children = parts;
       } else {
         attributes = parts[0];
