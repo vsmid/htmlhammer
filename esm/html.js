@@ -10,18 +10,6 @@ export class Blueprint {
   }
 }
 
-export const type = (value) =>
-  (value === undefined
-    ? "undefined"
-    : value === null
-    ? "null"
-    : value instanceof HTMLElement
-    ? "HTMLElement"
-    : value instanceof ChildAppender
-    ? "ChildAppender"
-    : value.constructor.name
-  ).toLowerCase();
-
 export const attachAttribute = (name, value, element) => {
   switch (true) {
     case Object.keys(AttributeHandler).includes(name):

@@ -192,28 +192,6 @@ o.spec("HTML", () => {
 
     });
 
-    o.spec("#type", () => {
-
-        const type = require("../cjs/html.js").type;
-
-        o("Should return exact input variable type", () => {
-            o(type(undefined)).equals("undefined");
-            o(type(null)).equals("null");
-            o(type(document.createElement("div"))).equals("htmlelement");
-            o(type(1)).equals("number");
-            o(type("hello world")).equals("string");
-            o(type(new Date())).equals("date");
-            o(type([])).equals("array");
-            o(type(new Map())).equals("map");
-        });
-
-        o("Should always return lowercased result", () => {
-            class Person { };
-            o(type(new Person())).equals("person");
-        });
-
-    });
-
     o.spec("#attachAttribute", () => {
 
         const attachAttribute = require("../cjs/html").attachAttribute;
