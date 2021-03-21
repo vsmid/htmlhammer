@@ -41,26 +41,20 @@ export const attachAttribute = (name, value, element) => {
 };
 
 export const appendChild = (child, element, object) => {
-  switch (type(child)) {
-    case "array":
+  if (child) {
+    if (Array.isArray(child)) {
       child.forEach((_) => appendChild(_, element, object));
-      break;
-    case "null":
-    case "undefined":
-      break;
-    case "comment":
-    case "htmlelement":
+    } else if (child instanceof HTMLElement) {
       element.append(child);
-      break;
-    case "childappender":
+    } else if (child instanceof ChildAppender) {
       child.append(element);
-      break;
-    case "function":
+    } else if (typeof child === "function") {
       appendChild(object ? child(object) : child(), element, object);
-      break;
-    default:
+    } else if (child.constructor.name === "Comment") {
+      element.append(child);
+    } else {
       element.append(document.createTextNode(child.toString()));
-      break;
+    }
   }
 };
 
@@ -81,7 +75,7 @@ export const AttributeHandler = Object.freeze({
       ? attributeValue(callbackInput)
       : !!attributeValue,
   $ref: (attributeValue, callbackInput, element) => {
-    if (typeof attributeValue === "function") {
+    if (type(attributeValue) === "function") {
       if (callbackInput) {
         attributeValue(callbackInput)(element);
       } else {
