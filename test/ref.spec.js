@@ -2,9 +2,7 @@ const o = require("ospec");
 const { document } = require("basichtml").init({});
 
 o.spec("Ref", () => {
-
     o.spec("#setRef & #ref", () => {
-
         const { ref, setRef } = require("../cjs/ref.js").default;
 
         o("Should return ref in an array", () => {
@@ -15,7 +13,6 @@ o.spec("Ref", () => {
 
             o(Array.isArray(ref(ob))).equals(true);
         });
-
 
         o("Should store multiple objects for the same ref object", () => {
             let ob = {};
@@ -81,6 +78,5 @@ o.spec("Ref", () => {
             setRef(ob, "id")(el2);
             o(ref(ob, "id")).equals(el2);
         });
-
     });
 });

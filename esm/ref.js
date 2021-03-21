@@ -1,7 +1,7 @@
 export default (() => {
-    const refs = new WeakMap;
+    const refs = new WeakMap();
     return {
-        ref: (o, id) => o ? (id ? refs.get(o)[id] : refs.get(o)) : null,
+        ref: (o, id) => (o ? (id ? refs.get(o)[id] : refs.get(o)) : null),
         setRef: (o, id) => (e) => {
             if (o) {
                 if (refs.has(o)) {
@@ -22,6 +22,6 @@ export default (() => {
             } else {
                 return null;
             }
-        }
+        },
     };
 })();
