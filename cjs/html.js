@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports["default"] = exports.define = exports.extract = exports.createElement = exports.AttributeHandler = exports.appendChild = exports.attachAttribute = exports.type = exports.Blueprint = void 0;
+exports["default"] = exports.define = exports.extract = exports.createElement = exports.AttributeHandler = exports.appendChild = exports.attachAttribute = exports.Blueprint = void 0;
 
 var _appenders = require("./appenders.js");
 
@@ -41,12 +41,6 @@ var Blueprint = function Blueprint() {
 
 exports.Blueprint = Blueprint;
 
-var type = function type(value) {
-  return (value === undefined ? "undefined" : value === null ? "null" : value instanceof HTMLElement ? "HTMLElement" : value instanceof _appenders.ChildAppender ? "ChildAppender" : value.constructor.name).toLowerCase();
-};
-
-exports.type = type;
-
 var attachAttribute = function attachAttribute(name, value, element) {
   switch (true) {
     case Object.keys(AttributeHandler).includes(name):
@@ -71,33 +65,22 @@ var attachAttribute = function attachAttribute(name, value, element) {
 exports.attachAttribute = attachAttribute;
 
 var appendChild = function appendChild(child, element, object) {
-  switch (type(child)) {
-    case "array":
+  if (child) {
+    if (Array.isArray(child)) {
       child.forEach(function (_) {
         return appendChild(_, element, object);
       });
-      break;
-
-    case "null":
-    case "undefined":
-      break;
-
-    case "comment":
-    case "htmlelement":
+    } else if (child instanceof HTMLElement) {
       element.append(child);
-      break;
-
-    case "childappender":
+    } else if (child instanceof _appenders.ChildAppender) {
       child.append(element);
-      break;
-
-    case "function":
+    } else if (typeof child === "function") {
       appendChild(object ? child(object) : child(), element, object);
-      break;
-
-    default:
+    } else if (child.constructor.name === "Comment") {
+      element.append(child);
+    } else {
       element.append(document.createTextNode(child.toString()));
-      break;
+    }
   }
 };
 
@@ -106,7 +89,7 @@ var AttributeHandler = Object.freeze({
   $for: function $for(attributeValue) {
     var blueprints = [];
 
-    if (!attributeValue || type(attributeValue) !== "array") {
+    if (!attributeValue || !Array.isArray(attributeValue)) {
       blueprints.push(new Blueprint());
     } else {
       attributeValue.forEach(function (o) {
@@ -117,7 +100,7 @@ var AttributeHandler = Object.freeze({
     return blueprints;
   },
   $if: function $if(attributeValue, callbackInput) {
-    return attributeValue === null || attributeValue === undefined ? true : type(attributeValue) === "function" ? attributeValue(callbackInput) : !!attributeValue;
+    return attributeValue === null || attributeValue === undefined ? true : typeof attributeValue === "function" ? attributeValue(callbackInput) : !!attributeValue;
   },
   $ref: function $ref(attributeValue, callbackInput, element) {
     if (typeof attributeValue === "function") {
@@ -166,15 +149,17 @@ var extract = function extract() {
   }
 
   if (parts && parts.length > 0) {
+    var isObject = parts[0].constructor.name === "Object";
+
     if (parts.length > 1) {
-      if (type(parts[0]) === "object") {
+      if (isObject) {
         attributes = parts[0];
         children = parts.slice(1);
       } else {
         children = parts;
       }
     } else if (parts.length === 1) {
-      if (type(parts[0]) !== "object") {
+      if (!isObject) {
         children = parts;
       } else {
         attributes = parts[0];
