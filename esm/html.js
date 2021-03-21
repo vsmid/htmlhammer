@@ -32,14 +32,15 @@ export const appendChild = (child, element, object) => {
     if (child) {
         if (Array.isArray(child)) {
             child.forEach((_) => appendChild(_, element, object));
-        } else if (child instanceof HTMLElement) {
+        } else if (
+            child instanceof HTMLElement ||
+            child.constructor.name === "Comment"
+        ) {
             element.append(child);
         } else if (child instanceof ChildAppender) {
             child.append(element);
         } else if (typeof child === "function") {
             appendChild(object ? child(object) : child(), element, object);
-        } else if (child.constructor.name === "Comment") {
-            element.append(child);
         } else {
             element.append(document.createTextNode(child.toString()));
         }
