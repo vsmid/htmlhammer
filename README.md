@@ -103,15 +103,15 @@ document.body.append(
 
 ### String as HTML
 
-If you have HTML in string format and you would like for it to be added to element as HTML you should wrap it in `HTMLString` class. This is useful when you want to inject already generated HTML in string format to an element (e.g. HTML content received from REST service).
+If you have HTML in string format and you would like for it to be added to element as HTML you should wrap it in `HtmlString` class. This is useful when you want to inject already generated HTML in string format to an element (e.g. HTML content received from REST service).
 
 ```javascript
-import { div, HTMLString } from "./esm/index.js";
+import { div, HtmlString } from "./esm/index.js";
 
 const html = "<h1>Hello World!</h1>";
 
 document.body.append(
-  div({}, new HTMLString(html)) // Without HTMLString wrapper, html content would be treated as text content hence text node would be created
+  div({}, new HtmlString(html)) // Without HTMLString wrapper, html content would be treated as text content hence text node would be created
 );
 ```
 Version 2.1.0 introduced a new attribute handler `$apply` which allows you to create inline element in any way you like. 
