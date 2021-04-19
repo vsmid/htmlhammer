@@ -118,5 +118,5 @@ export const {
     template
 } = HTML;
 export const { ref, setRef } = REF;
-export { customElement } from "./html.js";
+export { customElement } from "./customElement.js";
 export * from "./appenders.js";
