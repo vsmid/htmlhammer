@@ -14,6 +14,12 @@ export const attachAttribute = (name, value, element) => {
     switch (true) {
         case Object.keys(AttributeHandler).includes(name):
             break;
+        case name === "shadowRoot":
+            element.attachShadow(value);
+            if (value.stylesheets) {
+                value.stylesheets.forEach(style => element.shadowRoot.append(style));
+            }
+            break;
         case name === "style":
             Object.keys(value).forEach((key) => {
                 element.style[key] = value[key];
@@ -30,19 +36,23 @@ export const attachAttribute = (name, value, element) => {
 
 export const appendChild = (child, element, object) => {
     if (child) {
+        let appendTo = element;
+        if (element.shadowRoot && element.shadowRoot.mode === "open") {
+            appendTo = element.shadowRoot;
+        }
         if (Array.isArray(child)) {
-            child.forEach((_) => appendChild(_, element, object));
+            child.forEach((_) => appendChild(_, appendTo, object));
         } else if (
             child instanceof HTMLElement ||
             child.constructor.name === "Comment"
         ) {
-            element.append(child);
+            appendTo.append(child);
         } else if (child instanceof ChildAppender) {
-            child.append(element);
+            child.append(appendTo);
         } else if (typeof child === "function") {
-            appendChild(object ? child(object) : child(), element, object);
+            appendChild(object ? child(object) : child(), appendTo, object);
         } else {
-            element.append(document.createTextNode(child.toString()));
+            appendTo.append(document.createTextNode(child.toString()));
         }
     }
 };
@@ -84,7 +94,7 @@ export const AttributeHandler = Object.freeze({
                 applyCallback(element);
             }
         }
-    },
+    }
 });
 
 export const createElement = (blueprint) => {
@@ -141,6 +151,71 @@ export const define = (tag) => (...parts) => {
         });
 
     return elements.length === 1 ? elements[0] : elements;
+};
+
+export const customElement = (name, impl) => {
+    const reserved = [
+        "constructor",
+        "connectedCallback",
+        "disconnectedCallback",
+        "attributeChangedCallback",
+        "adoptedCallback"
+    ];
+    const CustomElement = class extends HTMLElement {
+        constructor() {
+            super();
+            impl.constructor();
+        }
+    };
+    Object.defineProperties(CustomElement.prototype, {
+        connectedCallback: { value: impl.connectedCallback },
+        disconnectedCallback: { value: impl.disconnectedCallback },
+        attributeChangedCallback: { value: impl.attributeChangedCallback },
+        adoptedCallback: { value: impl.adoptedCallback }
+    });
+    Object.defineProperties(CustomElement, {
+        observedAttributes: { value: impl.observedAttributes }
+    });
+    Object.keys(impl)
+        .filter(key => /[A-Z]/.test(key.charAt(0)) && typeof impl[key] === "function")
+        .forEach(key =>
+            Object.defineProperty(CustomElement.prototype, key, { value: impl[key] })
+        );
+    Object.keys(impl)
+        .filter(key => typeof impl[key] !== "function" && !reserved.includes(impl[key]))
+        .forEach(key => {
+                if (impl.observedAttributes.includes(key)) {
+                    Object.defineProperty(CustomElement.prototype, key, {
+                        get() {
+                            return this.getAttribute(key);
+                        },
+                        set(newVal) {
+                            this.setAttribute(key, newVal);
+                        }
+                    });
+                } else {
+                    let val = impl[key];
+                    if (/[A-Z]/.test(key.charAt(0))) {
+                        Object.defineProperty(CustomElement.prototype, key, {
+                            get() {
+                                return val;
+                            },
+                            set(newVal) {
+                                val = newVal;
+                            }
+                        });
+                    } else {
+                        Object.defineProperty(CustomElement.prototype, key, {
+                            get() {
+                                return val;
+                            }
+                        });
+                    }
+                }
+            }
+        );
+    customElements.define(name, CustomElement);
+    return define(name);
 };
 
 export default (() => {
@@ -273,7 +348,7 @@ export default (() => {
         "summary",
         // Web Components
         "slot",
-        "template",
+        "template"
     ].forEach((tag) => {
         tags[tag] = define(tag);
     });

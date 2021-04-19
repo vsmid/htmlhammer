@@ -67,6 +67,61 @@ var htmlhammer = (function (exports) {
     }
   }
 
+  function _construct(Parent, args, Class) {
+    if (_isNativeReflectConstruct()) {
+      _construct = Reflect.construct;
+    } else {
+      _construct = function _construct(Parent, args, Class) {
+        var a = [null];
+        a.push.apply(a, args);
+        var Constructor = Function.bind.apply(Parent, a);
+        var instance = new Constructor();
+        if (Class) _setPrototypeOf(instance, Class.prototype);
+        return instance;
+      };
+    }
+
+    return _construct.apply(null, arguments);
+  }
+
+  function _isNativeFunction(fn) {
+    return Function.toString.call(fn).indexOf("[native code]") !== -1;
+  }
+
+  function _wrapNativeSuper(Class) {
+    var _cache = typeof Map === "function" ? new Map() : undefined;
+
+    _wrapNativeSuper = function _wrapNativeSuper(Class) {
+      if (Class === null || !_isNativeFunction(Class)) return Class;
+
+      if (typeof Class !== "function") {
+        throw new TypeError("Super expression must either be null or a function");
+      }
+
+      if (typeof _cache !== "undefined") {
+        if (_cache.has(Class)) return _cache.get(Class);
+
+        _cache.set(Class, Wrapper);
+      }
+
+      function Wrapper() {
+        return _construct(Class, arguments, _getPrototypeOf(this).constructor);
+      }
+
+      Wrapper.prototype = Object.create(Class.prototype, {
+        constructor: {
+          value: Wrapper,
+          enumerable: false,
+          writable: true,
+          configurable: true
+        }
+      });
+      return _setPrototypeOf(Wrapper, Class);
+    };
+
+    return _wrapNativeSuper(Class);
+  }
+
   function _assertThisInitialized(self) {
     if (self === void 0) {
       throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
@@ -161,14 +216,14 @@ var htmlhammer = (function (exports) {
         params[_key - 1] = arguments[_key];
       }
 
-      return _super.call(this, element.constructor.name === "Function" ? element.apply(void 0, params) : element);
+      return _super.call(this, typeof element === "function" ? element.apply(void 0, params) : element);
     }
 
     _createClass(HtmlString, [{
       key: "append",
       value: function append(parentElement) {
         if (this.element) {
-          parentElement.insertAdjacentHTML("beforeend", this.element.constructor.name === "String" ? this.element : this.element.toString());
+          parentElement.insertAdjacentHTML("beforeend", typeof this.element === "string" ? this.element : this.element.toString());
         }
       }
     }]);
@@ -228,6 +283,17 @@ var htmlhammer = (function (exports) {
       case Object.keys(AttributeHandler).includes(name):
         break;
 
+      case name === "shadowRoot":
+        element.attachShadow(value);
+
+        if (value.stylesheets) {
+          value.stylesheets.forEach(function (style) {
+            return element.shadowRoot.append(style);
+          });
+        }
+
+        break;
+
       case name === "style":
         Object.keys(value).forEach(function (key) {
           element.style[key] = value[key];
@@ -245,20 +311,24 @@ var htmlhammer = (function (exports) {
   };
   var appendChild = function appendChild(child, element, object) {
     if (child) {
+      var appendTo = element;
+
+      if (element.shadowRoot && element.shadowRoot.mode === "open") {
+        appendTo = element.shadowRoot;
+      }
+
       if (Array.isArray(child)) {
         child.forEach(function (_) {
-          return appendChild(_, element, object);
+          return appendChild(_, appendTo, object);
         });
-      } else if (child instanceof HTMLElement) {
-        element.append(child);
+      } else if (child instanceof HTMLElement || child.constructor.name === "Comment") {
+        appendTo.append(child);
       } else if (child instanceof ChildAppender) {
-        child.append(element);
+        child.append(appendTo);
       } else if (typeof child === "function") {
-        appendChild(object ? child(object) : child(), element, object);
-      } else if (child.constructor.name === "Comment") {
-        element.append(child);
+        appendChild(object ? child(object) : child(), appendTo, object);
       } else {
-        element.append(document.createTextNode(child.toString()));
+        appendTo.append(document.createTextNode(child.toString()));
       }
     }
   };
@@ -371,6 +441,89 @@ var htmlhammer = (function (exports) {
       });
       return elements.length === 1 ? elements[0] : elements;
     };
+  };
+  var customElement = function customElement(name, impl) {
+    var reserved = ["constructor", "connectedCallback", "disconnectedCallback", "attributeChangedCallback", "adoptedCallback"];
+
+    var CustomElement = /*#__PURE__*/function (_HTMLElement) {
+      _inherits(CustomElement, _HTMLElement);
+
+      var _super = _createSuper(CustomElement);
+
+      function CustomElement() {
+        var _this;
+
+        _classCallCheck(this, CustomElement);
+
+        _this = _super.call(this);
+        impl.constructor();
+        return _this;
+      }
+
+      return CustomElement;
+    }( /*#__PURE__*/_wrapNativeSuper(HTMLElement));
+
+    Object.defineProperties(CustomElement.prototype, {
+      connectedCallback: {
+        value: impl.connectedCallback
+      },
+      disconnectedCallback: {
+        value: impl.disconnectedCallback
+      },
+      attributeChangedCallback: {
+        value: impl.attributeChangedCallback
+      },
+      adoptedCallback: {
+        value: impl.adoptedCallback
+      }
+    });
+    Object.defineProperties(CustomElement, {
+      observedAttributes: {
+        value: impl.observedAttributes
+      }
+    });
+    Object.keys(impl).filter(function (key) {
+      return /[A-Z]/.test(key.charAt(0)) && typeof impl[key] === "function";
+    }).forEach(function (key) {
+      return Object.defineProperty(CustomElement.prototype, key, {
+        value: impl[key]
+      });
+    });
+    Object.keys(impl).filter(function (key) {
+      return typeof impl[key] !== "function" && !reserved.includes(impl[key]);
+    }).forEach(function (key) {
+      if (impl.observedAttributes.includes(key)) {
+        Object.defineProperty(CustomElement.prototype, key, {
+          get: function get() {
+            return this.getAttribute(key);
+          },
+          set: function set(newVal) {
+            this.setAttribute(key, newVal);
+          }
+        });
+      } else {
+        var val = impl[key];
+
+        if (/[A-Z]/.test(key.charAt(0))) {
+          Object.defineProperty(CustomElement.prototype, key, {
+            get: function get() {
+              return val;
+            },
+            set: function set(newVal) {
+              val = newVal;
+            }
+          });
+        } else {
+          Object.defineProperty(CustomElement.prototype, key, {
+            get: function get() {
+              return val;
+            }
+          });
+        }
+      }
+    });
+    customElements.define(name, CustomElement);
+    return define(name);
   };
   var HTML = (function () {
     var tags = {};
@@ -534,6 +687,7 @@ var htmlhammer = (function (exports) {
   exports.code = code;
   exports.col = col;
   exports.colgroup = colgroup;
+  exports.customElement = customElement;
   exports.data = data;
   exports.datalist = datalist;
   exports.dd = dd;

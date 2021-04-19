@@ -22,6 +22,6 @@ export default (() => {
             } else {
                 return null;
             }
-        },
+        }
     };
 })();

@@ -115,9 +115,8 @@ export const {
     menu,
     summary,
     slot,
-    template,
+    template
 } = HTML;
-
 export const { ref, setRef } = REF;
-
+export { customElement } from "./html.js";
 export * from "./appenders.js";

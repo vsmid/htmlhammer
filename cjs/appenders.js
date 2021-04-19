@@ -56,14 +56,14 @@ var HtmlString = /*#__PURE__*/function (_ChildAppender) {
       params[_key - 1] = arguments[_key];
     }
 
-    return _super.call(this, element.constructor.name === "Function" ? element.apply(void 0, params) : element);
+    return _super.call(this, typeof element === "function" ? element.apply(void 0, params) : element);
   }
 
   _createClass(HtmlString, [{
     key: "append",
     value: function append(parentElement) {
       if (this.element) {
-        parentElement.insertAdjacentHTML("beforeend", this.element.constructor.name === "String" ? this.element : this.element.toString());
+        parentElement.insertAdjacentHTML("beforeend", typeof this.element === "string" ? this.element : this.element.toString());
       }
     }
   }]);

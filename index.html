@@ -1,17 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+<head>
     <meta charset="UTF-8" />
     <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1.0"
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
     />
     <title>AccountInfo example</title>
-  </head>
+</head>
 
-  <body>
-    <script type="module">
-      import {
+<body>
+<script type="module">
+    import {
         span,
         div,
         h2,
@@ -28,12 +28,31 @@
         ref,
         HtmlString,
         ChildAppender,
-      } from "./esm/index.js";
+        customElement
+    } from "./esm/index.js";
 
-      document.head.append(
+    const yetiCustom = customElement("yeti-custom", {
+        connectedCallback: function() {
+            console.log("Custom element created!");
+            // Set shadow only if not set via htmlhammer's element attribute
+            // this.attachShadow({ mode: "open" });
+
+            // Add styles to shadow
+            this.shadowRoot.append(style(`:host { font-weight: bold;}`));
+        },
+        observedAttributes: ["age"],
+        attributeChangedCallback: function(n, ov, nv) {
+            console.log("Attribute value change: ", n, ov, nv);
+        },
+        Data: "ok", // Public get, set
+        data: "ok", // Only public get
+        age: 2 // Will reflect attribute
+    });
+
+    document.head.append(
         style(
-          {},
-          `
+            {},
+            `
             .accountInfo {
                 font-family: helvetica;
                 font-size: 18px;
@@ -56,146 +75,154 @@
             }
             `
         )
-      );
+    );
 
-      const SpentButton = (trxs, currency) =>
+    const SpentButton = (trxs, currency) =>
         button(
-          {
-            onclick: () =>
-              alert(
-                "Total amount spent: " +
-                  trxs.reduce(
-                    (acc, trx) =>
-                      acc + trx.amount,
-                    0
-                  ) +
-                  ` ${currency}`
-              ),
-          },
-          "Total amount spent"
+            {
+                onclick: () =>
+                    alert(
+                        "Total amount spent: " +
+                        trxs.reduce(
+                            (acc, trx) =>
+                                acc + trx.amount,
+                            0
+                        ) +
+                        ` ${currency}`
+                    )
+            },
+            "Total amount spent"
         );
 
-      const AccountInfo = (data) =>
+    const AccountInfo = (data) =>
         div(
-          {},
-          div(
-            { class: "accountInfo" },
-            h2({}, "Account info"),
-            label({ for: "iban" }, "IBAN:"),
-            input({
-              id: "iban",
-              readonly: true,
-              value: data.iban,
-            }),
-            br(),
-            label({ for: "bal" }, "Balance:"),
-            input({
-              id: "bal",
-              readonly: true,
-              value: data.balance,
-            }),
-            br(),
-            label({ for: "curr" }, "Currency:"),
-            input({
-              id: "curr",
-              readonly: true,
-              value: data.currency,
-            }),
-            br(),
-            h2({}, "Transactions"),
-            table(
-              { $ref: data.transactions },
-              tr(
-                {},
-                th({}, "Date"),
-                th({}, "Amount"),
-                th({}, "Purpose")
-              ),
-              tr(
-                {
-                  $for: data.transactions,
-                  $if: (trx) => trx.amount > 0.2,
-                  $ref: setRef,
-                },
-                (trx) => [
-                  td({}, trx.date.toISOString()),
-                  td(
-                    {
-                      style: {
-                        textAlign: "right",
-                      },
-                    },
-                    trx.amount
-                  ),
-                  td({}, trx.purpose),
-                ]
-              )
-            ),
-            SpentButton(
-              data.transactions,
-              data.currency
+            {},
+            div(
+                { class: "accountInfo" },
+                h2({}, "Account info"),
+                label({ for: "iban" }, "IBAN:"),
+                input({
+                    id: "iban",
+                    readonly: true,
+                    value: data.iban
+                }),
+                br(),
+                label({ for: "bal" }, "Balance:"),
+                input({
+                    id: "bal",
+                    readonly: true,
+                    value: data.balance
+                }),
+                br(),
+                label({ for: "curr" }, "Currency:"),
+                input({
+                    id: "curr",
+                    readonly: true,
+                    value: data.currency
+                }),
+                br(),
+                h2({}, "Transactions"),
+                table(
+                    { $ref: data.transactions },
+                    tr(
+                        {},
+                        th({}, "Date"),
+                        th({}, "Amount"),
+                        th({}, "Purpose")
+                    ),
+                    tr(
+                        {
+                            $for: data.transactions,
+                            $if: (trx) => trx.amount > 0.2,
+                            $ref: setRef
+                        },
+                        (trx) => [
+                            td({}, trx.date.toISOString()),
+                            td(
+                                {
+                                    style: {
+                                        textAlign: "right"
+                                    }
+                                },
+                                trx.amount
+                            ),
+                            td({}, trx.purpose)
+                        ]
+                    )
+                ),
+                SpentButton(
+                    data.transactions,
+                    data.currency
+                )
             )
-          )
         );
 
-      const accountData = {
+    const accountData = {
         iban: "HR23600011001224234",
         balance: 235.45,
         currency: "EUR",
         transactions: [
-          {
-            date: new Date(),
-            amount: 0.11,
-            purpose: "Toy-Toy",
-          },
-          {
-            date: new Date(),
-            amount: 11.19,
-            purpose: "Plush rabbit",
-          },
-          {
-            date: new Date(),
-            amount: 12.33,
-            purpose: "Coca-Cola, 2l",
-          },
-          {
-            date: new Date(),
-            amount: 34.23,
-            purpose: "A4 paper bundle",
-          },
-          {
-            date: new Date(),
-            amount: 0.21,
-            purpose: "Coffee can",
-          },
-        ],
-      };
+            {
+                date: new Date(),
+                amount: 0.11,
+                purpose: "Toy-Toy"
+            },
+            {
+                date: new Date(),
+                amount: 11.19,
+                purpose: "Plush rabbit"
+            },
+            {
+                date: new Date(),
+                amount: 12.33,
+                purpose: "Coca-Cola, 2l"
+            },
+            {
+                date: new Date(),
+                amount: 34.23,
+                purpose: "A4 paper bundle"
+            },
+            {
+                date: new Date(),
+                amount: 0.21,
+                purpose: "Coffee can"
+            }
+        ]
+    };
 
-      const Red = (el) =>
+    const Red = (el) =>
         (el.style.color = "red");
-      const RawHtml = (data) => (el) =>
+    const RawHtml = (data) => (el) =>
         (el.innerHTML = data);
 
-      document.body.append(
+    document.body.append(
         div(
-          span({
-            $apply: [
-              Red,
-              RawHtml(
-                "<h1>Showcase application</h1>"
-              ),
-            ],
-          }),
-          new HtmlString(
-            (underline) => underline,
-            "<h2>__</h2>"
-          ),
-          AccountInfo(accountData)
+            span({
+                $apply: [
+                    Red,
+                    RawHtml(
+                        "<h1>Showcase application</h1>"
+                    )
+                ]
+            }),
+            new HtmlString(
+                (underline) => underline,
+                "<h2>__</h2>"
+            ),
+            AccountInfo(accountData),
+            br,
+            yetiCustom({
+                style: { color: "red" },
+                onclick: (e) => {
+                    alert(e.currentTarget.Data + " " + e.currentTarget.data);
+                },
+                shadowRoot: { mode: "open", stylesheets: [style(`:host {color: red;}`)] }
+            }, "Hello from CustomElement!")
         )
-      );
+    );
 
-      // Refs
-      console.log(ref(accountData.transactions));
-    </script>
-  </body>
+    // Refs
+    console.log(ref(accountData.transactions));
+</script>
+</body>
 </html>
