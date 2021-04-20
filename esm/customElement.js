@@ -29,12 +29,9 @@ const buildBase = (provider) => {
         .forEach(member => prototype[member] = { value: provider[member] });
 
     defineProperties(CustomElement.prototype, prototype);
-
-    const staticAccessors = {
+    defineProperties(CustomElement, {
         observedAttributes: { value: provider.observedAttributes }
-    };
-
-    defineProperties(CustomElement, staticAccessors);
+    });
 
     return CustomElement;
 };
