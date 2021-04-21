@@ -248,9 +248,9 @@ appender is implemented in [appenders.js](https://github.com/vsmid/htmlhammer/bl
 
 ### Method signature
 `customElement(tagName, provider, type)`
-* tagName - custom element tag name
-* provider - plain JS object with lifecycle functions and props implementations. See under `Lifecycle and reserved props.
-* type - optional, function reference to one of htmlhammer's functions (e.q. div, a, table etc.). Use when you
+* `tagName` - custom element tag name
+* `provider` - plain JS object with lifecycle functions and props implementations. See under `Lifecycle and reserved props.
+* `type` - optional, function reference to one of htmlhammer's functions (e.q. div, a, table etc.). Use when you
 want to extend existing html element, e.q. HTMLDivElement.
 
 ### Lifecycle and reserved props
@@ -261,9 +261,9 @@ want to extend existing html element, e.q. HTMLDivElement.
 * adoptedCallback
 * observedAttributes
 
-Differences to the specification:`
+Differences to the specification:
 * `postConstruct` - think of it as a constructor.
-* observedAttributes` - an array of strings (names of the observed attributes)
+* `observedAttributes` - an array of strings (names of the observed attributes)
 
 ### Create generic custom element
 
