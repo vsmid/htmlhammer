@@ -33,7 +33,7 @@
 
     const yetiCustom = customElement("yeti-custom", {
         connectedCallback: function() {
-            console.log("Custom element created!");
+            console.log("Generic custom element created!");
             // Set shadow only if not set via htmlhammer's element attribute
             // this.attachShadow({ mode: "open" });
 
@@ -48,6 +48,12 @@
         data: "ok", // Only public get
         age: 2 // Will reflect attribute
     });
+
+    const yetiDiv = customElement("yeti-div", {
+        connectedCallback: function() {
+            console.log("Specialized custom element created!");
+        }
+    }, div);
 
     document.head.append(
         style(
@@ -217,7 +223,8 @@
                     alert(e.currentTarget.Data + " " + e.currentTarget.data);
                 },
                 shadowRoot: { mode: "open", stylesheets: [style(`:host {color: red;}`)] }
-            }, "Hello from CustomElement!")
+            }, "Hello from Generic CustomElement"),
+            div({ is: "yeti-div" }, "Hello from Specialized CustomElement")
         )
     );
 

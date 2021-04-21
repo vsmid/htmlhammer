@@ -98,7 +98,11 @@ export const AttributeHandler = Object.freeze({
 });
 
 export const createElement = (blueprint) => {
-    let element = document.createElement(blueprint.tag);
+    let options = {};
+    if(blueprint.attributes.is){
+        options["is"] = blueprint.attributes.is;
+    }
+    let element = document.createElement(blueprint.tag, options);
     Object.keys(blueprint.attributes).forEach((name) =>
         attachAttribute(name, blueprint.attributes[name], element)
     );

@@ -14,8 +14,9 @@ const isFunction = (member) => typeof member === "function";
 const isProperty = (member) => !isFunction(member);
 const isObserved = (member, observed) => observed.includes(member.toLowerCase());
 const members = (provider) => Object.keys(provider).filter(member => !reserved.includes(member));
-const buildBase = (provider) => {
-    const CustomElement = class extends HTMLElement {
+const buildBase = (provider, is) => {
+    let el = is ? is().constructor : HTMLElement;
+    const CustomElement = class extends el {
         constructor() {
             super();
             provider.constructor();
@@ -36,9 +37,9 @@ const buildBase = (provider) => {
     return CustomElement;
 };
 
-export const customElement = (name, provider) => {
+export const customElement = (name, provider, is) => {
 
-    const CustomElement = buildBase(provider);
+    const CustomElement = buildBase(provider, is);
 
     members(provider).forEach(
         member => {
@@ -98,7 +99,9 @@ export const customElement = (name, provider) => {
         }
     );
 
-    customElements.define(name, CustomElement);
+    let options = is ? { extends: is().localName } : {};
+
+    customElements.define(name, CustomElement, options);
 
     return define(name);
 };
