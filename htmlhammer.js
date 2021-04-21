@@ -67,61 +67,6 @@ var htmlhammer = (function (exports) {
     }
   }
 
-  function _construct(Parent, args, Class) {
-    if (_isNativeReflectConstruct()) {
-      _construct = Reflect.construct;
-    } else {
-      _construct = function _construct(Parent, args, Class) {
-        var a = [null];
-        a.push.apply(a, args);
-        var Constructor = Function.bind.apply(Parent, a);
-        var instance = new Constructor();
-        if (Class) _setPrototypeOf(instance, Class.prototype);
-        return instance;
-      };
-    }
-
-    return _construct.apply(null, arguments);
-  }
-
-  function _isNativeFunction(fn) {
-    return Function.toString.call(fn).indexOf("[native code]") !== -1;
-  }
-
-  function _wrapNativeSuper(Class) {
-    var _cache = typeof Map === "function" ? new Map() : undefined;
-
-    _wrapNativeSuper = function _wrapNativeSuper(Class) {
-      if (Class === null || !_isNativeFunction(Class)) return Class;
-
-      if (typeof Class !== "function") {
-        throw new TypeError("Super expression must either be null or a function");
-      }
-
-      if (typeof _cache !== "undefined") {
-        if (_cache.has(Class)) return _cache.get(Class);
-
-        _cache.set(Class, Wrapper);
-      }
-
-      function Wrapper() {
-        return _construct(Class, arguments, _getPrototypeOf(this).constructor);
-      }
-
-      Wrapper.prototype = Object.create(Class.prototype, {
-        constructor: {
-          value: Wrapper,
-          enumerable: false,
-          writable: true,
-          configurable: true
-        }
-      });
-      return _setPrototypeOf(Wrapper, Class);
-    };
-
-    return _wrapNativeSuper(Class);
-  }
-
   function _assertThisInitialized(self) {
     if (self === void 0) {
       throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
@@ -166,7 +111,7 @@ var htmlhammer = (function (exports) {
   }
 
   function _iterableToArray(iter) {
-    if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter);
+    if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter);
   }
 
   function _unsupportedIterableToArray(o, minLen) {
@@ -372,8 +317,18 @@ var htmlhammer = (function (exports) {
       }
     }
   });
+  var elementOptions = function elementOptions(attributes) {
+    var options = {};
+    var is = attributes.is;
+
+    if (is) {
+      options["is"] = is;
+    }
+
+    return options;
+  };
   var createElement = function createElement(blueprint) {
-    var element = document.createElement(blueprint.tag);
+    var element = document.createElement(blueprint.tag, elementOptions(blueprint.attributes));
     Object.keys(blueprint.attributes).forEach(function (name) {
       return attachAttribute(name, blueprint.attributes[name], element);
     });
@@ -442,89 +397,6 @@ var htmlhammer = (function (exports) {
       return elements.length === 1 ? elements[0] : elements;
     };
   };
-  var customElement = function customElement(name, impl) {
-    var reserved = ["constructor", "connectedCallback", "disconnectedCallback", "attributeChangedCallback", "adoptedCallback"];
-
-    var CustomElement = /*#__PURE__*/function (_HTMLElement) {
-      _inherits(CustomElement, _HTMLElement);
-
-      var _super = _createSuper(CustomElement);
-
-      function CustomElement() {
-        var _this;
-
-        _classCallCheck(this, CustomElement);
-
-        _this = _super.call(this);
-        impl.constructor();
-        return _this;
-      }
-
-      return CustomElement;
-    }( /*#__PURE__*/_wrapNativeSuper(HTMLElement));
-
-    Object.defineProperties(CustomElement.prototype, {
-      connectedCallback: {
-        value: impl.connectedCallback
-      },
-      disconnectedCallback: {
-        value: impl.disconnectedCallback
-      },
-      attributeChangedCallback: {
-        value: impl.attributeChangedCallback
-      },
-      adoptedCallback: {
-        value: impl.adoptedCallback
-      }
-    });
-    Object.defineProperties(CustomElement, {
-      observedAttributes: {
-        value: impl.observedAttributes
-      }
-    });
-    Object.keys(impl).filter(function (key) {
-      return /[A-Z]/.test(key.charAt(0)) && typeof impl[key] === "function";
-    }).forEach(function (key) {
-      return Object.defineProperty(CustomElement.prototype, key, {
-        value: impl[key]
-      });
-    });
-    Object.keys(impl).filter(function (key) {
-      return typeof impl[key] !== "function" && !reserved.includes(impl[key]);
-    }).forEach(function (key) {
-      if (impl.observedAttributes.includes(key)) {
-        Object.defineProperty(CustomElement.prototype, key, {
-          get: function get() {
-            return this.getAttribute(key);
-          },
-          set: function set(newVal) {
-            this.setAttribute(key, newVal);
-          }
-        });
-      } else {
-        var val = impl[key];
-
-        if (/[A-Z]/.test(key.charAt(0))) {
-          Object.defineProperty(CustomElement.prototype, key, {
-            get: function get() {
-              return val;
-            },
-            set: function set(newVal) {
-              val = newVal;
-            }
-          });
-        } else {
-          Object.defineProperty(CustomElement.prototype, key, {
-            get: function get() {
-              return val;
-            }
-          });
-        }
-      }
-    });
-    customElements.define(name, CustomElement);
-    return define(name);
-  };
   var HTML = (function () {
     var tags = {};
     [// Main root
@@ -546,6 +418,129 @@ var htmlhammer = (function (exports) {
     });
     return tags;
   })();
+
+  var defineProperty = Object.defineProperty,
+      defineProperties = Object.defineProperties;
+  var reserved = ["postConstruct", "connectedCallback", "disconnectedCallback", "attributeChangedCallback", "adoptedCallback", "observedAttributes"];
+
+  var isUppercase = function isUppercase(member) {
+    return /[A-Z]/.test(member.charAt(0));
+  };
+
+  var isFunction = function isFunction(member) {
+    return typeof member === "function";
+  };
+
+  var isProperty = function isProperty(member) {
+    return !isFunction(member);
+  };
+
+  var isObserved = function isObserved(member, observed) {
+    return observed.includes(member.toLowerCase());
+  };
+
+  var members = function members(provider) {
+    return Object.keys(provider).filter(function (member) {
+      return !reserved.includes(member);
+    });
+  };
+
+  var buildBase = function buildBase(provider, type) {
+    var htmlElement = type ? type().constructor : HTMLElement;
+
+    var CustomElement = /*#__PURE__*/function (_htmlElement) {
+      _inherits(CustomElement, _htmlElement);
+
+      var _super = _createSuper(CustomElement);
+
+      function CustomElement() {
+        var _this;
+
+        _classCallCheck(this, CustomElement);
+
+        _this = _super.call(this);
+
+        if (provider.postConstruct) {
+          provider.postConstruct();
+        }
+
+        return _this;
+      }
+
+      return CustomElement;
+    }(htmlElement);
+
+    var prototype = {};
+    reserved.filter(function (member) {
+      return member !== "observedAttributes";
+    }).forEach(function (member) {
+      return prototype[member] = {
+        value: provider[member]
+      };
+    });
+    defineProperties(CustomElement.prototype, prototype);
+    defineProperties(CustomElement, {
+      observedAttributes: {
+        value: provider.observedAttributes
+      }
+    });
+    return CustomElement;
+  };
+
+  var customElement = function customElement(name, provider, type) {
+    var CustomElement = buildBase(provider, type);
+    members(provider).forEach(function (member) {
+      switch (true) {
+        case isUppercase(member) && isFunction(provider[member]):
+          defineProperty(CustomElement.prototype, member, {
+            value: provider[member]
+          });
+          break;
+
+        case isProperty(provider[member]):
+          var valueRef = provider[member];
+
+          switch (true) {
+            case isObserved(member, provider.observedAttributes):
+              defineProperty(CustomElement.prototype, member, {
+                get: function get() {
+                  return this.getAttribute(member);
+                },
+                set: function set(newVal) {
+                  this.setAttribute(member, newVal);
+                }
+              });
+              break;
+
+            case isUppercase(member):
+              defineProperty(CustomElement.prototype, member, {
+                get: function get() {
+                  return valueRef;
+                },
+                set: function set(newVal) {
+                  valueRef = newVal;
+                }
+              });
+              break;
+
+            case !isUppercase(member):
+              defineProperty(CustomElement.prototype, member, {
+                get: function get() {
+                  return valueRef;
+                }
+              });
+              break;
+          }
+
+          break;
+      }
+    });
+    var options = type ? {
+      "extends": type().localName
+    } : {};
+    customElements.define(name, CustomElement, options);
+    return define(name);
+  };
 
   var html = HTML.html,
       base = HTML.base,

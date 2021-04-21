@@ -1,7 +1,5 @@
 "use strict";
 
-function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
-
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
@@ -127,15 +125,17 @@ var _exportNames = {
 Object.defineProperty(exports, "customElement", {
   enumerable: true,
   get: function get() {
-    return _html.customElement;
+    return _customElement.customElement;
   }
 });
 exports.label = exports.input = exports.form = exports.fieldset = exports.datalist = exports.button = exports.tr = exports.thead = exports.th = exports.tfoot = exports.td = exports.tbody = exports.table = exports.colgroup = exports.col = exports.caption = exports.ins = exports.del = exports.script = exports.noscript = exports.canvas = exports.source = exports.picture = exports.param = exports.object = exports.iframe = exports.embed = exports.video = exports.track = exports.map = exports.img = exports.audio = exports.area = exports.wbr = exports.variable = exports.u = exports.time = exports.sup = exports.sub = exports.strong = exports.span = exports.small = exports.samp = exports.s = exports.ruby = exports.rtc = exports.rt = exports.rp = exports.rb = exports.q = exports.mark = exports.kbd = exports.i = exports.em = exports.dfn = exports.data = exports.code = exports.cite = exports.br = exports.bdo = exports.bdi = exports.b = exports.abbr = exports.a = exports.ul = exports.pre = exports.p = exports.ol = exports.li = exports.hr = exports.figure = exports.figcaption = exports.dt = exports.dl = exports.div = exports.dd = exports.blockquote = exports.section = exports.nav = exports.main = exports.hggroup = exports.h6 = exports.h5 = exports.h4 = exports.h3 = exports.h2 = exports.h1 = exports.header = exports.footer = exports.aside = exports.article = exports.address = exports.body = exports.title = exports.style = exports.meta = exports.link = exports.head = exports.base = exports.html = void 0;
 exports.setRef = exports.ref = exports.template = exports.slot = exports.summary = exports.menu = exports.dialog = exports.details = exports.textarea = exports.select = exports.progress = exports.output = exports.option = exports.oprgroup = exports.meter = exports.legend = void 0;
 
-var _html = _interopRequireWildcard(require("./html.js"));
+var _html = _interopRequireDefault(require("./html.js"));
 
 var _ref = _interopRequireDefault(require("./ref.js"));
+
+var _customElement = require("./customElement.js");
 
 var _appenders = require("./appenders.js");
 
@@ -152,10 +152,6 @@ Object.keys(_appenders).forEach(function (key) {
 });
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
-
-function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function _getRequireWildcardCache() { return cache; }; return cache; }
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") { return { "default": obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj["default"] = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
 var html = _html["default"].html,
     base = _html["default"].base,
