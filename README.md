@@ -35,7 +35,7 @@ Write HTML with JavaScript using real HTML tag names.
 
 <!-- Latest version ESM -->
 <script type="module">
-  import { div } from "https://unpkg.com/htmlhammer?module";
+    import { div } from "https://unpkg.com/htmlhammer?module";
 </script>
 
 <!-- Latest version single file IIFE -->
@@ -63,8 +63,8 @@ import { div, a, h1 } from "htmlhammer";
 
 ## Supported HTML tags/elements
 
-See the list on [MDN](https://developer.mozilla.org/en-US/docs/Web/HTML/Element).
-Tags/elements marked as obsolete/deprecated are not supported.
+See the list on [MDN](https://developer.mozilla.org/en-US/docs/Web/HTML/Element). Tags/elements marked as
+obsolete/deprecated are not supported.
 
 ## Signature
 
@@ -76,8 +76,10 @@ htmltagname((attributes = {}), ...children);
 
 Parameters:
 
-- attributes - JSON object where key is the name of the element's attribute and value is the new attribute value. See **reserved attributes**.
-- children - element or elements to be appended to parent element. Can be string, number, another HTMLElement created in a regular way or by **htmlhammer**, function returning one of the previously stated types etc.
+- attributes - JSON object where key is the name of the element's attribute and value is the new attribute value. See **
+  reserved attributes**.
+- children - element or elements to be appended to parent element. Can be string, number, another HTMLElement created in
+  a regular way or by **htmlhammer**, function returning one of the previously stated types etc.
 
 Returns:
 
@@ -89,21 +91,23 @@ Returns:
 let items = [{ value: 1 }, { value: 2 }];
 
 document.body.append(
-  div(
-    { style: { color: "red" } },
-    h1({}, "I am the title"),
-    a({ href: "#" }, "Click me!"),
-    table(
-      {},
-      tr({ $for: items }, (item) => td({}, item.value))
+    div(
+        { style: { color: "red" } },
+        h1({}, "I am the title"),
+        a({ href: "#" }, "Click me!"),
+        table(
+            {},
+            tr({ $for: items }, (item) => td({}, item.value))
+        )
     )
-  )
 );
 ```
 
 ### String as HTML
 
-If you have HTML in string format and you would like for it to be added to element as HTML you should wrap it in `HtmlString` class. This is useful when you want to inject already generated HTML in string format to an element (e.g. HTML content received from REST service).
+If you have HTML in string format and you would like for it to be added to element as HTML you should wrap it
+in `HtmlString` class. This is useful when you want to inject already generated HTML in string format to an element (
+e.g. HTML content received from REST service).
 
 ```javascript
 import { div, HtmlString } from "./esm/index.js";
@@ -111,17 +115,19 @@ import { div, HtmlString } from "./esm/index.js";
 const html = "<h1>Hello World!</h1>";
 
 document.body.append(
-  div({}, new HtmlString(html)) // Without HTMLString wrapper, html content would be treated as text content hence text node would be created
+    div({}, new HtmlString(html)) // Without HTMLString wrapper, html content would be treated as text content hence text node would be created
 );
 ```
-Version 2.1.0 introduced a new attribute handler `$apply` which allows you to create inline element in any way you like. 
+
+Version 2.1.0 introduced a new attribute handler `$apply` which allows you to create inline element in any way you like.
+
 ```javascript
 const RawHtml = (data) => (el) => (el.innerHTML = data);
 
 document.body.append(
-  div({},
-    span({ $apply: RawHtml("<h1>Hello World!</h1>") })
-  )
+    div({},
+        span({ $apply: RawHtml("<h1>Hello World!</h1>") })
+    )
 );
 ```
 
@@ -175,14 +181,18 @@ console.log(ref(person, "age"));
 
 // If used in combination with $for do not set object reference manually because it will automatically be set to the list item value
 element = div(
-  { $for: [{ v: 1 }, { v: 2 }, { v: 3 }], $ref: setRef },
-  "Hello World!"
+    { $for: [{ v: 1 }, { v: 2 }, { v: 3 }], $ref: setRef },
+    "Hello World!"
 );
 ```
+
 #### `$apply` - apply anything to an element
 
-Use this attribute to apply anything to an element. This gives you the full power of JavaScript Element API mixed within `htmlhammer's` inline element creation. This can also be ideal for sharing style, logic, event handlers etc. across multiple components/elements.
-$apply can be given as a function which receives element or an array of such functions.
+Use this attribute to apply anything to an element. This gives you the full power of JavaScript Element API mixed
+within `htmlhammer's` inline element creation. This can also be ideal for sharing style, logic, event handlers etc.
+across multiple components/elements. $apply can be given as a function which receives element or an array of such
+functions.
+
 ```javascript
 const RedText = (el) => (el.style.color = "red");
 
@@ -191,7 +201,7 @@ const HTMLContent = (data) => (el) => (el.innerHTML = data);
 
 // Valid usages
 div({ $apply: RedText });
-div({ $apply: [RedText, HTMLContent("<h1>Hello</h1>")] } );
+div({ $apply: [RedText, HTMLContent("<h1>Hello</h1>")] });
 ```
 
 ### Setting on-event actions
@@ -204,33 +214,156 @@ a({ onclick: (e) => alert("Clicked!") }, "Click me");
 
 ### Setting CSS
 
-CSS is given in the form of JSON object when using element's style attribute or HTMLStyleElement when using HTML tag style.
+CSS is given in the form of JSON object when using element's style attribute or HTMLStyleElement when using HTML tag
+style.
 
 ```javascript
 // Global, using HTMLStyleElement
 document.head.append(
-  style(
-    {},
-    `
+    style(
+        {},
+        `
     body {
       font-size: 12px;
     }
 `
-  )
+    )
 );
 
 // Inline, using style attribute
 div({ style: { color: "red", fontSize: "12px" } }, "Hello World!");
 ```
 
-When setting style attribute values, use corresponding JavaScript CSS property names. See [MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Properties_Reference).
+When setting style attribute values, use corresponding JavaScript CSS property names.
+See [MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Properties_Reference).
 
 ### Custom child appender
 
-Version 2.0.0 introduced option to provide a custom way of how child element is appended to parent element.
-Use case for this can be seen in `HtmlString` appender where raw html in the form of string needs to inserted to DOM element.
-For this to happen, element's `insertAdjacentHTML` method is used instead of default `append` method.
-See how HtmlString appender is implemented in [appenders.js](https://github.com/vsmid/htmlhammer/blob/master/esm/appenders.js).
+Version 2.0.0 introduced option to provide a custom way of how child element is appended to parent element. Use case for
+this can be seen in `HtmlString` appender where raw html in the form of string needs to inserted to DOM element. For
+this to happen, element's `insertAdjacentHTML` method is used instead of default `append` method. See how HtmlString
+appender is implemented in [appenders.js](https://github.com/vsmid/htmlhammer/blob/master/esm/appenders.js).
+
+## Custom elements (experimental)
+
+### Method signature
+`customElement(tagName, provider, type)`
+* tagName - custom element tag name
+* provider - plain JS object with lifecycle functions and props implementations. See under `Lifecycle and reserved props.
+* type - optional, function reference to one of htmlhammer's functions (e.q. div, a, table etc.). Use when you
+want to extend existing html element, e.q. HTMLDivElement.
+
+### Lifecycle and reserved props
+* postConstruct
+* connectedCallback
+* disconnectedCallback
+* attributeChangedCallback
+* adoptedCallback
+* observedAttributes
+
+Differences to the specification:`
+* `postConstruct` - think of it as a constructor.
+* observedAttributes` - an array of strings (names of the observed attributes)
+
+### Create generic custom element
+
+* Using only htmlhammer
+```javascript
+    const {customElement} = htmlhammer; // or use ES6 import
+
+    const yetiCustom = customElement("yeti-custom", {
+      connectedCallback: function() {
+          console.log("Generic custom element created!");
+      }
+    });
+
+    document.body.append(yetiCustom()); 
+```
+* Using htmlhammer and html
+```html
+<script>
+  const {customElement} = htmlhammer; // or use ES6 import
+
+  const yetiCustom = customElement("yeti-custom", {
+    connectedCallback: function() {
+      console.log("Generic custom element created!");
+    }
+  });
+</script>
+
+<yeti-custom></yeti-custom>
+```
+
+### Create specialized custom element
+* Using only htmlhammer
+```javascript
+    const {div, customElement} = htmlhammer; // or use ES6 import
+
+    const yetiDiv = customElement("yeti-div", {
+      connectedCallback: function() {
+          console.log("Generic custom element created!");
+      }
+    }, div);
+
+    document.body.append(div({is: "yeti-div"})); 
+```
+
+* Using htmlhammer and html
+```html
+<script>
+  const {div, customElement} = htmlhammer; // or use ES6 import
+
+  const yetiDiv = customElement("yeti-div", {
+    connectedCallback: function() {
+      console.log("Generic custom element created!");
+    }
+  }, div);
+</script>
+
+<div is="yeti-div"></div>
+```
+
+### Setting shadow dom
+* Inside custom element
+```javascript
+  const {customElement} = htmlhammer; // or use ES6 import
+
+  const yetiCustom = customElement("yeti-custom", {
+    connectedCallback: function() {
+      this.attachShadow({ mode: "open" });
+    }
+  });
+```
+* As htmlhammer attribute
+```javascript
+    yetiCustom({ shadowRoot: { mode: "open" } }, "Hello from Generic CustomElement");
+```
+
+### Setting styles
+* Inside custom element
+```javascript
+  const {style, customElement} = htmlhammer; // or use ES6 import
+
+  const yetiCustom = customElement("yeti-custom", {
+    connectedCallback: function() {
+      this.attachShadow({ mode: "open" });
+      this.shadowRoot.append(style(`:host { font-weight: bold;}`));
+    }
+  });
+```
+* As htmlhammer attribute
+```javascript
+  yetiCustom({ shadowRoot: { mode: "open", stylesheets: [style(`:host {color: red;}`)] } }, 
+      "Hello from Generic CustomElement");
+```
+
+### Conventions
+Conventions apply only to the provider(see under `Signature`).
+* Function starting with capital letter - binds function to context
+* Property starting with capital letter - receives get/set methods
+* Property not starting with capital letter - receives only get method
+* Property is named the same as observed attribute - property will reflect attribute
+
 
 ## Project's NPM scripts
 
