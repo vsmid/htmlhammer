@@ -647,6 +647,7 @@ o.spec("HTML", () => {
             "Should append all other types not tested above as text node by calling #toString() method",
             () => {
                 let element = document.createElement("div");
+
                 class Person {
                     toString() {
                         return "Lena";
@@ -744,6 +745,7 @@ o.spec("HTML", () => {
                 "Function which returns any other type not tested above as text node by calling #toString() method",
                 () => {
                     let element = document.createElement("div");
+
                     class Person {
                         toString() {
                             return "Lena";
@@ -942,7 +944,7 @@ o.spec("HTML", () => {
 
         o("Should create element without children", () => {
             let bp = new Blueprint("div", null, {
-                id: "myDiv",
+                id: "myDiv"
             });
 
             let element = createElement(bp);
@@ -1013,7 +1015,7 @@ o.spec("HTML", () => {
                     {
                         $for: items,
                         $if: (i) => i.v > 1,
-                        $ref: setRef,
+                        $ref: setRef
                     },
                     (i) => i.v
                 );
@@ -1047,20 +1049,34 @@ o.spec("HTML", () => {
             parts = extract({ id: 1 });
 
             o(Object.keys(parts).length).equals(2);
-            o(JSON.stringify(parts.attributes)).equals('{"id":1}');
+            o(JSON.stringify(parts.attributes)).equals("{\"id\":1}");
             o(JSON.stringify(parts.children)).equals("[]");
 
             parts = extract("1", 2);
 
             o(Object.keys(parts).length).equals(2);
             o(JSON.stringify(parts.attributes)).equals("{}");
-            o(JSON.stringify(parts.children)).equals('["1",2]');
+            o(JSON.stringify(parts.children)).equals("[\"1\",2]");
 
             parts = extract({ id: 1 }, "1", 2);
 
             o(Object.keys(parts).length).equals(2);
-            o(JSON.stringify(parts.attributes)).equals('{"id":1}');
-            o(JSON.stringify(parts.children)).equals('["1",2]');
+            o(JSON.stringify(parts.attributes)).equals("{\"id\":1}");
+            o(JSON.stringify(parts.children)).equals("[\"1\",2]");
+        });
+    });
+
+    o.spec("#elementOptions", () => {
+        const elementOptions = require("../cjs/html.js").elementOptions;
+
+        o("Should create option object with 'is' attribute", () => {
+            let options = elementOptions({ is: "custom-type" });
+            o(options.is).equals("custom-type");
+        });
+
+        o("Should create empty option object", () => {
+            let options = elementOptions({});
+            o(options.toString()).equals({}.toString());
         });
     });
 });
