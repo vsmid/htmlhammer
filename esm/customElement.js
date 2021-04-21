@@ -2,7 +2,7 @@ import { define } from "./html.js";
 
 const { defineProperty, defineProperties } = Object;
 const reserved = [
-    "constructor",
+    "postConstruct",
     "connectedCallback",
     "disconnectedCallback",
     "attributeChangedCallback",
@@ -20,7 +20,9 @@ const buildBase = (provider, type) => {
     const CustomElement = class extends htmlElement {
         constructor() {
             super();
-            provider.constructor();
+            if (provider.postConstruct) {
+                provider.postConstruct();
+            }
         }
     };
 
