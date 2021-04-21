@@ -46,14 +46,14 @@
         },
         Data: "ok", // Public get, set
         data: "ok", // Only public get
-        age: 2 // Will reflect attribute
+        age: 2 // Will reflect observed attribute
     });
 
     const yetiDiv = customElement("yeti-div", {
         connectedCallback: function() {
             console.log("Specialized custom element created!");
         }
-    }, div);
+    }, div); // Extends HTMLDivElement
 
     document.head.append(
         style(
@@ -217,6 +217,7 @@
             ),
             AccountInfo(accountData),
             br,
+            h2("Custom Elements"),
             yetiCustom({
                 style: { color: "red" },
                 onclick: (e) => {
