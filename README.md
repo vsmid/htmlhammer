@@ -272,7 +272,7 @@ Differences to the specification:
     const {customElement} = htmlhammer; // or use ES6 import
 
     const yetiCustom = customElement("yeti-custom", {
-      connectedCallback: function() {
+      connectedCallback() {
           console.log("Generic custom element created!");
       }
     });
@@ -285,7 +285,7 @@ Differences to the specification:
   const {customElement} = htmlhammer; // or use ES6 import
 
   const yetiCustom = customElement("yeti-custom", {
-    connectedCallback: function() {
+    connectedCallback() {
       console.log("Generic custom element created!");
     }
   });
@@ -300,7 +300,7 @@ Differences to the specification:
     const {div, customElement} = htmlhammer; // or use ES6 import
 
     const yetiDiv = customElement("yeti-div", {
-      connectedCallback: function() {
+      connectedCallback() {
           console.log("Generic custom element created!");
       }
     }, div);
@@ -314,7 +314,7 @@ Differences to the specification:
   const {div, customElement} = htmlhammer; // or use ES6 import
 
   const yetiDiv = customElement("yeti-div", {
-    connectedCallback: function() {
+    connectedCallback() {
       console.log("Generic custom element created!");
     }
   }, div);
@@ -329,7 +329,7 @@ Differences to the specification:
   const {customElement} = htmlhammer; // or use ES6 import
 
   const yetiCustom = customElement("yeti-custom", {
-    connectedCallback: function() {
+    connectedCallback() {
       this.attachShadow({ mode: "open" });
     }
   });
@@ -345,7 +345,7 @@ Differences to the specification:
   const {style, customElement} = htmlhammer; // or use ES6 import
 
   const yetiCustom = customElement("yeti-custom", {
-    connectedCallback: function() {
+    connectedCallback() {
       this.attachShadow({ mode: "open" });
       this.shadowRoot.append(style(`:host { font-weight: bold;}`));
     }
@@ -359,7 +359,7 @@ Differences to the specification:
 
 ### Conventions
 Conventions apply only to the provider(see under `Signature`).
-* Function starting with capital letter - binds function to context
+* Function starting with capital letter - binds function to context (custom element instance)
 * Property starting with capital letter - receives get/set methods
 * Property not starting with capital letter - receives only get method
 * Property is named the same as observed attribute - property will reflect attribute

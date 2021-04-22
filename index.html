@@ -27,12 +27,11 @@
         setRef,
         ref,
         HtmlString,
-        ChildAppender,
         customElement
     } from "./esm/index.js";
 
     const yetiCustom = customElement("yeti-custom", {
-        connectedCallback: function() {
+        connectedCallback() {
             console.log("Generic custom element created!");
             // Set shadow only if not set via htmlhammer's element attribute
             // this.attachShadow({ mode: "open" });
@@ -41,7 +40,7 @@
             this.shadowRoot.append(style(`:host { font-weight: bold;}`));
         },
         observedAttributes: ["age"],
-        attributeChangedCallback: function(n, ov, nv) {
+        attributeChangedCallback(n, ov, nv) {
             console.log("Attribute value change: ", n, ov, nv);
         },
         Data: "ok", // Public get, set
@@ -50,9 +49,9 @@
     });
 
     const yetiDiv = customElement("yeti-div", {
-        connectedCallback: function() {
+        connectedCallback() {
             console.log("Specialized custom element created!");
-        }
+        },
     }, div); // Extends HTMLDivElement
 
     document.head.append(
