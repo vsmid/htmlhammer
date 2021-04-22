@@ -445,6 +445,14 @@ var htmlhammer = (function (exports) {
     });
   };
 
+  var bind = function bind(provider, instance) {
+    members(provider).filter(function (member) {
+      return !reserved.includes(member) && isFunction(provider[member]) && isUppercase(member);
+    }).forEach(function (member) {
+      instance[member] = instance[member].bind(instance);
+    });
+  };
+
   var buildBase = function buildBase(provider, type) {
     var htmlElement = type ? type().constructor : HTMLElement;
 
@@ -462,8 +470,10 @@ var htmlhammer = (function (exports) {
 
         if (provider.postConstruct) {
           provider.postConstruct();
-        }
+        } // Bind uppercase functions
 
+
+        bind(provider, _assertThisInitialized(_this));
         return _this;
       }
 
@@ -489,11 +499,14 @@ var htmlhammer = (function (exports) {
 
   var customElement = function customElement(name, provider, type) {
     var CustomElement = buildBase(provider, type);
-    members(provider).forEach(function (member) {
+    members(provider).filter(function (member) {
+      return !reserved.includes(member);
+    }).forEach(function (member) {
       switch (true) {
-        case isUppercase(member) && isFunction(provider[member]):
+        case isFunction(provider[member]):
           defineProperty(CustomElement.prototype, member, {
-            value: provider[member]
+            value: provider[member],
+            writable: isUppercase(member)
           });
           break;
 
