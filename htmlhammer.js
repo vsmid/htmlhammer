@@ -481,7 +481,7 @@ var htmlhammer = (function (exports) {
     defineProperties(CustomElement.prototype, prototype);
     defineProperties(CustomElement, {
       observedAttributes: {
-        value: provider.observedAttributes
+        value: provider.observedAttributes || []
       }
     });
     return CustomElement;
@@ -501,7 +501,7 @@ var htmlhammer = (function (exports) {
           var valueRef = provider[member];
 
           switch (true) {
-            case isObserved(member, provider.observedAttributes):
+            case isObserved(member, CustomElement.observedAttributes):
               defineProperty(CustomElement.prototype, member, {
                 get: function get() {
                   return this.getAttribute(member);
