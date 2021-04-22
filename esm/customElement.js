@@ -34,7 +34,7 @@ const buildBase = (provider, type) => {
 
     defineProperties(CustomElement.prototype, prototype);
     defineProperties(CustomElement, {
-        observedAttributes: { value: provider.observedAttributes }
+        observedAttributes: { value: provider.observedAttributes || [] }
     });
 
     return CustomElement;
@@ -57,7 +57,7 @@ export const customElement = (name, provider, type) => {
                 case isProperty(provider[member]):
                     let valueRef = provider[member];
                     switch (true) {
-                        case isObserved(member, provider.observedAttributes):
+                        case isObserved(member, CustomElement.observedAttributes):
                             defineProperty(
                                 CustomElement.prototype,
                                 member,
