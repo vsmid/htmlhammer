@@ -14,6 +14,17 @@ const isFunction = (member) => typeof member === "function";
 const isProperty = (member) => !isFunction(member);
 const isObserved = (member, observed) => observed.includes(member.toLowerCase());
 const members = (provider) => Object.keys(provider).filter(member => !reserved.includes(member));
+const bind = (provider, instance) => {
+    members(provider)
+        .filter(member => !reserved.includes(member)
+            && isFunction(provider[member])
+            && isUppercase(member)
+        )
+        .forEach(member => {
+            instance[member] = instance[member].bind(instance);
+        });
+};
+
 const buildBase = (provider, type) => {
     let htmlElement = type ? type().constructor : HTMLElement;
 
@@ -23,6 +34,8 @@ const buildBase = (provider, type) => {
             if (provider.postConstruct) {
                 provider.postConstruct();
             }
+            // Bind uppercase functions
+            bind(provider, this);
         }
     };
 
@@ -44,63 +57,68 @@ export const customElement = (name, provider, type) => {
 
     const CustomElement = buildBase(provider, type);
 
-    members(provider).forEach(
-        member => {
-            switch (true) {
-                case isUppercase(member) && isFunction(provider[member]):
-                    defineProperty(
-                        CustomElement.prototype,
-                        member,
-                        { value: provider[member] }
-                    );
-                    break;
-                case isProperty(provider[member]):
-                    let valueRef = provider[member];
-                    switch (true) {
-                        case isObserved(member, CustomElement.observedAttributes):
-                            defineProperty(
-                                CustomElement.prototype,
-                                member,
-                                {
-                                    get() {
-                                        return this.getAttribute(member);
-                                    },
-                                    set(newVal) {
-                                        this.setAttribute(member, newVal);
-                                    }
-                                });
-                            break;
-                        case isUppercase(member):
-                            defineProperty(
-                                CustomElement.prototype,
-                                member, {
-                                    get() {
-                                        return valueRef;
-                                    },
-                                    set(newVal) {
-                                        valueRef = newVal;
-                                    }
-                                });
-                            break;
-                        case !isUppercase(member):
-                            defineProperty(
-                                CustomElement.prototype,
-                                member,
-                                {
-                                    get() {
-                                        return valueRef;
-                                    }
-                                });
-                            break;
-                        default:
-                            break;
-                    }
-                    break;
-                default:
-                    break;
+    members(provider)
+        .filter(member => !reserved.includes(member))
+        .forEach(
+            member => {
+                switch (true) {
+                    case isFunction(provider[member]):
+                        defineProperty(
+                            CustomElement.prototype,
+                            member,
+                            {
+                                value: provider[member],
+                                writable: isUppercase(member)
+                            }
+                        );
+                        break;
+                    case isProperty(provider[member]):
+                        let valueRef = provider[member];
+                        switch (true) {
+                            case isObserved(member, CustomElement.observedAttributes):
+                                defineProperty(
+                                    CustomElement.prototype,
+                                    member,
+                                    {
+                                        get() {
+                                            return this.getAttribute(member);
+                                        },
+                                        set(newVal) {
+                                            this.setAttribute(member, newVal);
+                                        }
+                                    });
+                                break;
+                            case isUppercase(member):
+                                defineProperty(
+                                    CustomElement.prototype,
+                                    member, {
+                                        get() {
+                                            return valueRef;
+                                        },
+                                        set(newVal) {
+                                            valueRef = newVal;
+                                        }
+                                    });
+                                break;
+                            case !isUppercase(member):
+                                defineProperty(
+                                    CustomElement.prototype,
+                                    member,
+                                    {
+                                        get() {
+                                            return valueRef;
+                                        }
+                                    });
+                                break;
+                            default:
+                                break;
+                        }
+                        break;
+                    default:
+                        break;
+                }
             }
-        }
-    );
+        );
 
     let options = type ? { extends: type().localName } : {};
 
