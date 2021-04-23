@@ -76,7 +76,7 @@ var attachAttribute = function attachAttribute(name, value, element) {
 exports.attachAttribute = attachAttribute;
 
 var appendChild = function appendChild(child, element, object) {
-  if (child) {
+  if (child !== null && child !== undefined) {
     var appendTo = element;
 
     if (element.shadowRoot && element.shadowRoot.mode === "open") {
