@@ -569,6 +569,15 @@ o.spec("HTML", () => {
             o(element.childNodes[1]).equals(child2);
         });
 
+        o("Should append 0(zero)", () => {
+            let element = document.createElement("div");
+
+            appendChild([0], element);
+
+            o(element.childNodes.length).equals(1);
+            o(element.childNodes[0].textContent).equals("0");
+        });
+
         o("Should append string as text node", () => {
             let element = document.createElement("div");
 

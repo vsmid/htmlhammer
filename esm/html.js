@@ -35,7 +35,7 @@ export const attachAttribute = (name, value, element) => {
 };
 
 export const appendChild = (child, element, object) => {
-    if (child) {
+    if (child !== null && child !== undefined) {
         let appendTo = element;
         if (element.shadowRoot && element.shadowRoot.mode === "open") {
             appendTo = element.shadowRoot;
