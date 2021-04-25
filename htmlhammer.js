@@ -445,15 +445,68 @@ var htmlhammer = (function (exports) {
     });
   };
 
-  var bind = function bind(provider, instance) {
+  var bindMembers = function bindMembers(provider, instance) {
     members(provider).filter(function (member) {
       return !reserved.includes(member) && isFunction(provider[member]) && isUppercase(member);
     }).forEach(function (member) {
-      instance[member] = instance[member].bind(instance);
+      instance[member] = provider[member].bind(instance);
     });
   };
 
-  var buildBase = function buildBase(provider, type) {
+  var assignMembers = function assignMembers(provider, instance) {
+    members(provider).filter(function (member) {
+      return !reserved.includes(member);
+    }).forEach(function (member) {
+      switch (true) {
+        case isFunction(provider[member]):
+          defineProperty(instance, member, {
+            value: provider[member],
+            writable: isUppercase(member)
+          });
+          break;
+
+        case isProperty(provider[member]):
+          // Optimize this
+          var valueRef = JSON.parse(JSON.stringify(provider[member]));
+
+          switch (true) {
+            case isObserved(member, provider.observedAttributes || []):
+              defineProperty(instance, member, {
+                get: function get() {
+                  return this.getAttribute(member);
+                },
+                set: function set(newVal) {
+                  this.setAttribute(member, newVal);
+                }
+              });
+              break;
+
+            case isUppercase(member):
+              defineProperty(instance, member, {
+                get: function get() {
+                  return valueRef;
+                },
+                set: function set(newVal) {
+                  valueRef = newVal;
+                }
+              });
+              break;
+
+            case !isUppercase(member):
+              defineProperty(instance, member, {
+                get: function get() {
+                  return valueRef;
+                }
+              });
+              break;
+          }
+
+          break;
+      }
+    });
+  };
+
+  var build = function build(provider, type) {
     var htmlElement = type ? type().constructor : HTMLElement;
 
     var CustomElement = /*#__PURE__*/function (_htmlElement) {
@@ -466,14 +519,16 @@ var htmlhammer = (function (exports) {
 
         _classCallCheck(this, CustomElement);
 
-        _this = _super.call(this);
+        _this = _super.call(this); // Assign properties
+
+        assignMembers(provider, _assertThisInitialized(_this));
 
         if (provider.postConstruct) {
           provider.postConstruct();
         } // Bind uppercase functions
 
 
-        bind(provider, _assertThisInitialized(_this));
+        bindMembers(provider, _assertThisInitialized(_this));
         return _this;
       }
 
@@ -498,56 +553,7 @@ var htmlhammer = (function (exports) {
   };
 
   var customElement = function customElement(name, provider, type) {
-    var CustomElement = buildBase(provider, type);
-    members(provider).filter(function (member) {
-      return !reserved.includes(member);
-    }).forEach(function (member) {
-      switch (true) {
-        case isFunction(provider[member]):
-          defineProperty(CustomElement.prototype, member, {
-            value: provider[member],
-            writable: isUppercase(member)
-          });
-          break;
-
-        case isProperty(provider[member]):
-          var valueRef = provider[member];
-
-          switch (true) {
-            case isObserved(member, CustomElement.observedAttributes):
-              defineProperty(CustomElement.prototype, member, {
-                get: function get() {
-                  return this.getAttribute(member);
-                },
-                set: function set(newVal) {
-                  this.setAttribute(member, newVal);
-                }
-              });
-              break;
-
-            case isUppercase(member):
-              defineProperty(CustomElement.prototype, member, {
-                get: function get() {
-                  return valueRef;
-                },
-                set: function set(newVal) {
-                  valueRef = newVal;
-                }
-              });
-              break;
-
-            case !isUppercase(member):
-              defineProperty(CustomElement.prototype, member, {
-                get: function get() {
-                  return valueRef;
-                }
-              });
-              break;
-          }
-
-          break;
-      }
-    });
+    var CustomElement = build(provider, type);
     var options = type ? {
       "extends": type().localName
     } : {};
