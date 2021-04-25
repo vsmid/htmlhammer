@@ -14,28 +14,95 @@ const isFunction = (member) => typeof member === "function";
 const isProperty = (member) => !isFunction(member);
 const isObserved = (member, observed) => observed.includes(member.toLowerCase());
 const members = (provider) => Object.keys(provider).filter(member => !reserved.includes(member));
-const bind = (provider, instance) => {
+const bindMembers = (provider, instance) => {
     members(provider)
         .filter(member => !reserved.includes(member)
             && isFunction(provider[member])
             && isUppercase(member)
         )
         .forEach(member => {
-            instance[member] = instance[member].bind(instance);
+            instance[member] = provider[member].bind(instance);
         });
 };
+const assignMembers = (provider, instance) => {
+    members(provider)
+        .filter(member => !reserved.includes(member))
+        .forEach(
+            member => {
+                switch (true) {
+                    case isFunction(provider[member]):
+                        defineProperty(
+                            instance,
+                            member,
+                            {
+                                value: provider[member],
+                                writable: isUppercase(member)
+                            }
+                        );
+                        break;
+                    case isProperty(provider[member]):
+                        // Optimize this
+                        let valueRef = JSON.parse(JSON.stringify(provider[member]));
+                        switch (true) {
+                            case isObserved(member, provider.observedAttributes || []):
+                                defineProperty(
+                                    instance,
+                                    member,
+                                    {
+                                        get() {
+                                            return this.getAttribute(member);
+                                        },
+                                        set(newVal) {
+                                            this.setAttribute(member, newVal);
+                                        }
+                                    });
+                                break;
+                            case isUppercase(member):
+                                defineProperty(
+                                    instance,
+                                    member, {
+                                        get() {
+                                            return valueRef;
+                                        },
+                                        set(newVal) {
+                                            valueRef = newVal;
+                                        }
+                                    });
+                                break;
+                            case !isUppercase(member):
+                                defineProperty(
+                                    instance,
+                                    member,
+                                    {
+                                        get() {
+                                            return valueRef;
+                                        }
+                                    });
+                                break;
+                            default:
+                                break;
+                        }
+                        break;
+                    default:
+                        break;
+                }
+            }
+        );
+};
 
-const buildBase = (provider, type) => {
+const build = (provider, type) => {
     let htmlElement = type ? type().constructor : HTMLElement;
 
     const CustomElement = class extends htmlElement {
         constructor() {
             super();
+            // Assign properties
+            assignMembers(provider, this);
             if (provider.postConstruct) {
                 provider.postConstruct();
             }
             // Bind uppercase functions
-            bind(provider, this);
+            bindMembers(provider, this);
         }
     };
 
@@ -54,71 +121,7 @@ const buildBase = (provider, type) => {
 };
 
 export const customElement = (name, provider, type) => {
-
-    const CustomElement = buildBase(provider, type);
-
-    members(provider)
-        .filter(member => !reserved.includes(member))
-        .forEach(
-            member => {
-                switch (true) {
-                    case isFunction(provider[member]):
-                        defineProperty(
-                            CustomElement.prototype,
-                            member,
-                            {
-                                value: provider[member],
-                                writable: isUppercase(member)
-                            }
-                        );
-                        break;
-                    case isProperty(provider[member]):
-                        let valueRef = provider[member];
-                        switch (true) {
-                            case isObserved(member, CustomElement.observedAttributes):
-                                defineProperty(
-                                    CustomElement.prototype,
-                                    member,
-                                    {
-                                        get() {
-                                            return this.getAttribute(member);
-                                        },
-                                        set(newVal) {
-                                            this.setAttribute(member, newVal);
-                                        }
-                                    });
-                                break;
-                            case isUppercase(member):
-                                defineProperty(
-                                    CustomElement.prototype,
-                                    member, {
-                                        get() {
-                                            return valueRef;
-                                        },
-                                        set(newVal) {
-                                            valueRef = newVal;
-                                        }
-                                    });
-                                break;
-                            case !isUppercase(member):
-                                defineProperty(
-                                    CustomElement.prototype,
-                                    member,
-                                    {
-                                        get() {
-                                            return valueRef;
-                                        }
-                                    });
-                                break;
-                            default:
-                                break;
-                        }
-                        break;
-                    default:
-                        break;
-                }
-            }
-        );
+    const CustomElement = build(provider, type);
 
     let options = type ? { extends: type().localName } : {};
 
