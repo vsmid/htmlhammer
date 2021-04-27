@@ -515,6 +515,32 @@ o.spec("HTML", () => {
 
             o(element.getAttribute("speed")).equals(10);
         });
+
+        o("Should set checked of radio", () => {
+            let radio = document.createElement("input");
+            radio.type = "radio";
+
+            attachAttribute("checked", true, radio);
+
+            o(radio.checked).equals(true);
+        });
+
+        o("Should set checked of checkbox", () => {
+            let checkbox = document.createElement("input");
+            checkbox.type = "checkbox";
+
+            attachAttribute("checked", true, checkbox);
+
+            o(checkbox.checked).equals(true);
+        });
+
+        o("Should set checked of option", () => {
+            let option = document.createElement("option");
+
+            attachAttribute("selected", true, option);
+
+            o(option.selected).equals(true);
+        });
     });
 
     o.spec("#appendChild", () => {
