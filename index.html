@@ -216,7 +216,7 @@
             ),
             AccountInfo(accountData),
             br,
-            h2("Custom Elements"),
+            h2({say: () => alert(1)}, "Custom Elements"),
             yetiCustom({
                 style: { color: "red" },
                 onclick: (e) => {

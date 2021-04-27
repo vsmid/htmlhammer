@@ -249,17 +249,13 @@ var htmlhammer = (function (exports) {
         element[name] = value;
         break;
 
-      case typeof value === "boolean":
-        if (value === true) {
-          element[name] = value;
-        } else {
+      default:
+        if (value === false) {
           element.removeAttribute(name);
+        } else {
+          element.setAttribute(name, value);
         }
 
-        break;
-
-      default:
-        element.setAttribute(name, value);
         break;
     }
   };
