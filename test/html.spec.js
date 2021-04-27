@@ -522,7 +522,7 @@ o.spec("HTML", () => {
 
             attachAttribute("checked", true, radio);
 
-            o(radio.checked).equals(true);
+            o(radio.getAttribute("checked")).equals(true);
         });
 
         o("Should set checked of checkbox", () => {
@@ -531,7 +531,7 @@ o.spec("HTML", () => {
 
             attachAttribute("checked", true, checkbox);
 
-            o(checkbox.checked).equals(true);
+            o(checkbox.getAttribute("checked")).equals(true);
         });
 
         o("Should set checked of option", () => {
@@ -539,7 +539,7 @@ o.spec("HTML", () => {
 
             attachAttribute("selected", true, option);
 
-            o(option.selected).equals(true);
+            o(option.getAttribute("selected")).equals(true);
         });
     });
 

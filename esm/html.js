@@ -28,15 +28,12 @@ export const attachAttribute = (name, value, element) => {
         case name.startsWith("on") && element[name] === null:
             element[name] = value;
             break;
-        case typeof value === "boolean":
-            if (value === true) {
-                element[name] = value;
-            } else {
-                element.removeAttribute(name);
-            }
-            break;
         default:
-            element.setAttribute(name, value);
+            if (value === false) {
+                element.removeAttribute(name);
+            } else {
+                element.setAttribute(name, value);
+            }
             break;
     }
 };
