@@ -249,6 +249,15 @@ var htmlhammer = (function (exports) {
         element[name] = value;
         break;
 
+      case typeof value === "boolean":
+        if (value === true) {
+          element[name] = value;
+        } else {
+          element.removeAttribute(name);
+        }
+
+        break;
+
       default:
         element.setAttribute(name, value);
         break;
