@@ -124,13 +124,13 @@ in `HtmlString` class. This is useful when you want to inject already generated 
 e.g. HTML content received from REST service).
 
 ```javascript
-  import { div, HtmlString } from "./esm/index.js";
-  
-  const html = "<h1>Hello World!</h1>";
-  
-  document.body.append(
-      div(new HtmlString(html)) // Without HTMLString wrapper, html content would be treated as text content hence text node would be created
-  );
+import { div, HtmlString } from "./esm/index.js";
+
+const html = "<h1>Hello World!</h1>";
+
+document.body.append(
+    div(new HtmlString(html)) // Without HTMLString wrapper, html content would be treated as text content hence text node would be created
+);
 ```
 
 Version 2.1.0 introduced a new attribute handler `$apply` which allows you to create inline element in any way you like.
@@ -175,33 +175,33 @@ div({ $for: [1, 2, 3], $if: (item) => item > 2 }, (item) => item);
 A key under which element will be stored must be an object!
 
 ```javascript
-  const { div, ref, setRef } = htmlhammer;
-  
-  // Reference by object
-  let obj = {};
-  
-  // Prior to 2.2.0
-  let element = div({ $ref: setRef(obj) }, "Hello World!");
-  
-  // Version 2.2.0 allows ref to be set just by passing an object reference
-  let element = div({ $ref: obj }, "Hello World!");
-  
-  console.log(ref(obj) === element);
-  
-  // Manually assigning id if the same object is used for multiple references
-  let person = new Person("Lena", 0);
-  
-  div({ $ref: setRef(person, "name") }, person.name);
-  div({ $ref: setRef(person, "age") }, person.age);
-  
-  console.log(ref(person, "name"));
-  console.log(ref(person, "age"));
-  
-  // If used in combination with $for do not set object reference manually because it will automatically be set to the list item value
-  element = div(
-      { $for: [{ v: 1 }, { v: 2 }, { v: 3 }], $ref: setRef },
-      "Hello World!"
-  );
+const { div, ref, setRef } = htmlhammer;
+
+// Reference by object
+let obj = {};
+
+// Prior to 2.2.0
+let element = div({ $ref: setRef(obj) }, "Hello World!");
+
+// Version 2.2.0 allows ref to be set just by passing an object reference
+let element = div({ $ref: obj }, "Hello World!");
+
+console.log(ref(obj) === element);
+
+// Manually assigning id if the same object is used for multiple references
+let person = new Person("Lena", 0);
+
+div({ $ref: setRef(person, "name") }, person.name);
+div({ $ref: setRef(person, "age") }, person.age);
+
+console.log(ref(person, "name"));
+console.log(ref(person, "age"));
+
+// If used in combination with $for do not set object reference manually because it will automatically be set to the list item value
+element = div(
+    { $for: [{ v: 1 }, { v: 2 }, { v: 3 }], $ref: setRef },
+    "Hello World!"
+);
 ```
 
 #### `$apply` - apply anything to an element
@@ -304,7 +304,6 @@ document.body.append(yetiCustom());
 * Using htmlhammer and html
 
 ```html
-
 <script>
     const { customElement } = htmlhammer; // or use ES6 import
 
