@@ -222,6 +222,7 @@ var htmlhammer = (function (exports) {
     this.object = object;
     this.attributes = attributes;
     this.children = children;
+    this.index = null;
   };
   var attachAttribute = function attachAttribute(name, value, element) {
     switch (true) {
@@ -259,7 +260,7 @@ var htmlhammer = (function (exports) {
         break;
     }
   };
-  var appendChild = function appendChild(child, element, object) {
+  var appendChild = function appendChild(child, element, blueprint) {
     if (child !== null && child !== undefined) {
       var appendTo = element;
 
@@ -269,14 +270,14 @@ var htmlhammer = (function (exports) {
 
       if (Array.isArray(child)) {
         child.forEach(function (_) {
-          return appendChild(_, appendTo, object);
+          return appendChild(_, appendTo, blueprint);
         });
       } else if (child instanceof HTMLElement || child.constructor.name === "Comment") {
         appendTo.append(child);
       } else if (child instanceof ChildAppender) {
         child.append(appendTo);
       } else if (typeof child === "function") {
-        appendChild(object ? child(object) : child(), appendTo, object);
+        appendChild(blueprint.object ? child(blueprint.object, blueprint.index) : child(), appendTo, blueprint.object);
       } else {
         appendTo.append(document.createTextNode(child.toString()));
       }
@@ -289,8 +290,10 @@ var htmlhammer = (function (exports) {
       if (!attributeValue || !Array.isArray(attributeValue)) {
         blueprints.push(new Blueprint());
       } else {
-        attributeValue.forEach(function (o) {
-          return blueprints.push(new Blueprint(null, o));
+        attributeValue.forEach(function (o, index) {
+          var blueprint = new Blueprint(null, o);
+          blueprint.index = index;
+          blueprints.push(blueprint);
         });
       }
 
@@ -338,7 +341,7 @@ var htmlhammer = (function (exports) {
       return attachAttribute(name, blueprint.attributes[name], element);
     });
     blueprint.children.forEach(function (child) {
-      return appendChild(child, element, blueprint.object);
+      return appendChild(child, element, blueprint);
     });
     return element;
   };

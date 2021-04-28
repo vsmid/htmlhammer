@@ -1,3 +1,6 @@
+## 3.3.0
+Function creating element as part of $for attribute can now use additional index parameter.
+
 ## 3.2.4
 Minor change about how attributes are attached.
 
