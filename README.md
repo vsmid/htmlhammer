@@ -95,11 +95,10 @@ let items = [{ value: 1 }, { value: 2 }];
 document.body.append(
     div(
         { style: { color: "red" } },
-        h1({}, "I am the title"),
+        h1("I am the title"),
         a({ href: "#" }, "Click me!"),
         table(
-            {},
-            tr({ $for: items }, (item) => td({}, item.value))
+            tr({ $for: items }, (item) => td(item.value))
         )
     )
 );
@@ -117,7 +116,7 @@ import { div, HtmlString } from "./esm/index.js";
 const html = "<h1>Hello World!</h1>";
 
 document.body.append(
-    div({}, new HtmlString(html)) // Without HTMLString wrapper, html content would be treated as text content hence text node would be created
+    div(new HtmlString(html)) // Without HTMLString wrapper, html content would be treated as text content hence text node would be created
 );
 ```
 
@@ -127,7 +126,7 @@ Version 2.1.0 introduced a new attribute handler `$apply` which allows you to cr
 const RawHtml = (data) => (el) => (el.innerHTML = data);
 
 document.body.append(
-    div({},
+    div(
         span({ $apply: RawHtml("<h1>Hello World!</h1>") })
     )
 );
@@ -222,13 +221,10 @@ style.
 ```javascript
 // Global, using HTMLStyleElement
 document.head.append(
-    style(
-        {},
-        `
-    body {
-      font-size: 12px;
-    }
-`
+    style(`
+      body {
+        font-size: 12px;
+      }`
     )
 );
 
