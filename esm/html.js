@@ -7,6 +7,7 @@ export class Blueprint {
         this.object = object;
         this.attributes = attributes;
         this.children = children;
+        this.index = null;
     }
 }
 
@@ -38,14 +39,14 @@ export const attachAttribute = (name, value, element) => {
     }
 };
 
-export const appendChild = (child, element, object) => {
+export const appendChild = (child, element, blueprint) => {
     if (child !== null && child !== undefined) {
         let appendTo = element;
         if (element.shadowRoot && element.shadowRoot.mode === "open") {
             appendTo = element.shadowRoot;
         }
         if (Array.isArray(child)) {
-            child.forEach((_) => appendChild(_, appendTo, object));
+            child.forEach((_) => appendChild(_, appendTo, blueprint));
         } else if (
             child instanceof HTMLElement ||
             child.constructor.name === "Comment"
@@ -54,7 +55,10 @@ export const appendChild = (child, element, object) => {
         } else if (child instanceof ChildAppender) {
             child.append(appendTo);
         } else if (typeof child === "function") {
-            appendChild(object ? child(object) : child(), appendTo, object);
+            appendChild(blueprint.object
+                ? child(blueprint.object, blueprint.index)
+                : child(), appendTo, blueprint.object
+            );
         } else {
             appendTo.append(document.createTextNode(child.toString()));
         }
@@ -67,8 +71,11 @@ export const AttributeHandler = Object.freeze({
         if (!attributeValue || !Array.isArray(attributeValue)) {
             blueprints.push(new Blueprint());
         } else {
-            attributeValue.forEach((o) =>
-                blueprints.push(new Blueprint(null, o))
+            attributeValue.forEach((o, index) => {
+                    let blueprint = new Blueprint(null, o);
+                    blueprint.index = index;
+                    blueprints.push(blueprint);
+                }
             );
         }
         return blueprints;
@@ -119,7 +126,7 @@ export const createElement = (blueprint) => {
         attachAttribute(name, blueprint.attributes[name], element)
     );
     blueprint.children.forEach((child) =>
-        appendChild(child, element, blueprint.object)
+        appendChild(child, element, blueprint)
     );
     return element;
 };

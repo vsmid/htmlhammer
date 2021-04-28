@@ -588,7 +588,7 @@ o.spec("HTML", () => {
             let child1 = document.createElement("a");
             let child2 = document.createElement("a");
 
-            appendChild(() => [child1, child2], element);
+            appendChild(() => [child1, child2], element, {});
 
             o(element.childNodes.length).equals(2);
             o(element.childNodes[0]).equals(child1);
@@ -708,7 +708,7 @@ o.spec("HTML", () => {
             o("Function which returns null", () => {
                 let element = document.createElement("div");
 
-                appendChild(() => null, element);
+                appendChild(() => null, element, {});
 
                 o(element.childNodes.length).equals(0);
             });
@@ -716,7 +716,7 @@ o.spec("HTML", () => {
             o("Function which returns undefined", () => {
                 let element = document.createElement("div");
 
-                appendChild(() => undefined, element);
+                appendChild(() => undefined, element, {});
 
                 o(element.childNodes.length).equals(0);
             });
@@ -725,7 +725,7 @@ o.spec("HTML", () => {
                 let element = document.createElement("div");
                 let child = document.createElement("a");
 
-                appendChild(() => child, element);
+                appendChild(() => child, element, {});
 
                 o(element.childNodes.length).equals(1);
                 o(element.childNodes[0]).equals(child);
@@ -736,11 +736,20 @@ o.spec("HTML", () => {
                 let child1 = document.createElement("a");
                 let child2 = document.createElement("a");
 
-                appendChild(() => [child1, child2], element);
+                appendChild(() => [child1, child2], element, {});
 
                 o(element.childNodes.length).equals(2);
                 o(element.childNodes[0]).equals(child1);
                 o(element.childNodes[1]).equals(child2);
+            });
+
+            o("Functions will receive additional index parameter which will be set when $for attribute is used", () => {
+                let element = document.createElement("div");
+
+                appendChild((o, i) => o + " " + i, element, { object: 1, index: 0 });
+
+                o(element.childNodes.length).equals(1);
+                o(element.childNodes[0].textContent).equals("1 0");
             });
 
             o("Function which returns string as inner html", () => {
@@ -749,7 +758,7 @@ o.spec("HTML", () => {
                 let mock = o.spy();
                 element.insertAdjacentHTML = mock;
 
-                appendChild(() => new HtmlString("<h1>Hello!</h1>"), element);
+                appendChild(() => new HtmlString("<h1>Hello!</h1>"), element, {});
 
                 o(mock.callCount).equals(1);
                 o(mock.args[0]).equals("beforeend");
@@ -759,7 +768,7 @@ o.spec("HTML", () => {
             o("Function which returns string as text node", () => {
                 let element = document.createElement("div");
 
-                appendChild(() => "Hello", element);
+                appendChild(() => "Hello", element, {});
 
                 o(element.childNodes.length).equals(1);
                 o(element.childNodes[0].nodeName).equals("#text");
@@ -769,16 +778,14 @@ o.spec("HTML", () => {
             o("Function which returns number as text node", () => {
                 let element = document.createElement("div");
 
-                appendChild(() => 1, element);
+                appendChild(() => 1, element, {});
 
                 o(element.childNodes.length).equals(1);
                 o(element.childNodes[0].nodeName).equals("#text");
                 o(element.childNodes[0].textContent).equals("1");
             });
 
-            o(
-                "Function which returns any other type not tested above as text node by calling #toString() method",
-                () => {
+            o("Function which returns any other type not tested above as text node by calling #toString() method", () => {
                     let element = document.createElement("div");
 
                     class Person {
@@ -788,10 +795,10 @@ o.spec("HTML", () => {
                     }
 
                     let person = new Person();
-                    appendChild(person, element);
+                    appendChild(person, element, {});
 
                     let date = new Date();
-                    appendChild(new Date(), element);
+                    appendChild(new Date(), element, {});
 
                     o(element.childNodes.length).equals(2);
                     o(element.childNodes[0].nodeName).equals("#text");
