@@ -5,7 +5,7 @@
   </a>
 </p>
 <p align="center">
-  <img alt="logo" src="./htmlhammer.png" height="100" width="150">
+  <img alt="logo" src="./htmlhammer.png" height="100" width="200">
 </p>
 
 # htmlhammer
