@@ -1,4 +1,12 @@
-<img alt="logo" src="./htmlhammer.png" height="100" width="150">
+<p align="center">
+  <a href="https://badge.fury.io/js/htmlhammer.svg"><img src="https://badge.fury.io/js/htmlhammer.svg" /></a>
+  <a href="https://github.com/vsmid/htmlhammer/blob/master/LICENSE">
+    <img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="htmlhammer is released under the MIT license." />
+  </a>
+</p>
+<p align="center">
+  <img alt="logo" src="./htmlhammer.png" height="100" width="150">
+</p>
 
 # htmlhammer
 
