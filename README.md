@@ -1,3 +1,5 @@
+<img alt="logo" src="./htmlhammer.png" height="100" width="150">
+
 # htmlhammer
 
 Write HTML with JavaScript using real HTML tag names.
