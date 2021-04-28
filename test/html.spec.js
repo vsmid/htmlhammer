@@ -731,22 +731,10 @@ o.spec("HTML", () => {
                 o(element.childNodes[0]).equals(child);
             });
 
-            o("Function which returns an array of children", () => {
-                let element = document.createElement("div");
-                let child1 = document.createElement("a");
-                let child2 = document.createElement("a");
-
-                appendChild(() => [child1, child2], element, {});
-
-                o(element.childNodes.length).equals(2);
-                o(element.childNodes[0]).equals(child1);
-                o(element.childNodes[1]).equals(child2);
-            });
-
             o("Functions will receive additional index parameter which will be set when $for attribute is used", () => {
                 let element = document.createElement("div");
 
-                appendChild((o, i) => o + " " + i, element, { object: 1, index: 0 });
+                appendChild((val, i) => val + " " + i, element, { object: 1, index: 0 });
 
                 o(element.childNodes.length).equals(1);
                 o(element.childNodes[0].textContent).equals("1 0");
@@ -867,10 +855,7 @@ o.spec("HTML", () => {
 
             o("Should return value as boolean", () => {
                 o(AttributeHandler.$if(true)).equals(true);
-                o(AttributeHandler.$if(1 == 1)).equals(true);
                 o(AttributeHandler.$if(false)).equals(false);
-                o(AttributeHandler.$if(1 == 2)).equals(false);
-
                 o(AttributeHandler.$if("car")).equals(true);
             });
         });
@@ -918,7 +903,7 @@ o.spec("HTML", () => {
         o.spec("$apply", () => {
             o("Should apply custom function to the given element", () => {
                 const el = document.createElement();
-                const redText = (el) => (el.style.color = "red");
+                const redText = (e) => (e.style.color = "red");
 
                 AttributeHandler.$apply(el, redText);
 
@@ -929,9 +914,9 @@ o.spec("HTML", () => {
                 "Should apply an array of custom functions to the given element",
                 () => {
                     const el = document.createElement();
-                    const redText = (el) => (el.style.color = "red");
-                    const textContent = (el) =>
-                        (el.innerHTML = "<h1>Hello!</h1>");
+                    const redText = (e) => (e.style.color = "red");
+                    const textContent = (e) =>
+                        (e.innerHTML = "<h1>Hello!</h1>");
 
                     AttributeHandler.$apply(el, [redText, textContent]);
 
