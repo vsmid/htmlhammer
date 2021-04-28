@@ -255,7 +255,7 @@ this can be seen in `HtmlString` appender where raw html in the form of string n
 this to happen, element's `insertAdjacentHTML` method is used instead of default `append` method. See how HtmlString
 appender is implemented in [appenders.js](https://github.com/vsmid/htmlhammer/blob/master/esm/appenders.js).
 
-## Custom elements (experimental)
+## Custom elements
 
 ### Method signature
 
