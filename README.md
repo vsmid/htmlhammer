@@ -124,13 +124,13 @@ in `HtmlString` class. This is useful when you want to inject already generated 
 e.g. HTML content received from REST service).
 
 ```javascript
-import { div, HtmlString } from "./esm/index.js";
-
-const html = "<h1>Hello World!</h1>";
-
-document.body.append(
-    div(new HtmlString(html)) // Without HTMLString wrapper, html content would be treated as text content hence text node would be created
-);
+  import { div, HtmlString } from "./esm/index.js";
+  
+  const html = "<h1>Hello World!</h1>";
+  
+  document.body.append(
+      div(new HtmlString(html)) // Without HTMLString wrapper, html content would be treated as text content hence text node would be created
+  );
 ```
 
 Version 2.1.0 introduced a new attribute handler `$apply` which allows you to create inline element in any way you like.
@@ -175,33 +175,33 @@ div({ $for: [1, 2, 3], $if: (item) => item > 2 }, (item) => item);
 A key under which element will be stored must be an object!
 
 ```javascript
-const { div, ref, setRef } = htmlhammer;
-
-// Reference by object
-let obj = {};
-
-// Prior to 2.2.0
-let element = div({ $ref: setRef(obj) }, "Hello World!");
-
-// Version 2.2.0 allows ref to be set just by passing an object reference
-let element = div({ $ref: obj }, "Hello World!");
-
-console.log(ref(obj) === element);
-
-// Manually assigning id if the same object is used for multiple references
-let person = new Person("Lena", 0);
-
-div({ $ref: setRef(person, "name") }, person.name);
-div({ $ref: setRef(person, "age") }, person.age);
-
-console.log(ref(person, "name"));
-console.log(ref(person, "age"));
-
-// If used in combination with $for do not set object reference manually because it will automatically be set to the list item value
-element = div(
-    { $for: [{ v: 1 }, { v: 2 }, { v: 3 }], $ref: setRef },
-    "Hello World!"
-);
+  const { div, ref, setRef } = htmlhammer;
+  
+  // Reference by object
+  let obj = {};
+  
+  // Prior to 2.2.0
+  let element = div({ $ref: setRef(obj) }, "Hello World!");
+  
+  // Version 2.2.0 allows ref to be set just by passing an object reference
+  let element = div({ $ref: obj }, "Hello World!");
+  
+  console.log(ref(obj) === element);
+  
+  // Manually assigning id if the same object is used for multiple references
+  let person = new Person("Lena", 0);
+  
+  div({ $ref: setRef(person, "name") }, person.name);
+  div({ $ref: setRef(person, "age") }, person.age);
+  
+  console.log(ref(person, "name"));
+  console.log(ref(person, "age"));
+  
+  // If used in combination with $for do not set object reference manually because it will automatically be set to the list item value
+  element = div(
+      { $for: [{ v: 1 }, { v: 2 }, { v: 3 }], $ref: setRef },
+      "Hello World!"
+  );
 ```
 
 #### `$apply` - apply anything to an element
@@ -290,7 +290,7 @@ Differences to the specification:
 * Using only htmlhammer
 
 ```javascript
-    const { customElement } = htmlhammer; // or use ES6 import
+const { customElement } = htmlhammer; // or use ES6 import
 
 const yetiCustom = customElement("yeti-custom", {
     connectedCallback() {
@@ -323,7 +323,7 @@ document.body.append(yetiCustom());
 * Using only htmlhammer
 
 ```javascript
-    const { div, customElement } = htmlhammer; // or use ES6 import
+const { div, customElement } = htmlhammer; // or use ES6 import
 
 const yetiDiv = customElement("yeti-div", {
     connectedCallback() {
@@ -337,7 +337,6 @@ document.body.append(div({ is: "yeti-div" }));
 * Using htmlhammer and html
 
 ```html
-
 <script>
     const { div, customElement } = htmlhammer; // or use ES6 import
 
@@ -356,7 +355,7 @@ document.body.append(div({ is: "yeti-div" }));
 * Inside custom element
 
 ```javascript
-  const { customElement } = htmlhammer; // or use ES6 import
+const { customElement } = htmlhammer; // or use ES6 import
 
 const yetiCustom = customElement("yeti-custom", {
     connectedCallback() {
@@ -368,7 +367,7 @@ const yetiCustom = customElement("yeti-custom", {
 * As htmlhammer attribute
 
 ```javascript
-    yetiCustom({ shadowRoot: { mode: "open" } }, "Hello from Generic CustomElement");
+yetiCustom({ shadowRoot: { mode: "open" } }, "Hello from Generic CustomElement");
 ```
 
 ### Setting styles
@@ -376,7 +375,7 @@ const yetiCustom = customElement("yeti-custom", {
 * Inside custom element
 
 ```javascript
-  const { style, customElement } = htmlhammer; // or use ES6 import
+const { style, customElement } = htmlhammer; // or use ES6 import
 
 const yetiCustom = customElement("yeti-custom", {
     connectedCallback() {
@@ -389,7 +388,7 @@ const yetiCustom = customElement("yeti-custom", {
 * As htmlhammer attribute
 
 ```javascript
-  yetiCustom({ shadowRoot: { mode: "open", stylesheets: [style(`:host {color: red;}`)] } },
+yetiCustom({ shadowRoot: { mode: "open", stylesheets: [style(`:host {color: red;}`)] } },
     "Hello from Generic CustomElement");
 ```
 
