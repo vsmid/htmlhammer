@@ -1,5 +1,5 @@
 ––––––
-All 284 assertions passed (old style total: 284)  
+All 279 assertions passed (old style total: 279)  
 ------------------|---------|----------|---------|---------|--------------------------
 File              | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s        
 ------------------|---------|----------|---------|---------|--------------------------
