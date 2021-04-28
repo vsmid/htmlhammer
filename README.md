@@ -153,7 +153,11 @@ For more complex and complete example check [index.html](https://github.com/vsmi
 
 ```javascript
 // Creates three elements of type div, <div>1</div>, <div>2</div>, <div>3</div>
-div({ $for: [1, 2, 3] }, (item) => item);
+// index parameter is optional
+// item = 1, index = 0
+// item = 2, index = 1
+// item = 3, index = 2
+div({ $for: [1, 2, 3] }, (item, index) => item);
 ```
 
 #### `$if` - conditionally create element
