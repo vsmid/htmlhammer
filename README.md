@@ -1,15 +1,16 @@
 <p align="center">
   <a href="https://badge.fury.io/js/htmlhammer.svg"><img src="https://badge.fury.io/js/htmlhammer.svg"/></a>
-  <a href="https://sonarcloud.io/api/project_badges/measure?project=vsmid_htmlhammer&metric=sqale_ratin"><img src="https://sonarcloud.io/api/project_badges/measure?project=vsmid_htmlhammer&metric=sqale_rating"/></a>
-  <a href="https://sonarcloud.io/api/project_badges/measure?project=vsmid_htmlhammer&metric=reliability_rating"><img src="https://sonarcloud.io/api/project_badges/measure?project=vsmid_htmlhammer&metric=reliability_rating"/></a>
-  <a href="https://sonarcloud.io/api/project_badges/measure?project=vsmid_htmlhammer&metric=security_rating"><img src="https://sonarcloud.io/api/project_badges/measure?project=vsmid_htmlhammer&metric=security_rating"/></a>  
-  <a href="https://sonarcloud.io/api/project_badges/measure?project=vsmid_htmlhammer&metric=vulnerabilities"><img src="https://sonarcloud.io/api/project_badges/measure?project=vsmid_htmlhammer&metric=vulnerabilities"/></a>  
   <a href="https://github.com/vsmid/htmlhammer/blob/master/LICENSE">
     <img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="htmlhammer is released under the MIT license." />
   </a>
 </p>
 <p align="center">
   <img alt="logo" src="./htmlhammer.png" height="100" width="200">
+</p>
+<p align="center">
+  <a href="https://sonarcloud.io/api/project_badges/measure?project=vsmid_htmlhammer&metric=sqale_ratin"><img src="https://sonarcloud.io/api/project_badges/measure?project=vsmid_htmlhammer&metric=sqale_rating"/></a>
+  <a href="https://sonarcloud.io/api/project_badges/measure?project=vsmid_htmlhammer&metric=reliability_rating"><img src="https://sonarcloud.io/api/project_badges/measure?project=vsmid_htmlhammer&metric=reliability_rating"/></a>
+  <a href="https://sonarcloud.io/api/project_badges/measure?project=vsmid_htmlhammer&metric=security_rating"><img src="https://sonarcloud.io/api/project_badges/measure?project=vsmid_htmlhammer&metric=security_rating"/></a>
 </p>
 
 # htmlhammer
