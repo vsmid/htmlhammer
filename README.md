@@ -1,5 +1,9 @@
 <p align="center">
-  <a href="https://badge.fury.io/js/htmlhammer.svg"><img src="https://badge.fury.io/js/htmlhammer.svg" /></a>
+  <a href="https://badge.fury.io/js/htmlhammer.svg"><img src="https://badge.fury.io/js/htmlhammer.svg"/></a>
+  <a href="https://sonarcloud.io/api/project_badges/measure?project=vsmid_htmlhammer&metric=sqale_ratin"><img src="https://sonarcloud.io/api/project_badges/measure?project=vsmid_htmlhammer&metric=sqale_rating"/></a>
+  <a href="https://sonarcloud.io/api/project_badges/measure?project=vsmid_htmlhammer&metric=reliability_rating"><img src="https://sonarcloud.io/api/project_badges/measure?project=vsmid_htmlhammer&metric=reliability_rating"/></a>
+  <a href="https://sonarcloud.io/api/project_badges/measure?project=vsmid_htmlhammer&metric=security_rating"><img src="https://sonarcloud.io/api/project_badges/measure?project=vsmid_htmlhammer&metric=security_rating"/></a>  
+  <a href="https://sonarcloud.io/api/project_badges/measure?project=vsmid_htmlhammer&metric=vulnerabilities"><img src="https://sonarcloud.io/api/project_badges/measure?project=vsmid_htmlhammer&metric=vulnerabilities"/></a>  
   <a href="https://github.com/vsmid/htmlhammer/blob/master/LICENSE">
     <img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="htmlhammer is released under the MIT license." />
   </a>
@@ -253,13 +257,17 @@ appender is implemented in [appenders.js](https://github.com/vsmid/htmlhammer/bl
 ## Custom elements (experimental)
 
 ### Method signature
+
 `customElement(tagName, provider, type)`
+
 * `tagName` - custom element tag name
-* `provider` - plain JS object with lifecycle functions and props implementations. See under `Lifecycle and reserved props.
-* `type` - optional, function reference to one of htmlhammer's functions (e.q. div, a, table etc.). Use when you
-want to extend existing html element, e.q. HTMLDivElement.
+* `provider` - plain JS object with lifecycle functions and props implementations. See under `Lifecycle and reserved
+  props.
+* `type` - optional, function reference to one of htmlhammer's functions (e.q. div, a, table etc.). Use when you want to
+  extend existing html element, e.q. HTMLDivElement.
 
 ### Lifecycle and reserved props
+
 * postConstruct
 * connectedCallback
 * disconnectedCallback
@@ -268,108 +276,126 @@ want to extend existing html element, e.q. HTMLDivElement.
 * observedAttributes
 
 Differences to the specification:
+
 * `postConstruct` - think of it as a constructor.
 * `observedAttributes` - an array of strings (names of the observed attributes)
 
 ### Create generic custom element
 
 * Using only htmlhammer
+
 ```javascript
-    const {customElement} = htmlhammer; // or use ES6 import
+    const { customElement } = htmlhammer; // or use ES6 import
+
+const yetiCustom = customElement("yeti-custom", {
+    connectedCallback() {
+        console.log("Generic custom element created!");
+    }
+});
+
+document.body.append(yetiCustom()); 
+```
+
+* Using htmlhammer and html
+
+```html
+
+<script>
+    const { customElement } = htmlhammer; // or use ES6 import
 
     const yetiCustom = customElement("yeti-custom", {
-      connectedCallback() {
-          console.log("Generic custom element created!");
-      }
+        connectedCallback() {
+            console.log("Generic custom element created!");
+        }
     });
-
-    document.body.append(yetiCustom()); 
-```
-* Using htmlhammer and html
-```html
-<script>
-  const {customElement} = htmlhammer; // or use ES6 import
-
-  const yetiCustom = customElement("yeti-custom", {
-    connectedCallback() {
-      console.log("Generic custom element created!");
-    }
-  });
 </script>
 
 <yeti-custom></yeti-custom>
 ```
 
 ### Create specialized custom element
+
 * Using only htmlhammer
+
 ```javascript
-    const {div, customElement} = htmlhammer; // or use ES6 import
+    const { div, customElement } = htmlhammer; // or use ES6 import
 
-    const yetiDiv = customElement("yeti-div", {
-      connectedCallback() {
-          console.log("Generic custom element created!");
-      }
-    }, div);
+const yetiDiv = customElement("yeti-div", {
+    connectedCallback() {
+        console.log("Generic custom element created!");
+    }
+}, div);
 
-    document.body.append(div({is: "yeti-div"})); 
+document.body.append(div({ is: "yeti-div" })); 
 ```
 
 * Using htmlhammer and html
-```html
-<script>
-  const {div, customElement} = htmlhammer; // or use ES6 import
 
-  const yetiDiv = customElement("yeti-div", {
-    connectedCallback() {
-      console.log("Generic custom element created!");
-    }
-  }, div);
+```html
+
+<script>
+    const { div, customElement } = htmlhammer; // or use ES6 import
+
+    const yetiDiv = customElement("yeti-div", {
+        connectedCallback() {
+            console.log("Generic custom element created!");
+        }
+    }, div);
 </script>
 
 <div is="yeti-div"></div>
 ```
 
 ### Setting shadow dom
-* Inside custom element
-```javascript
-  const {customElement} = htmlhammer; // or use ES6 import
 
-  const yetiCustom = customElement("yeti-custom", {
+* Inside custom element
+
+```javascript
+  const { customElement } = htmlhammer; // or use ES6 import
+
+const yetiCustom = customElement("yeti-custom", {
     connectedCallback() {
-      this.attachShadow({ mode: "open" });
+        this.attachShadow({ mode: "open" });
     }
-  });
+});
 ```
+
 * As htmlhammer attribute
+
 ```javascript
     yetiCustom({ shadowRoot: { mode: "open" } }, "Hello from Generic CustomElement");
 ```
 
 ### Setting styles
-* Inside custom element
-```javascript
-  const {style, customElement} = htmlhammer; // or use ES6 import
 
-  const yetiCustom = customElement("yeti-custom", {
-    connectedCallback() {
-      this.attachShadow({ mode: "open" });
-      this.shadowRoot.append(style(`:host { font-weight: bold;}`));
-    }
-  });
-```
-* As htmlhammer attribute
+* Inside custom element
+
 ```javascript
-  yetiCustom({ shadowRoot: { mode: "open", stylesheets: [style(`:host {color: red;}`)] } }, 
-      "Hello from Generic CustomElement");
+  const { style, customElement } = htmlhammer; // or use ES6 import
+
+const yetiCustom = customElement("yeti-custom", {
+    connectedCallback() {
+        this.attachShadow({ mode: "open" });
+        this.shadowRoot.append(style(`:host { font-weight: bold;}`));
+    }
+});
+```
+
+* As htmlhammer attribute
+
+```javascript
+  yetiCustom({ shadowRoot: { mode: "open", stylesheets: [style(`:host {color: red;}`)] } },
+    "Hello from Generic CustomElement");
 ```
 
 ### Conventions
+
 Conventions apply only to the provider(see under `Signature`).
+
 * Function starting with capital letter - binds function to context (custom element instance)
 * Property starting with capital letter - receives get/set methods
 * Property not starting with capital letter - receives only get method
 * Property is named the same as observed attribute - property will reflect attribute
-
 
 ## Project's NPM scripts
 
