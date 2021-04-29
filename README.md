@@ -93,9 +93,8 @@ htmltagname((attributesAndProperties = {}), ...children);
 Parameters:
 
 - attributesAndProperties - JSON object where key is the name of the element's attribute/property (e.g. id, name, style, onclick, or custom attribute/property etc. ) and value is the new attribute/property value.
-  See **reserved attributes** for reserved attributes/properties.
-- children - element or elements to be appended to parent element. Can be string, number, another HTMLElement created in
-  a regular way or by **htmlhammer**, function returning one of the previously stated types etc.
+  Difference between defining an attribute or property is that property value must always be a function(important if you are using `customeElement` -> customElement's property which is not a function can only be defined inside `provider`). See **reserved attributes** for reserved attributes/properties.
+- children - element or elements to be appended to parent element. Can be string, number, another HTMLElement created in a regular way or by **htmlhammer**, function returning one of the previously stated types etc.
 
 Returns:
 
