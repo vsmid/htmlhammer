@@ -85,14 +85,14 @@ obsolete/deprecated are not supported.
 
 ```javascript
 // Function name htmltagname is one of supported HTML tag/elements, e.g. div, a, h1, table etc.
-// Since version 2.3.0 attributes parameter is optional
-htmltagname((attributes = {}), ...children);
+// Since version 2.3.0 attributesAndProperties parameter is optional
+htmltagname((attributesAndProperties = {}), ...children);
 ```
 
 Parameters:
 
-- attributes - JSON object where key is the name of the element's attribute and value is the new attribute value. See **
-  reserved attributes**.
+- attributesAndProperties - JSON object where key is the name of the element's attribute/property (e.g. id, name, style, onclick, or custom attribute/property etc. ) and value is the new attribute/property value.
+  See **reserved attributes** for reserved attributes/properties.
 - children - element or elements to be appended to parent element. Can be string, number, another HTMLElement created in
   a regular way or by **htmlhammer**, function returning one of the previously stated types etc.
 
@@ -224,10 +224,13 @@ div({ $apply: [RedText, HTMLContent("<h1>Hello</h1>")] });
 
 ### Setting on-event actions
 
-Event names are case sensitive. For each event use corresponding element's attribute name.
+Event names are case-sensitive. For each event use corresponding element's event name.
 
 ```javascript
+// Defines element's onclick event function
 a({ onclick: (e) => alert("Clicked!") }, "Click me");
+// Defines plain function on element, will not trigger on click
+a({ onClick: (e) => alert("Clicked!") }, "Click me");
 ```
 
 ### Setting CSS
