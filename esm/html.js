@@ -26,7 +26,7 @@ export const attachAttribute = (name, value, element) => {
                 element.style[key] = value[key];
             });
             break;
-        case name.startsWith("on") && element[name] === null:
+        case typeof value === "function":
             element[name] = value;
             break;
         default:

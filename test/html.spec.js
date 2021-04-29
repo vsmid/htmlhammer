@@ -499,12 +499,12 @@ o.spec("HTML", () => {
 
             o(element.onHover).equals(undefined);
 
-            attachAttribute("onMouseOver", (e) => counter++, element);
+            // Will attach as a new function, event names are case sensitive!
+            attachAttribute("onHover", (e) => counter++, element);
 
-            o(element.onMouseOver).equals(undefined);
-            // Attached as regular attribute
-            o(element.hasAttribute("onMouseOver")).equals(true);
+            o(typeof element.onHover).equals("function");
 
+            // Will attach to existing event function
             attachAttribute("onmouseover", (e) => counter++, element);
 
             o(typeof element.onmouseover).equals("function");
