@@ -8,6 +8,7 @@
   <img alt="logo" src="./htmlhammer.png" height="100" width="200">
 </p>
 <p align="center">
+  <a href="https://sonarcloud.io/dashboard?id=vsmid_htmlhammer"><img src="https://sonarcloud.io/api/project_badges/measure?project=vsmid_htmlhammer&metric=alert_status"/></a>
   <a href="https://sonarcloud.io/dashboard?id=vsmid_htmlhammer"><img src="https://sonarcloud.io/api/project_badges/measure?project=vsmid_htmlhammer&metric=sqale_rating"/></a>
   <a href="https://sonarcloud.io/dashboard?id=vsmid_htmlhammer"><img src="https://sonarcloud.io/api/project_badges/measure?project=vsmid_htmlhammer&metric=reliability_rating"/></a>
   <a href="https://sonarcloud.io/dashboard?id=vsmid_htmlhammer"><img src="https://sonarcloud.io/api/project_badges/measure?project=vsmid_htmlhammer&metric=security_rating"/></a>
