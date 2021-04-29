@@ -246,7 +246,7 @@ var htmlhammer = (function (exports) {
         });
         break;
 
-      case name.startsWith("on") && element[name] === null:
+      case typeof value === "function":
         element[name] = value;
         break;
 

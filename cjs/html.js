@@ -64,7 +64,7 @@ var attachAttribute = function attachAttribute(name, value, element) {
       });
       break;
 
-    case name.startsWith("on") && element[name] === null:
+    case typeof value === "function":
       element[name] = value;
       break;
 

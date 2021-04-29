@@ -1,3 +1,7 @@
+## 3.4.0
+* Inline functions no longer ignore function not starting with "on"
+* Docs updating (Sonar badges and styling)
+
 ## 3.3.0
 Function creating element as part of $for attribute can now use additional index parameter.
 
