@@ -14,7 +14,8 @@
     "html",
     "javascript",
     "template",
-    "htmlhammer"
+    "custom",
+    "elements"
   ],
   "author": "vedransmid@yeti-it.hr",
   "license": "MIT",
