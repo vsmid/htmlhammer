@@ -26,7 +26,8 @@ export const attachAttribute = (name, value, element) => {
                 element.style[key] = value[key];
             });
             break;
-        case typeof value === "function":
+        case value.constructor.toString().startsWith("class"):
+        case ["Function", "Object", "Array"].includes(value.constructor.name):
             element[name] = value;
             break;
         default:

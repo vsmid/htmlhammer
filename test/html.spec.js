@@ -478,22 +478,6 @@ o.spec("HTML", () => {
             );
         });
 
-        o(
-            "Attribute names starting with 'on' and are defined on element are treated as events",
-            () => {
-                let counter = 0;
-
-                o(element.onclick).equals(null);
-
-                attachAttribute("onclick", (e) => counter++, element);
-
-                o(typeof element.onclick).equals("function");
-                element.onclick();
-
-                o(counter).equals(1);
-            }
-        );
-
         o("Attribute names describing events are case sensitive", () => {
             let counter = 0;
 
@@ -511,9 +495,9 @@ o.spec("HTML", () => {
         });
 
         o("Regular attributes are attached as-is", () => {
-            attachAttribute("speed", 10, element);
+            attachAttribute("speed", "10", element);
 
-            o(element.getAttribute("speed")).equals(10);
+            o(element.getAttribute("speed")).equals("10");
         });
 
         o("Should set checked of radio", () => {
@@ -541,6 +525,60 @@ o.spec("HTML", () => {
 
             o(option.getAttribute("selected")).equals(true);
         });
+
+        o("Should attach function as property",
+            () => {
+                let counter = 0;
+
+                o(element.onclick).equals(null);
+
+                attachAttribute("onclick", (e) => counter++, element);
+
+                o(typeof element.onclick).equals("function");
+                element.onclick();
+
+                o(counter).equals(1);
+            }
+        );
+
+        o("Should attach object as property",
+            () => {
+                o(element.data).equals(undefined);
+
+                let val = {};
+
+                attachAttribute("data", val, element);
+
+                o(element.data).equals(val);
+            }
+        );
+
+        o("Should attach array as property",
+            () => {
+                o(element.data).equals(undefined);
+
+                let val = [];
+
+                attachAttribute("data", val, element);
+
+                o(element.data).equals(val);
+            }
+        );
+
+        o("Should attach instance of class as property",
+            () => {
+                o(element.data).equals(undefined);
+
+                class C {
+                };
+
+                let val = new C();
+
+                attachAttribute("data", val, element);
+
+                o(element.data).equals(val);
+            }
+        );
     });
 
     o.spec("#appendChild", () => {
