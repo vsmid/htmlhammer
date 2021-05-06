@@ -570,7 +570,7 @@ o.spec("HTML", () => {
                 o(element.data).equals(undefined);
 
                 class C {
-                };
+                }
 
                 let val = new C();
 
