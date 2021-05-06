@@ -22,9 +22,9 @@ Write HTML with JavaScript using real HTML tag names.
 
 - String literals tend to get messy and unreadable
 - Maybe you don't want or need JSX
-- HyperScript is ok but you would like to avoid manually writing HTML tag names
+- HyperScript is ok, but you would like to avoid manually writing HTML tag names
 - Make writing HTML in JavaScript feel almost like writing it in .html file
-- Make writing HTML in JavaScript dead simple and intuitive but keeping all of the JavaScript's power
+- Make writing HTML in JavaScript dead simple and intuitive but keeping all the JavaScript's power
 
 ## Install
 
@@ -93,8 +93,7 @@ htmltagname((attributesAndProperties = {}), ...children);
 Parameters:
 
 - attributesAndProperties - JSON object where key is the name of the element's attribute/property (e.g. id, name, style, onclick, or custom attribute/property etc. ) and value is the new attribute/property value.
-  Difference between defining an attribute and property is that property value must always be one of function, instance of class, array or json object (prior to version 3.5.0 only function was treated as property).
-  See **reserved attributes** for reserved attributes/properties.
+  Difference between defining an attribute and property is that property value must always be one of function, instance of class, array or json object. This rule does not apply to [reserved element attributes/properties](#reserved-element-attributesproperties) and `style`.
 - children - element or elements to be appended to parent element. Can be string, number, another HTMLElement created regularly or by **htmlhammer**, function returning one of the previously stated types etc.
 
 Returns:
@@ -121,7 +120,7 @@ document.body.append(
 ### String as HTML
 
 If you have HTML in string format and you would like for it to be added to element as HTML you should wrap it
-in `HtmlString` class. This is useful when you want to inject already generated HTML in string format to an element (
+in `HtmlString` class. This is useful when you want to inject an already generated HTML in string format to an element (
 e.g. HTML content received from REST service).
 
 ```javascript
@@ -148,7 +147,7 @@ document.body.append(
 
 For more complex and complete example check [index.html](https://github.com/vsmid/htmlhammer/blob/master/index.html).
 
-### Reserved element attributes
+### Reserved element attributes/properties
 
 #### `$for` - creating multiple elements of the same type
 
