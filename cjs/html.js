@@ -25,6 +25,8 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
+var PropertyTypes = ["Function", "Object", "Array"];
+
 var Blueprint = function Blueprint() {
   var tag = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
   var object = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
@@ -64,7 +66,8 @@ var attachAttribute = function attachAttribute(name, value, element) {
       });
       break;
 
-    case typeof value === "function":
+    case value.constructor.toString().startsWith("class"):
+    case PropertyTypes.includes(value.constructor.name):
       element[name] = value;
       break;
 

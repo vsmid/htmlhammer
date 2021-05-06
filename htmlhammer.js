@@ -210,6 +210,7 @@ var htmlhammer = (function (exports) {
     };
   })();
 
+  var PropertyTypes = ["Function", "Object", "Array"];
   var Blueprint = function Blueprint() {
     var tag = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
     var object = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
@@ -246,7 +247,8 @@ var htmlhammer = (function (exports) {
         });
         break;
 
-      case typeof value === "function":
+      case value.constructor.toString().startsWith("class"):
+      case PropertyTypes.includes(value.constructor.name):
         element[name] = value;
         break;
 
