@@ -1,6 +1,8 @@
 import { ChildAppender } from "./appenders.js";
 import REF from "./ref.js";
 
+const PropertyTypes = ["Function", "Object", "Array"];
+
 export class Blueprint {
     constructor(tag = null, object = null, attributes = {}, children = []) {
         this.tag = tag;
@@ -27,7 +29,7 @@ export const attachAttribute = (name, value, element) => {
             });
             break;
         case value.constructor.toString().startsWith("class"):
-        case ["Function", "Object", "Array"].includes(value.constructor.name):
+        case PropertyTypes.includes(value.constructor.name):
             element[name] = value;
             break;
         default:
