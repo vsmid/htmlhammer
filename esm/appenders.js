@@ -2,7 +2,9 @@ export class ChildAppender {
     constructor(element) {
         this.element = element;
     }
-    append(parentElement) {}
+    append(parentElement) {
+        // Implement this method in classes extending ChildAppender
+    }
 }
 
 export class HtmlString extends ChildAppender {

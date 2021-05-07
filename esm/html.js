@@ -83,12 +83,15 @@ export const AttributeHandler = Object.freeze({
         }
         return blueprints;
     },
-    $if: (attributeValue, callbackInput) =>
-        attributeValue === null || attributeValue === undefined
-            ? true
-            : typeof attributeValue === "function"
-            ? attributeValue(callbackInput)
-            : !!attributeValue,
+    $if: (attributeValue, callbackInput) => {
+        if (attributeValue === null || attributeValue === undefined) {
+            return true;
+        } else {
+            return typeof attributeValue === "function"
+                ? attributeValue(callbackInput)
+                : !!attributeValue;
+        }
+    },
     $ref: (attributeValue, callbackInput, element) => {
         if (typeof attributeValue === "function") {
             if (callbackInput) {
