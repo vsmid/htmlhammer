@@ -126,7 +126,11 @@ var AttributeHandler = Object.freeze({
     return blueprints;
   },
   $if: function $if(attributeValue, callbackInput) {
-    return attributeValue === null || attributeValue === undefined ? true : typeof attributeValue === "function" ? attributeValue(callbackInput) : !!attributeValue;
+    if (attributeValue === null || attributeValue === undefined) {
+      return true;
+    } else {
+      return typeof attributeValue === "function" ? attributeValue(callbackInput) : !!attributeValue;
+    }
   },
   $ref: function $ref(attributeValue, callbackInput, element) {
     if (typeof attributeValue === "function") {

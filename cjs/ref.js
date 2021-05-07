@@ -21,30 +21,31 @@ var _default = function () {
   var refs = new WeakMap();
   return {
     ref: function ref(o, id) {
-      return o ? id ? refs.get(o)[id] : refs.get(o) : null;
+      var val = id ? refs.get(o)[id] : refs.get(o);
+      return o ? val : null;
     },
     setRef: function setRef(o, id) {
       return function (e) {
-        if (o) {
-          if (refs.has(o)) {
-            if (id) {
-              refs.get(o)[id] = e;
-            } else {
-              refs.set(o, [].concat(_toConsumableArray(refs.get(o)), [e]));
-            }
+        if (!o) {
+          return;
+        }
+
+        if (refs.has(o)) {
+          if (id) {
+            refs.get(o)[id] = e;
           } else {
-            var val = {};
-
-            if (id) {
-              val[id] = e;
-            } else {
-              val = [e];
-            }
-
-            refs.set(o, val);
+            refs.set(o, [].concat(_toConsumableArray(refs.get(o)), [e]));
           }
         } else {
-          return null;
+          var val = {};
+
+          if (id) {
+            val[id] = e;
+          } else {
+            val = [e];
+          }
+
+          refs.set(o, val);
         }
       };
     }

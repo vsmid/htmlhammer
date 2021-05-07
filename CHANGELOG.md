@@ -1,3 +1,7 @@
+## 3.5.1
+
+Reducing code smells.
+
 ## 3.5.0
 
 * Definition of what is attached to an element as property is expanded from only function to function, instance of

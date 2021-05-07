@@ -36,7 +36,8 @@ var ChildAppender = /*#__PURE__*/function () {
 
   _createClass(ChildAppender, [{
     key: "append",
-    value: function append(parentElement) {}
+    value: function append(parentElement) {// Implement this method in classes extending ChildAppender
+    }
   }]);
 
   return ChildAppender;
