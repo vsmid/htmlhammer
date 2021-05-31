@@ -269,8 +269,7 @@ appender is implemented in [appenders.js](https://github.com/vsmid/htmlhammer/bl
 `customElement(tagName, provider, type)`
 
 * `tagName` - custom element tag name
-* `provider` - plain JS object with lifecycle functions and props implementations. See under `Lifecycle and reserved
-  props.
+* `provider` - plain JS object with lifecycle functions and props implementations. See under [Lifecycle and reserved props](#lifecycle-and-reserved-props).
 * `type` - optional, function reference to one of htmlhammer's functions (e.q. div, a, table etc.). Use when you want to
   extend existing html element, e.q. HTMLDivElement.
 
@@ -396,7 +395,7 @@ yetiCustom({ shadowRoot: { mode: "open", stylesheets: [style(`:host {color: red;
 
 ### Conventions
 
-Conventions apply only to the provider(see under `Signature`).
+Conventions apply only to the provider(see under [Method signature](#method-signature)).
 
 * Function starting with capital letter - binds function to context (custom element instance)
 * Property starting with capital letter - receives get/set methods
