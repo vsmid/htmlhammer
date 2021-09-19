@@ -122,10 +122,7 @@ const build = (provider, type) => {
 
 export const customElement = (name, provider, type) => {
     const CustomElement = build(provider, type);
-
     let options = type ? { extends: type().localName } : {};
-
     customElements.define(name, CustomElement, options);
-
     return define(name);
 };
