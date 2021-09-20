@@ -42,7 +42,7 @@ const assignMembers = (provider, instance) => {
                         break;
                     case isProperty(provider[member]):
                         // Optimize this
-                        let valueRef = JSON.parse(JSON.stringify(provider[member]));
+                        let propertyValue = JSON.parse(JSON.stringify(provider[member]));
                         switch (true) {
                             case isObserved(member, provider.observedAttributes || []):
                                 defineProperty(
@@ -50,7 +50,9 @@ const assignMembers = (provider, instance) => {
                                     member,
                                     {
                                         get() {
-                                            return this.getAttribute(member);
+                                            let attributeValue = this.getAttribute(member);
+                                            // If there is no attribute value yet, try property value
+                                            return attributeValue ? attributeValue : propertyValue;
                                         },
                                         set(newVal) {
                                             this.setAttribute(member, newVal);
@@ -62,10 +64,10 @@ const assignMembers = (provider, instance) => {
                                     instance,
                                     member, {
                                         get() {
-                                            return valueRef;
+                                            return propertyValue;
                                         },
                                         set(newVal) {
-                                            valueRef = newVal;
+                                            propertyValue = newVal;
                                         }
                                     });
                                 break;
@@ -75,7 +77,7 @@ const assignMembers = (provider, instance) => {
                                     member,
                                     {
                                         get() {
-                                            return valueRef;
+                                            return propertyValue;
                                         }
                                     });
                                 break;
