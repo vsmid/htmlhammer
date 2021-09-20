@@ -78,6 +78,8 @@ var htmlhammer = (function (exports) {
   function _possibleConstructorReturn(self, call) {
     if (call && (typeof call === "object" || typeof call === "function")) {
       return call;
+    } else if (call !== void 0) {
+      throw new TypeError("Derived constructors may only return object or undefined");
     }
 
     return _assertThisInitialized(self);
@@ -483,13 +485,15 @@ var htmlhammer = (function (exports) {
 
         case isProperty(provider[member]):
           // Optimize this
-          var valueRef = JSON.parse(JSON.stringify(provider[member]));
+          var propertyValue = JSON.parse(JSON.stringify(provider[member]));
 
           switch (true) {
             case isObserved(member, provider.observedAttributes || []):
               defineProperty(instance, member, {
                 get: function get() {
-                  return this.getAttribute(member);
+                  var attributeValue = this.getAttribute(member); // If there is no attribute value yet, try property value
+
+                  return attributeValue ? attributeValue : propertyValue;
                 },
                 set: function set(newVal) {
                   this.setAttribute(member, newVal);
@@ -500,10 +504,10 @@ var htmlhammer = (function (exports) {
             case isUppercase(member):
               defineProperty(instance, member, {
                 get: function get() {
-                  return valueRef;
+                  return propertyValue;
                 },
                 set: function set(newVal) {
-                  valueRef = newVal;
+                  propertyValue = newVal;
                 }
               });
               break;
@@ -511,7 +515,7 @@ var htmlhammer = (function (exports) {
             case !isUppercase(member):
               defineProperty(instance, member, {
                 get: function get() {
-                  return valueRef;
+                  return propertyValue;
                 }
               });
               break;
