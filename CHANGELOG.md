@@ -1,3 +1,12 @@
+## 3.5.3
+
+Maintenance release.
+
+## 3.5.2
+
+* Fixed bug where property reflecting attribute did not use default value (#7)
+* Updated dependencies
+
 ## 3.5.1
 
 Reducing code smells.
