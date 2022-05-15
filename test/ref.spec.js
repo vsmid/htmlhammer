@@ -51,9 +51,14 @@ o.spec("Ref", () => {
             o(ref(null)).equals(null);
         });
 
-        o("Should return undefined if trying to set value for key === null", () => {
-            o(setRef(null)(document.createElement("div"))).equals(undefined);
-        });
+        o(
+            "Should return undefined if trying to set value for key === null",
+            () => {
+                o(setRef(null)(document.createElement("div"))).equals(
+                    undefined
+                );
+            }
+        );
 
         o("Should override value for existing key", () => {
             let ob = {};

@@ -3,7 +3,7 @@ export default (() => {
     return {
         ref: (o, id) => {
             let val = id ? refs.get(o)[id] : refs.get(o);
-            return (o ? val : null);
+            return o ? val : null;
         },
         setRef: (o, id) => (e) => {
             if (!o) {
@@ -25,6 +25,6 @@ export default (() => {
                 }
                 refs.set(o, val);
             }
-        }
+        },
     };
 })();

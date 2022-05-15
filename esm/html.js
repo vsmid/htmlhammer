@@ -20,7 +20,9 @@ export const attachAttribute = (name, value, element) => {
         case name === "shadowRoot":
             element.attachShadow(value);
             if (value.stylesheets) {
-                value.stylesheets.forEach(style => element.shadowRoot.append(style));
+                value.stylesheets.forEach((style) =>
+                    element.shadowRoot.append(style)
+                );
             }
             break;
         case name === "style":
@@ -58,9 +60,12 @@ export const appendChild = (child, element, blueprint) => {
         } else if (child instanceof ChildAppender) {
             child.append(appendTo);
         } else if (typeof child === "function") {
-            appendChild(blueprint.object
-                ? child(blueprint.object, blueprint.index)
-                : child(), appendTo, blueprint.object
+            appendChild(
+                blueprint.object
+                    ? child(blueprint.object, blueprint.index)
+                    : child(),
+                appendTo,
+                blueprint.object
             );
         } else {
             appendTo.append(document.createTextNode(child.toString()));
@@ -75,11 +80,10 @@ export const AttributeHandler = Object.freeze({
             blueprints.push(new Blueprint());
         } else {
             attributeValue.forEach((o, index) => {
-                    let blueprint = new Blueprint(null, o);
-                    blueprint.index = index;
-                    blueprints.push(blueprint);
-                }
-            );
+                let blueprint = new Blueprint(null, o);
+                blueprint.index = index;
+                blueprints.push(blueprint);
+            });
         }
         return blueprints;
     },
@@ -111,7 +115,7 @@ export const AttributeHandler = Object.freeze({
                 applyCallback(element);
             }
         }
-    }
+    },
 });
 
 export const elementOptions = (attributes) => {
@@ -161,26 +165,28 @@ export const extract = (...parts) => {
     return { attributes, children };
 };
 
-export const define = (tag) => (...parts) => {
-    const { attributes, children } = extract(...parts);
-    const { $for, $if, $ref, $apply } = attributes;
+export const define =
+    (tag) =>
+    (...parts) => {
+        const { attributes, children } = extract(...parts);
+        const { $for, $if, $ref, $apply } = attributes;
 
-    let elements = AttributeHandler.$for($for)
-        .filter((bp) => AttributeHandler.$if($if, bp.object))
-        .map((bp) => {
-            bp.tag = tag;
-            Object.assign(bp.attributes, attributes);
-            if (children) {
-                bp.children.push([...children]);
-            }
-            let e = createElement(bp);
-            AttributeHandler.$apply(e, $apply);
-            AttributeHandler.$ref($ref, bp.object, e);
-            return e;
-        });
+        let elements = AttributeHandler.$for($for)
+            .filter((bp) => AttributeHandler.$if($if, bp.object))
+            .map((bp) => {
+                bp.tag = tag;
+                Object.assign(bp.attributes, attributes);
+                if (children) {
+                    bp.children.push([...children]);
+                }
+                let e = createElement(bp);
+                AttributeHandler.$apply(e, $apply);
+                AttributeHandler.$ref($ref, bp.object, e);
+                return e;
+            });
 
-    return elements.length === 1 ? elements[0] : elements;
-};
+        return elements.length === 1 ? elements[0] : elements;
+    };
 
 export default (() => {
     let tags = {};
@@ -312,7 +318,7 @@ export default (() => {
         "summary",
         // Web Components
         "slot",
-        "template"
+        "template",
     ].forEach((tag) => {
         tags[tag] = define(tag);
     });

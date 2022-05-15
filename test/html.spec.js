@@ -526,59 +526,50 @@ o.spec("HTML", () => {
             o(option.getAttribute("selected")).equals(true);
         });
 
-        o("Should attach function as property",
-            () => {
-                let counter = 0;
+        o("Should attach function as property", () => {
+            let counter = 0;
 
-                o(element.onclick).equals(null);
+            o(element.onclick).equals(null);
 
-                attachAttribute("onclick", (e) => counter++, element);
+            attachAttribute("onclick", (e) => counter++, element);
 
-                o(typeof element.onclick).equals("function");
-                element.onclick();
+            o(typeof element.onclick).equals("function");
+            element.onclick();
 
-                o(counter).equals(1);
-            }
-        );
+            o(counter).equals(1);
+        });
 
-        o("Should attach object as property",
-            () => {
-                o(element.data).equals(undefined);
+        o("Should attach object as property", () => {
+            o(element.data).equals(undefined);
 
-                let val = {};
+            let val = {};
 
-                attachAttribute("data", val, element);
+            attachAttribute("data", val, element);
 
-                o(element.data).equals(val);
-            }
-        );
+            o(element.data).equals(val);
+        });
 
-        o("Should attach array as property",
-            () => {
-                o(element.data).equals(undefined);
+        o("Should attach array as property", () => {
+            o(element.data).equals(undefined);
 
-                let val = [];
+            let val = [];
 
-                attachAttribute("data", val, element);
+            attachAttribute("data", val, element);
 
-                o(element.data).equals(val);
-            }
-        );
+            o(element.data).equals(val);
+        });
 
-        o("Should attach instance of class as property",
-            () => {
-                o(element.data).equals(undefined);
+        o("Should attach instance of class as property", () => {
+            o(element.data).equals(undefined);
 
-                class C {
-                }
+            class C {}
 
-                let val = new C();
+            let val = new C();
 
-                attachAttribute("data", val, element);
+            attachAttribute("data", val, element);
 
-                o(element.data).equals(val);
-            }
-        );
+            o(element.data).equals(val);
+        });
     });
 
     o.spec("#appendChild", () => {
@@ -769,14 +760,20 @@ o.spec("HTML", () => {
                 o(element.childNodes[0]).equals(child);
             });
 
-            o("Functions will receive additional index parameter which will be set when $for attribute is used", () => {
-                let element = document.createElement("div");
+            o(
+                "Functions will receive additional index parameter which will be set when $for attribute is used",
+                () => {
+                    let element = document.createElement("div");
 
-                appendChild((val, i) => val + " " + i, element, { object: 1, index: 0 });
+                    appendChild((val, i) => val + " " + i, element, {
+                        object: 1,
+                        index: 0,
+                    });
 
-                o(element.childNodes.length).equals(1);
-                o(element.childNodes[0].textContent).equals("1 0");
-            });
+                    o(element.childNodes.length).equals(1);
+                    o(element.childNodes[0].textContent).equals("1 0");
+                }
+            );
 
             o("Function which returns string as inner html", () => {
                 let element = document.createElement("div");
@@ -784,7 +781,11 @@ o.spec("HTML", () => {
                 let mock = o.spy();
                 element.insertAdjacentHTML = mock;
 
-                appendChild(() => new HtmlString("<h1>Hello!</h1>"), element, {});
+                appendChild(
+                    () => new HtmlString("<h1>Hello!</h1>"),
+                    element,
+                    {}
+                );
 
                 o(mock.callCount).equals(1);
                 o(mock.args[0]).equals("beforeend");
@@ -811,7 +812,9 @@ o.spec("HTML", () => {
                 o(element.childNodes[0].textContent).equals("1");
             });
 
-            o("Function which returns any other type not tested above as text node by calling #toString() method", () => {
+            o(
+                "Function which returns any other type not tested above as text node by calling #toString() method",
+                () => {
                     let element = document.createElement("div");
 
                     class Person {
@@ -1009,7 +1012,7 @@ o.spec("HTML", () => {
 
         o("Should create element without children", () => {
             let bp = new Blueprint("div", null, {
-                id: "myDiv"
+                id: "myDiv",
             });
 
             let element = createElement(bp);
@@ -1080,7 +1083,7 @@ o.spec("HTML", () => {
                     {
                         $for: items,
                         $if: (i) => i.v > 1,
-                        $ref: setRef
+                        $ref: setRef,
                     },
                     (i) => i.v
                 );
@@ -1114,20 +1117,20 @@ o.spec("HTML", () => {
             parts = extract({ id: 1 });
 
             o(Object.keys(parts).length).equals(2);
-            o(JSON.stringify(parts.attributes)).equals("{\"id\":1}");
+            o(JSON.stringify(parts.attributes)).equals('{"id":1}');
             o(JSON.stringify(parts.children)).equals("[]");
 
             parts = extract("1", 2);
 
             o(Object.keys(parts).length).equals(2);
             o(JSON.stringify(parts.attributes)).equals("{}");
-            o(JSON.stringify(parts.children)).equals("[\"1\",2]");
+            o(JSON.stringify(parts.children)).equals('["1",2]');
 
             parts = extract({ id: 1 }, "1", 2);
 
             o(Object.keys(parts).length).equals(2);
-            o(JSON.stringify(parts.attributes)).equals("{\"id\":1}");
-            o(JSON.stringify(parts.children)).equals("[\"1\",2]");
+            o(JSON.stringify(parts.attributes)).equals('{"id":1}');
+            o(JSON.stringify(parts.children)).equals('["1",2]');
         });
     });
 
