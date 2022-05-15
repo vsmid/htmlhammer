@@ -5,7 +5,7 @@
   </a>
 </p>
 <p align="center">
-  <img alt="logo" src="./htmlhammer.png" height="100" width="200">
+  <img alt="logo" src="https://github.com/vsmid/htmlhammer/blob/master/htmlhammer.png" height="100" width="200">
 </p>
 <p align="center">
   <a href="https://sonarcloud.io/dashboard?id=vsmid_htmlhammer"><img src="https://sonarcloud.io/api/project_badges/measure?project=vsmid_htmlhammer&metric=alert_status"/></a>
