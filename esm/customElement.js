@@ -96,11 +96,11 @@ const build = (provider, type) => {
     const CustomElement = class extends htmlElement {
         constructor() {
             super();
-            // Assign properties
-            assignMembers(provider, this);
             if (provider.postConstruct) {
                 provider.postConstruct();
             }
+            // Assign properties
+            assignMembers(provider, this);
             // Bind uppercase functions
             bindMembers(provider, this);
         }
