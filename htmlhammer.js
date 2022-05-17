@@ -20,6 +20,9 @@ var htmlhammer = (function (exports) {
   function _createClass(Constructor, protoProps, staticProps) {
     if (protoProps) _defineProperties(Constructor.prototype, protoProps);
     if (staticProps) _defineProperties(Constructor, staticProps);
+    Object.defineProperty(Constructor, "prototype", {
+      writable: false
+    });
     return Constructor;
   }
 
@@ -34,6 +37,9 @@ var htmlhammer = (function (exports) {
         writable: true,
         configurable: true
       }
+    });
+    Object.defineProperty(subClass, "prototype", {
+      writable: false
     });
     if (superClass) _setPrototypeOf(subClass, superClass);
   }
@@ -215,7 +221,7 @@ var htmlhammer = (function (exports) {
   })();
 
   var PropertyTypes = ["Function", "Object", "Array"];
-  var Blueprint = function Blueprint() {
+  var Blueprint = /*#__PURE__*/_createClass(function Blueprint() {
     var tag = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
     var object = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
     var attributes = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
@@ -228,7 +234,7 @@ var htmlhammer = (function (exports) {
     this.attributes = attributes;
     this.children = children;
     this.index = null;
-  };
+  });
   var attachAttribute = function attachAttribute(name, value, element) {
     switch (true) {
       case Object.keys(AttributeHandler).includes(name):
@@ -539,20 +545,20 @@ var htmlhammer = (function (exports) {
 
         _classCallCheck(this, CustomElement);
 
-        _this = _super.call(this); // Assign properties
-
-        assignMembers(provider, _assertThisInitialized(_this));
+        _this = _super.call(this);
 
         if (provider.postConstruct) {
           provider.postConstruct();
-        } // Bind uppercase functions
+        } // Assign properties
 
+
+        assignMembers(provider, _assertThisInitialized(_this)); // Bind uppercase functions
 
         bindMembers(provider, _assertThisInitialized(_this));
         return _this;
       }
 
-      return CustomElement;
+      return _createClass(CustomElement);
     }(htmlElement);
 
     var prototype = {};

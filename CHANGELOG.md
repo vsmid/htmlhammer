@@ -1,3 +1,7 @@
+## 3.5.4
+
+Fixed bug where members(e.g. properties) of customElement instance were not correctly set in postConstruct lifecycle method.
+
 ## 3.5.3
 
 Maintenance release.
