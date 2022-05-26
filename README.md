@@ -402,6 +402,12 @@ Conventions apply only to the provider(see under [Method signature](#method-sign
 * Property not starting with capital letter - receives only get method
 * Property is named the same as observed attribute - property will reflect attribute
 
+### Counter web component example
+
+This example demonstrates how you can use this library to build web component with simple state management and a few action buttons. It also shows you a cool way of how you can set and assign any node you would like to reference at any time during component's life. This feature is basically a consequence of building html with javascript which htmlhammer is all about.
+
+This example(among other examples) can be found in project's [index.html](https://github.com/vsmid/htmlhammer/blob/master/index.html) file.
+
 ## Project's NPM scripts
 
 ### `test` - run tests

@@ -24,6 +24,7 @@
                 setRef,
                 ref,
                 HtmlString,
+                customElement,
             } from "./esm/index.js";
 
             const yetiCustom = customElement("yeti-custom", {
@@ -196,6 +197,51 @@
             const Red = (el) => (el.style.color = "red");
             const RawHtml = (data) => (el) => (el.innerHTML = data);
 
+            // Counter component example
+            const CounterComponentStyle = style(`
+      * {
+        font-size: 200%;
+      }
+
+      span {
+        width: 4rem;
+        display: inline-block;
+        text-align: center;
+      }
+
+      button {
+        width: 4rem;
+        height: 4rem;
+        border: none;
+        border-radius: 10px;
+        background-color: seagreen;
+        color: white;
+      }
+    `);
+
+            const CounterComponent = customElement("yeti-counter", {
+                Count: 0,
+                connectedCallback() {
+                    this.attachShadow({ mode: "open" });
+                    this.shadowRoot.append(
+                        CounterComponentStyle,
+                        button({ id: "dec", onclick: this.Dec }, "-"),
+                        (this.CounterDisplay = span(this.Count)), // Cool way to set and assign html element
+                        button({ id: "inc", onclick: this.Inc }, "+")
+                    );
+                },
+                Inc() {
+                    this.Update(++this.Count);
+                },
+                Dec() {
+                    this.Update(--this.Count);
+                },
+                Update(count) {
+                    this.CounterDisplay.textContent = count; // Assigned html element referenced
+                },
+            });
+
+            // Full template
             document.body.append(
                 div(
                     span({
@@ -225,7 +271,9 @@
                     div(
                         { is: "yeti-div" },
                         "Hello from Specialized CustomElement"
-                    )
+                    ),
+                    h2("Counter component example"),
+                    CounterComponent()
                 )
             );
 
