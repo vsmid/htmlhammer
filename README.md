@@ -16,7 +16,8 @@
 
 # htmlhammer
 
-Write HTML with JavaScript using real HTML tag names.
+* Write HTML with JavaScript using real HTML tag names.
+* Unique way of writing WebComponents
 
 ## Why?
 
@@ -407,6 +408,12 @@ Conventions apply only to the provider(see under [Method signature](#method-sign
 This example demonstrates how you can use this library to build web component with simple state management and a few action buttons. It also shows you a cool way of how you can set and assign any node you would like to reference at any time during component's life. This feature is basically a consequence of building html with javascript which htmlhammer is all about.
 
 This example(among other examples) can be found in project's [index.html](https://github.com/vsmid/htmlhammer/blob/master/index.html) file.
+
+### Demo
+
+Demo is basically `index.html` file found in the root of the project served as a github page.
+
+[Live demo](https://vsmid.github.io/htmlhammer/)
 
 ## Project's NPM scripts
 
