@@ -3,282 +3,78 @@
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>AccountInfo example</title>
+        <title>Htmlhammer Demo</title>
     </head>
 
     <body>
         <script type="module">
             import {
+                DefaultAccountInfo,
+                accountStyle,
+            } from "./demo/account-example.js";
+
+            import { Counter } from "./demo/counter-web-component-example.js";
+
+            import {
+                yetiCustom,
+                DefaultYetiCustom,
+                yetiDiv,
+                DefaultDivUsingIsAttribute,
+            } from "./demo/custom-elements-examples.js";
+
+            import {
                 span,
                 div,
                 h2,
-                br,
                 style,
-                table,
-                th,
-                tr,
-                td,
-                label,
-                input,
-                button,
-                setRef,
-                ref,
-                HtmlString,
-                customElement,
+                header,
+                section,
             } from "./esm/index.js";
 
-            const yetiCustom = customElement("yeti-custom", {
-                connectedCallback() {
-                    console.log("Generic custom element created!");
-                    // Set shadow only if not set via htmlhammer's element attribute
-                    // this.attachShadow({ mode: "open" });
-
-                    // Add styles to shadow
-                    this.shadowRoot.append(
-                        style(`:host { font-weight: bold;}`)
-                    );
-                },
-                observedAttributes: ["age"],
-                attributeChangedCallback(n, ov, nv) {
-                    console.log("Attribute value change: ", n, ov, nv);
-                },
-                Data: "ok", // Public get, set
-                data: "ok", // Only public get
-                age: 2, // Will reflect observed attribute
-            });
-
-            const yetiDiv = customElement(
-                "yeti-div",
-                {
-                    connectedCallback() {
-                        console.log("Specialized custom element created!");
-                    },
-                },
-                div
-            ); // Extends HTMLDivElement
-
-            document.head.append(
-                style(
-                    {},
-                    `
-            .accountInfo {
-                font-family: helvetica;
-                font-size: 18px;
-                padding: 4px;
-            }
-
-            .accountInfo label {
-                font-weight: lighter;
-            }
-
-            .accountInfo input {
-                font-size: 18px;
-                outline: none;
-                border: none;
-            }
-
-            .accountInfo td {
-                font-size: 14px;
-                text-align: center;
-            }
-            `
-                )
-            );
-
-            const SpentButton = (trxs, currency) =>
-                button(
-                    {
-                        onclick: () =>
-                            alert(
-                                "Total amount spent: " +
-                                    trxs.reduce(
-                                        (acc, trx) => acc + trx.amount,
-                                        0
-                                    ) +
-                                    ` ${currency}`
-                            ),
-                    },
-                    "Total amount spent"
-                );
-
-            const AccountInfo = (data) =>
-                div(
-                    {},
-                    div(
-                        { class: "accountInfo" },
-                        h2({}, "Account info"),
-                        label({ for: "iban" }, "IBAN:"),
-                        input({
-                            id: "iban",
-                            readonly: true,
-                            value: data.iban,
-                        }),
-                        br(),
-                        label({ for: "bal" }, "Balance:"),
-                        input({
-                            id: "bal",
-                            readonly: true,
-                            value: data.balance,
-                        }),
-                        br(),
-                        label({ for: "curr" }, "Currency:"),
-                        input({
-                            id: "curr",
-                            readonly: true,
-                            value: data.currency,
-                        }),
-                        br(),
-                        h2({}, "Transactions"),
-                        table(
-                            { $ref: data.transactions },
-                            tr(
-                                {},
-                                th({}, "Date"),
-                                th({}, "Amount"),
-                                th({}, "Purpose")
-                            ),
-                            tr(
-                                {
-                                    $for: data.transactions,
-                                    $if: (trx) => trx.amount > 0.2,
-                                    $ref: setRef,
-                                },
-                                (trx) => [
-                                    td({}, trx.date.toISOString()),
-                                    td(
-                                        {
-                                            style: {
-                                                textAlign: "right",
-                                            },
-                                        },
-                                        trx.amount
-                                    ),
-                                    td({}, trx.purpose),
-                                ]
-                            )
-                        ),
-                        SpentButton(data.transactions, data.currency)
-                    )
-                );
-
-            const accountData = {
-                iban: "HR23600011001224234",
-                balance: 235.45,
-                currency: "EUR",
-                transactions: [
-                    {
-                        date: new Date(),
-                        amount: 0.11,
-                        purpose: "Toy-Toy",
-                    },
-                    {
-                        date: new Date(),
-                        amount: 11.19,
-                        purpose: "Plush rabbit",
-                    },
-                    {
-                        date: new Date(),
-                        amount: 12.33,
-                        purpose: "Coca-Cola, 2l",
-                    },
-                    {
-                        date: new Date(),
-                        amount: 34.23,
-                        purpose: "A4 paper bundle",
-                    },
-                    {
-                        date: new Date(),
-                        amount: 0.21,
-                        purpose: "Coffee can",
-                    },
-                ],
-            };
-
-            const Red = (el) => (el.style.color = "red");
+            const YetiColor = (el) => (el.style.color = "#81B3DA");
             const RawHtml = (data) => (el) => (el.innerHTML = data);
 
-            // Counter component example
-            const CounterComponentStyle = style(`
-      * {
-        font-size: 200%;
-      }
+            const DemoContainer = (...components) => div({}, components);
 
-      span {
-        width: 4rem;
-        display: inline-block;
-        text-align: center;
-      }
+            // Specialized appender to append raw html. The same can be achieved via RawHtml and $apply.
+            const DemoSectionSeparator = () => h2("__");
 
-      button {
-        width: 4rem;
-        height: 4rem;
-        border: none;
-        border-radius: 10px;
-        background-color: seagreen;
-        color: white;
-      }
-    `);
-
-            const CounterComponent = customElement("yeti-counter", {
-                Count: 0,
-                connectedCallback() {
-                    this.attachShadow({ mode: "open" });
-                    this.shadowRoot.append(
-                        CounterComponentStyle,
-                        button({ id: "dec", onclick: this.Dec }, "-"),
-                        (this.CounterDisplay = span(this.Count)), // Cool way to set and assign html element
-                        button({ id: "inc", onclick: this.Inc }, "+")
-                    );
-                },
-                Inc() {
-                    this.Update(++this.Count);
-                },
-                Dec() {
-                    this.Update(--this.Count);
-                },
-                Update(count) {
-                    this.CounterDisplay.textContent = count; // Assigned html element referenced
-                },
-            });
-
-            // Full template
-            document.body.append(
-                div(
+            const DemoHeader = (title) =>
+                header(
                     span({
-                        $apply: [Red, RawHtml("<h1>Showcase application</h1>")],
-                    }),
-                    new HtmlString((underline) => underline, "<h2>__</h2>"),
-                    AccountInfo(accountData),
-                    br,
-                    h2({ say: () => alert(1) }, "Custom Elements"),
-                    yetiCustom(
-                        {
-                            style: { color: "red" },
-                            onclick: (e) => {
-                                alert(
-                                    e.currentTarget.Data +
-                                        " " +
-                                        e.currentTarget.data
-                                );
-                            },
-                            shadowRoot: {
-                                mode: "open",
-                                stylesheets: [style(`:host {color: red;}`)],
-                            },
-                        },
-                        "Hello from Generic CustomElement"
+                        $apply: [
+                            YetiColor,
+                            RawHtml("<h1>Htmlhammer Demo Application</h1>"),
+                        ],
+                    })
+                );
+
+            const SectionTitle = (title) =>
+                h2({ onclick: () => alert(title) }, title);
+
+            const DemoSection = (title, ...components) =>
+                section(
+                    DemoSectionSeparator(),
+                    SectionTitle(title),
+                    components
+                );
+
+            document.head.append(accountStyle);
+            document.body.append(
+                DemoContainer(
+                    DemoHeader("<h1>Htmlhammer Demo Application</h1>"),
+                    DemoSection(
+                        "Account info component example",
+                        DefaultAccountInfo
                     ),
-                    div(
-                        { is: "yeti-div" },
-                        "Hello from Specialized CustomElement"
+                    DemoSection(
+                        "Custom elements",
+                        DefaultYetiCustom,
+                        DefaultDivUsingIsAttribute
                     ),
-                    h2("Counter component example"),
-                    CounterComponent()
+                    DemoSection("Counter web component example", Counter())
                 )
             );
-
-            // Refs
-            console.log(ref(accountData.transactions));
         </script>
     </body>
 </html>
