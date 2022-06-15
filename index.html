@@ -16,10 +16,8 @@
             import { Counter } from "./demo/counter-web-component-example.js";
 
             import {
-                yetiCustom,
                 DefaultYetiCustom,
-                yetiDiv,
-                DefaultDivUsingIsAttribute,
+                DefaultExtendedNativeHTMLDivElement,
             } from "./demo/custom-elements-examples.js";
 
             import {
@@ -70,7 +68,7 @@
                     DemoSection(
                         "Custom elements",
                         DefaultYetiCustom,
-                        DefaultDivUsingIsAttribute
+                        DefaultExtendedNativeHTMLDivElement
                     ),
                     DemoSection("Counter web component example", Counter())
                 )

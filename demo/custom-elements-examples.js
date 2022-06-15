@@ -1,4 +1,4 @@
-import { div, style, customElement } from "../esm/index.js";
+import { customElement, div, style } from "../esm/index.js";
 
 export const yetiCustom = customElement("yeti-custom", {
     connectedCallback() {
@@ -37,13 +37,13 @@ export const yetiDiv = customElement(
     "yeti-div",
     {
         connectedCallback() {
-            console.log("Specialized custom element created!");
+            console.log("Extended HTMLDivElement created!");
         },
     },
     div
 );
 
-export const DefaultDivUsingIsAttribute = div(
+export const DefaultExtendedNativeHTMLDivElement = div(
     { is: "yeti-div" },
-    "Hello from Specialized CustomElement"
+    "Hello from extended HTMLDivElement"
 );

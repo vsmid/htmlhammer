@@ -313,7 +313,9 @@ document.body.append(yetiCustom());
 <yeti-custom></yeti-custom>
 ```
 
-### Create specialized custom element
+### Extending existing native element
+
+Examples below show how to extend existing [HTMLDivElement](https://developer.mozilla.org/en-US/docs/Web/API/HTMLDivElement)
 
 -   Using only htmlhammer
 
