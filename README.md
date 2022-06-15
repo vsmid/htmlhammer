@@ -420,7 +420,35 @@ Conventions apply only to the provider(see under [Method signature](#method-sign
 
 This example demonstrates how you can use this library to build web component with simple state management and a few action buttons. It also shows you a cool way of how you can set and assign any node you would like to reference at any time during component's life. This feature is basically a consequence of building html with javascript which htmlhammer is all about.
 
-See [counter web component example](https://github.com/vsmid/htmlhammer/blob/master/demo/counter-web-component-example.js).
+```javascript
+// Simplified counter component example
+export const Counter = customElement("yeti-counter", {
+    Count: 0,
+    connectedCallback() {
+        this.append(
+            button({ id: "dec", onclick: this.Dec }, "-"),
+            (this.CounterDisplay = span(this.Count)), // Cool way to set and assign html element
+            button({ id: "inc", onclick: this.Inc }, "+")
+        );
+    },
+    observedAttributes: ["count"],
+    attributeChangedCallback(n, ov, nv) {
+        // Each time Count changes a new console log is written
+        console.log(`Counter change: ${ov} -> ${nv}`);
+    },
+    Inc() {
+        this.Update(++this.Count);
+    },
+    Dec() {
+        this.Update(--this.Count);
+    },
+    Update(count) {
+        this.CounterDisplay.textContent = count; // Assigned html element referenced
+    },
+});
+```
+
+See [complete counter web component example](https://github.com/vsmid/htmlhammer/blob/master/demo/counter-web-component-example.js).
 
 ### Demo
 
