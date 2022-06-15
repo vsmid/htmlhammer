@@ -35,6 +35,10 @@ export const Counter = customElement("yeti-counter", {
             button({ id: "inc", onclick: this.Inc }, "+")
         );
     },
+    observedAttributes: ["count"],
+    attributeChangedCallback(n, ov, nv) {
+        console.log(`Counter change: ${ov} -> ${nv}`);
+    },
     Inc() {
         this.Update(++this.Count);
     },

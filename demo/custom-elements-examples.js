@@ -1,6 +1,6 @@
 import { customElement, div, style } from "../esm/index.js";
 
-export const yetiCustom = customElement("yeti-custom", {
+export const YetiCustom = customElement("yeti-custom", {
     connectedCallback() {
         console.log("Generic custom element created!");
         // Set shadow only if not set via htmlhammer's element attribute
@@ -18,7 +18,7 @@ export const yetiCustom = customElement("yeti-custom", {
     age: 2, // Will reflect observed attribute
 });
 
-export const DefaultYetiCustom = yetiCustom(
+export const DefaultYetiCustom = YetiCustom(
     {
         style: { color: "red" },
         onclick: (e) => {
@@ -33,7 +33,7 @@ export const DefaultYetiCustom = yetiCustom(
 );
 
 // Extends HTMLDivElement
-export const yetiDiv = customElement(
+export const YetiDiv = customElement(
     "yeti-div",
     {
         connectedCallback() {

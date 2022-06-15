@@ -3,56 +3,62 @@
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Htmlhammer Demo</title>
+        <link
+            rel="stylesheet"
+            href="https://unpkg.com/@highlightjs/cdn-assets@11.5.1/styles/github.min.css"
+        />
+        <title>Htmlhammer</title>
     </head>
 
     <body>
         <script type="module">
             import {
-                DefaultAccountInfo,
+                AccountInfo,
                 accountStyle,
             } from "./demo/account-example.js";
-
+            import AccountInfoData from "./demo/account-data.js";
             import { Counter } from "./demo/counter-web-component-example.js";
-
             import {
-                DefaultYetiCustom,
-                DefaultExtendedNativeHTMLDivElement,
-            } from "./demo/custom-elements-examples.js";
-
-            import {
+                a,
                 span,
                 div,
                 h2,
                 style,
                 header,
                 section,
+                img,
+                br,
+                code,
+                pre,
+                ref,
             } from "./esm/index.js";
 
             const YetiColor = (el) => (el.style.color = "#81B3DA");
             const RawHtml = (data) => (el) => (el.innerHTML = data);
 
-            const DemoContainer = (...components) => div({}, components);
-
-            // Specialized appender to append raw html. The same can be achieved via RawHtml and $apply.
-            const DemoSectionSeparator = () => h2("__");
+            const DemoContainer = (...components) =>
+                div({ style: { padding: "2px" } }, components);
 
             const DemoHeader = (title) =>
                 header(
+                    img({ src: "./htmlhammer.png", width: 50, height: 25 }),
                     span({
-                        $apply: [
-                            YetiColor,
-                            RawHtml("<h1>Htmlhammer Demo Application</h1>"),
-                        ],
+                        $apply: [YetiColor, RawHtml("<h1>Htmlhammer</h1>")],
                     })
                 );
 
             const SectionTitle = (title) =>
-                h2({ onclick: () => alert(title) }, title);
+                h2(
+                    {
+                        style: { textDecoration: "underline" },
+                        onclick: () => alert(title),
+                    },
+                    title
+                );
 
             const DemoSection = (title, ...components) =>
                 section(
-                    DemoSectionSeparator(),
+                    { style: { padding: "12px" } },
                     SectionTitle(title),
                     components
                 );
@@ -60,17 +66,9 @@
             document.head.append(accountStyle);
             document.body.append(
                 DemoContainer(
-                    DemoHeader("<h1>Htmlhammer Demo Application</h1>"),
-                    DemoSection(
-                        "Account info component example",
-                        DefaultAccountInfo
-                    ),
-                    DemoSection(
-                        "Custom elements",
-                        DefaultYetiCustom,
-                        DefaultExtendedNativeHTMLDivElement
-                    ),
-                    DemoSection("Counter web component example", Counter())
+                    DemoHeader,
+                    DemoSection("HTML templates", AccountInfo(AccountInfoData)),
+                    DemoSection("Custom elements (Web Components)", Counter())
                 )
             );
         </script>

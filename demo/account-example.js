@@ -2,10 +2,9 @@ import {
     br,
     button,
     div,
-    h2,
+    h5,
     input,
     label,
-    ref,
     setRef,
     style,
     table,
@@ -13,39 +12,6 @@ import {
     th,
     tr,
 } from "../esm/index.js";
-
-const accountData = {
-    iban: "HR23600011001224234",
-    balance: 235.45,
-    currency: "EUR",
-    transactions: [
-        {
-            date: new Date(),
-            amount: 0.11,
-            purpose: "Toy-Toy",
-        },
-        {
-            date: new Date(),
-            amount: 11.19,
-            purpose: "Plush rabbit",
-        },
-        {
-            date: new Date(),
-            amount: 12.33,
-            purpose: "Coca-Cola, 2l",
-        },
-        {
-            date: new Date(),
-            amount: 34.23,
-            purpose: "A4 paper bundle",
-        },
-        {
-            date: new Date(),
-            amount: 0.21,
-            purpose: "Coffee can",
-        },
-    ],
-};
 
 export const accountStyle = style(
     {},
@@ -72,25 +38,10 @@ export const accountStyle = style(
 `
 );
 
-const getTransactionsTableViaRef = () => ref(accountData.transactions);
-
-const SpentButton = (trxs, currency) =>
-    button(
-        {
-            onclick: () =>
-                alert(
-                    "Total amount spent: " +
-                        trxs.reduce((acc, trx) => acc + trx.amount, 0) +
-                        ` ${currency}`
-                ),
-        },
-        "Total amount spent"
-    );
-
 export const AccountInfo = (data) =>
     div(
         { class: "accountInfo" },
-        h2({}, "Account info"),
+        h5({}, "Account info"),
         label({ for: "iban" }, "IBAN:"),
         input({
             id: "iban",
@@ -112,7 +63,7 @@ export const AccountInfo = (data) =>
             value: data.currency,
         }),
         br(),
-        h2({}, "Transactions"),
+        h5({}, "Transactions"),
         table(
             { $ref: data.transactions },
             tr({}, th({}, "Date"), th({}, "Amount"), th({}, "Purpose")),
@@ -136,17 +87,18 @@ export const AccountInfo = (data) =>
                 ]
             )
         ),
-        SpentButton(data.transactions, data.currency),
         button(
             {
                 onclick: () =>
-                    console.log(
-                        "Transactions table:",
-                        getTransactionsTableViaRef()
+                    alert(
+                        "Total amount spent: " +
+                            data.transactions.reduce(
+                                (acc, trx) => acc + trx.amount,
+                                0
+                            ) +
+                            ` ${data.currency}`
                     ),
             },
-            "Print transactions table to console via ref"
+            "Total amount spent"
         )
     );
-
-export const DefaultAccountInfo = AccountInfo(accountData);
