@@ -31,6 +31,8 @@
                 code,
                 pre,
                 ref,
+                strong,
+                i,
             } from "./esm/index.js";
 
             const YetiColor = (el) => (el.style.color = "#81B3DA");
@@ -41,10 +43,14 @@
 
             const DemoHeader = (title) =>
                 header(
+                    { style: { textAlign: "center" } },
                     img({ src: "./htmlhammer.png", width: 50, height: 25 }),
-                    span({
-                        $apply: [YetiColor, RawHtml("<h1>Htmlhammer</h1>")],
-                    })
+                    br,
+                    br,
+                    div(
+                        strong(i("htmlhammer")),
+                        " - a tiny javascript library for building html and web components"
+                    )
                 );
 
             const SectionTitle = (title) =>
@@ -56,10 +62,10 @@
                     title
                 );
 
-            const DemoSection = (title, ...components) =>
+            const DemoSection = (title, link, ...components) =>
                 section(
                     { style: { padding: "12px" } },
-                    SectionTitle(title),
+                    span(SectionTitle(title), a({ href: link }, "See code")),
                     components
                 );
 
@@ -67,8 +73,18 @@
             document.body.append(
                 DemoContainer(
                     DemoHeader,
-                    DemoSection("HTML templates", AccountInfo(AccountInfoData)),
-                    DemoSection("Custom elements (Web Components)", Counter())
+                    DemoSection(
+                        "Html templates",
+                        "./demo/account-example.js",
+                        AccountInfo(AccountInfoData)
+                    ),
+                    DemoSection(
+                        "Custom elements (Web Components)",
+                        "./demo/counter-web-component-example.js",
+                        br,
+                        br,
+                        Counter()
+                    )
                 )
             );
         </script>
