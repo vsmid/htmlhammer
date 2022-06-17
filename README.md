@@ -483,3 +483,8 @@ npm run build
 ```
 
 ## [Current version test coverage report](https://github.com/vsmid/htmlhammer/blob/master/test-coverage-report.txt)
+
+## Special thanks
+Big thanks to [JetBrains](https://www.jetbrains.com/) for granting me a free license :)
+
+![JetBrains Logo (Main) logo](https://resources.jetbrains.com/storage/products/company/brand/logos/jb_beam.svg)
