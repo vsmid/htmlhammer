@@ -1,21 +1,21 @@
 import {
-    br,
-    button,
-    div,
-    h5,
-    input,
-    label,
-    setRef,
-    style,
-    table,
-    td,
-    th,
-    tr,
-} from "../esm/index.js";
+  br,
+  button,
+  div,
+  h5,
+  input,
+  label,
+  setRef,
+  style,
+  table,
+  td,
+  th,
+  tr
+} from '../esm/index.js';
 
 export const accountStyle = style(
-    {},
-    `
+  {},
+  `
 .accountInfo {
     font-family: helvetica;
     font-size: 18px;
@@ -38,67 +38,72 @@ export const accountStyle = style(
 `
 );
 
-export const AccountInfo = (data) =>
-    div(
-        { class: "accountInfo" },
-        h5({}, "Account info"),
-        label({ for: "iban" }, "IBAN:"),
-        input({
-            id: "iban",
-            readonly: true,
-            value: data.iban,
-        }),
-        br(),
-        label({ for: "bal" }, "Balance:"),
-        input({
-            id: "bal",
-            readonly: true,
-            value: data.balance,
-        }),
-        br(),
-        label({ for: "curr" }, "Currency:"),
-        input({
-            id: "curr",
-            readonly: true,
-            value: data.currency,
-        }),
-        br(),
-        h5({}, "Transactions"),
-        table(
-            { $ref: data.transactions },
-            tr({}, th({}, "Date"), th({}, "Amount"), th({}, "Purpose")),
-            tr(
-                {
-                    $for: data.transactions,
-                    $if: (trx) => trx.amount > 0.2,
-                    $ref: setRef,
-                },
-                (trx) => [
-                    td({}, trx.date.toISOString()),
-                    td(
-                        {
-                            style: {
-                                textAlign: "right",
-                            },
-                        },
-                        trx.amount
-                    ),
-                    td({}, trx.purpose),
-                ]
-            )
-        ),
-        button(
+export const AccountInfo = data =>
+  div(
+    { class: 'accountInfo' },
+    h5({}, 'Account info'),
+    label({ for: 'iban' }, 'IBAN:'),
+    input({
+      id: 'iban',
+      readonly: true,
+      value: data.iban
+    }),
+    br(),
+    label({ for: 'bal' }, 'Balance:'),
+    input({
+      id: 'bal',
+      readonly: true,
+      value: data.balance
+    }),
+    br(),
+    label({ for: 'curr' }, 'Currency:'),
+    input({
+      id: 'curr',
+      readonly: true,
+      value: data.currency
+    }),
+    br(),
+    h5({}, 'Transactions'),
+    table(
+      { $ref: data.transactions },
+      tr(
+        {},
+        th({}, 'Date'),
+        th({}, 'Amount'),
+        th({}, 'Purpose')
+      ),
+      tr(
+        {
+          $for: data.transactions,
+          $if: trx => trx.amount > 0.2,
+          $ref: setRef
+        },
+        trx => [
+          td({}, trx.date.toISOString()),
+          td(
             {
-                onclick: () =>
-                    alert(
-                        "Total amount spent: " +
-                            data.transactions.reduce(
-                                (acc, trx) => acc + trx.amount,
-                                0
-                            ) +
-                            ` ${data.currency}`
-                    ),
+              style: {
+                textAlign: 'right'
+              }
             },
-            "Total amount spent"
-        )
-    );
+            trx.amount
+          ),
+          td({}, trx.purpose)
+        ]
+      )
+    ),
+    button(
+      {
+        onclick: () =>
+          alert(
+            'Total amount spent: ' +
+              data.transactions.reduce(
+                (acc, trx) => acc + trx.amount,
+                0
+              ) +
+              ` ${data.currency}`
+          )
+      },
+      'Total amount spent'
+    )
+  );

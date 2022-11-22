@@ -1,8 +1,13 @@
-import { style, customElement, button, span } from "../esm/index.js";
+import {
+  style,
+  customElement,
+  button,
+  span
+} from '../esm/index.js';
 
 export const counterStyle = style(
-    {},
-    `
+  {},
+  `
 * {
     font-size: 200%;
 }
@@ -24,28 +29,28 @@ button {
 `
 );
 
-export const Counter = customElement("yeti-counter", {
-    Count: 0,
-    connectedCallback() {
-        this.attachShadow({ mode: "open" });
-        this.shadowRoot.append(
-            counterStyle,
-            button({ id: "dec", onclick: this.Dec }, "-"),
-            (this.CounterDisplay = span(this.Count)), // Cool way to set and assign html element
-            button({ id: "inc", onclick: this.Inc }, "+")
-        );
-    },
-    observedAttributes: ["count"],
-    attributeChangedCallback(n, ov, nv) {
-        console.log(`Counter change: ${ov} -> ${nv}`);
-    },
-    Inc() {
-        this.Update(++this.Count);
-    },
-    Dec() {
-        this.Update(--this.Count);
-    },
-    Update(count) {
-        this.CounterDisplay.textContent = count; // Assigned html element referenced
-    },
+export const Counter = customElement('yeti-counter', {
+  Count: 0,
+  connectedCallback() {
+    this.attachShadow({ mode: 'open' });
+    this.shadowRoot.append(
+      counterStyle,
+      button({ id: 'dec', onclick: this.Dec }, '-'),
+      (this.CounterDisplay = span(this.Count)), // Cool way to set and assign html element
+      button({ id: 'inc', onclick: this.Inc }, '+')
+    );
+  },
+  observedAttributes: ['count'],
+  attributeChangedCallback(n, ov, nv) {
+    console.log(`Counter change: ${ov} -> ${nv}`);
+  },
+  Inc() {
+    this.Update(++this.Count);
+  },
+  Dec() {
+    this.Update(--this.Count);
+  },
+  Update(count) {
+    this.CounterDisplay.textContent = count; // Assigned html element referenced
+  }
 });

@@ -1,92 +1,102 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <link
-            rel="stylesheet"
-            href="https://unpkg.com/@highlightjs/cdn-assets@11.5.1/styles/github.min.css"
-        />
-        <title>Htmlhammer</title>
-    </head>
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0"
+    />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/@highlightjs/cdn-assets@11.5.1/styles/github.min.css"
+    />
+    <title>Htmlhammer</title>
+  </head>
 
-    <body>
-        <script type="module">
-            import {
-                AccountInfo,
-                accountStyle,
-            } from "./demo/account-example.js";
-            import AccountInfoData from "./demo/account-data.js";
-            import { Counter } from "./demo/counter-web-component-example.js";
-            import {
-                a,
-                span,
-                div,
-                h2,
-                style,
-                header,
-                section,
-                img,
-                br,
-                code,
-                pre,
-                ref,
-                strong,
-                i,
-            } from "./esm/index.js";
+  <body>
+    <script type="module">
+      import {
+        AccountInfo,
+        accountStyle
+      } from './demo/account-example.js';
+      import AccountInfoData from './demo/account-data.js';
+      import { Counter } from './demo/counter-web-component-example.js';
+      import {
+        a,
+        span,
+        div,
+        h2,
+        style,
+        header,
+        section,
+        img,
+        br,
+        code,
+        pre,
+        ref,
+        strong,
+        i
+      } from './esm/index.js';
 
-            const YetiColor = (el) => (el.style.color = "#81B3DA");
-            const RawHtml = (data) => (el) => (el.innerHTML = data);
+      const YetiColor = el => (el.style.color = '#81B3DA');
+      const RawHtml = data => el => (el.innerHTML = data);
 
-            const DemoContainer = (...components) =>
-                div({ style: { padding: "2px" } }, components);
+      const DemoContainer = (...components) =>
+        div({ style: { padding: '2px' } }, components);
 
-            const DemoHeader = (title) =>
-                header(
-                    { style: { textAlign: "center" } },
-                    img({ src: "./htmlhammer.png", width: 50, height: 25 }),
-                    br,
-                    br,
-                    div(
-                        strong(i("htmlhammer")),
-                        " - a tiny javascript library for building html and web components"
-                    )
-                );
+      const DemoHeader = title =>
+        header(
+          { style: { textAlign: 'center' } },
+          img({
+            src: './htmlhammer.png',
+            width: 50,
+            height: 25
+          }),
+          br,
+          br,
+          div(
+            strong(i('htmlhammer')),
+            ' - a tiny javascript library for building html and web components'
+          )
+        );
 
-            const SectionTitle = (title) =>
-                h2(
-                    {
-                        style: { textDecoration: "underline" },
-                        onclick: () => alert(title),
-                    },
-                    title
-                );
+      const SectionTitle = title =>
+        h2(
+          {
+            style: { textDecoration: 'underline' },
+            onclick: () => alert(title)
+          },
+          title
+        );
 
-            const DemoSection = (title, link, ...components) =>
-                section(
-                    { style: { padding: "12px" } },
-                    span(SectionTitle(title), a({ href: link }, "See code")),
-                    components
-                );
+      const DemoSection = (title, link, ...components) =>
+        section(
+          { style: { padding: '12px' } },
+          span(
+            SectionTitle(title),
+            a({ href: link }, 'See code')
+          ),
+          components
+        );
 
-            document.head.append(accountStyle);
-            document.body.append(
-                DemoContainer(
-                    DemoHeader,
-                    DemoSection(
-                        "Html templates",
-                        "./demo/account-example.js",
-                        AccountInfo(AccountInfoData)
-                    ),
-                    DemoSection(
-                        "Custom elements (Web Components)",
-                        "./demo/counter-web-component-example.js",
-                        br,
-                        br,
-                        Counter()
-                    )
-                )
-            );
-        </script>
-    </body>
+      document.head.append(accountStyle);
+      document.body.append(
+        DemoContainer(
+          DemoHeader,
+          DemoSection(
+            'Html templates',
+            './demo/account-example.js',
+            AccountInfo(AccountInfoData)
+          ),
+          DemoSection(
+            'Custom elements (Web Components)',
+            './demo/counter-web-component-example.js',
+            br,
+            br,
+            Counter()
+          )
+        )
+      );
+    </script>
+  </body>
 </html>
