@@ -1,3 +1,6 @@
+## 3.6.0
+* AttributeHandler can now handle data attributes
+
 ## 3.5.5
 * CustomElement function now correctly assigns classes
 * Updated prettier config
