@@ -31,14 +31,18 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
 
 var defineProperty = Object.defineProperty,
     defineProperties = Object.defineProperties;
-var reserved = ["postConstruct", "connectedCallback", "disconnectedCallback", "attributeChangedCallback", "adoptedCallback", "observedAttributes"];
+var reserved = ['postConstruct', 'connectedCallback', 'disconnectedCallback', 'attributeChangedCallback', 'adoptedCallback', 'observedAttributes'];
 
 var isUppercase = function isUppercase(member) {
   return /[A-Z]/.test(member.charAt(0));
 };
 
 var isFunction = function isFunction(member) {
-  return typeof member === "function";
+  return typeof member === 'function';
+};
+
+var isClass = function isClass(member) {
+  return member.constructor && member.constructor.toString().startsWith('class ');
 };
 
 var isProperty = function isProperty(member) {
@@ -68,7 +72,7 @@ var assignMembers = function assignMembers(provider, instance) {
     return !reserved.includes(member);
   }).forEach(function (member) {
     switch (true) {
-      case isFunction(provider[member]):
+      case isFunction(provider[member]) || isClass(provider[member]):
         defineProperty(instance, member, {
           value: provider[member],
           writable: isUppercase(member)
@@ -155,7 +159,7 @@ var build = function build(provider, type) {
 
   var prototype = {};
   reserved.filter(function (member) {
-    return member !== "observedAttributes";
+    return member !== 'observedAttributes';
   }).forEach(function (member) {
     return prototype[member] = {
       value: provider[member]

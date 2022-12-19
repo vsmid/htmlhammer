@@ -1,3 +1,7 @@
+## 3.5.5
+* CustomElement function now correctly assigns classes
+* Updated prettier config
+
 ## 3.5.4
 
 Fixed bug where members(e.g. properties) of customElement instance were not correctly set in postConstruct lifecycle method.

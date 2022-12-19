@@ -170,14 +170,14 @@ var htmlhammer = (function (exports) {
         params[_key - 1] = arguments[_key];
       }
 
-      return _super.call(this, typeof element === "function" ? element.apply(void 0, params) : element);
+      return _super.call(this, typeof element === 'function' ? element.apply(void 0, params) : element);
     }
 
     _createClass(HtmlString, [{
       key: "append",
       value: function append(parentElement) {
         if (this.element) {
-          parentElement.insertAdjacentHTML("beforeend", typeof this.element === "string" ? this.element : this.element.toString());
+          parentElement.insertAdjacentHTML('beforeend', typeof this.element === 'string' ? this.element : this.element.toString());
         }
       }
     }]);
@@ -220,7 +220,7 @@ var htmlhammer = (function (exports) {
     };
   })();
 
-  var PropertyTypes = ["Function", "Object", "Array"];
+  var PropertyTypes = ['Function', 'Object', 'Array'];
   var Blueprint = /*#__PURE__*/_createClass(function Blueprint() {
     var tag = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
     var object = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
@@ -240,7 +240,7 @@ var htmlhammer = (function (exports) {
       case Object.keys(AttributeHandler).includes(name):
         break;
 
-      case name === "shadowRoot":
+      case name === 'shadowRoot':
         element.attachShadow(value);
 
         if (value.stylesheets) {
@@ -251,13 +251,13 @@ var htmlhammer = (function (exports) {
 
         break;
 
-      case name === "style":
+      case name === 'style':
         Object.keys(value).forEach(function (key) {
           element.style[key] = value[key];
         });
         break;
 
-      case value.constructor.toString().startsWith("class"):
+      case value.constructor.toString().startsWith('class '):
       case PropertyTypes.includes(value.constructor.name):
         element[name] = value;
         break;
@@ -276,7 +276,7 @@ var htmlhammer = (function (exports) {
     if (child !== null && child !== undefined) {
       var appendTo = element;
 
-      if (element.shadowRoot && element.shadowRoot.mode === "open") {
+      if (element.shadowRoot && element.shadowRoot.mode === 'open') {
         appendTo = element.shadowRoot;
       }
 
@@ -284,11 +284,11 @@ var htmlhammer = (function (exports) {
         child.forEach(function (_) {
           return appendChild(_, appendTo, blueprint);
         });
-      } else if (child instanceof HTMLElement || child.constructor.name === "Comment") {
+      } else if (child instanceof HTMLElement || child.constructor.name === 'Comment') {
         appendTo.append(child);
       } else if (child instanceof ChildAppender) {
         child.append(appendTo);
-      } else if (typeof child === "function") {
+      } else if (typeof child === 'function') {
         appendChild(blueprint.object ? child(blueprint.object, blueprint.index) : child(), appendTo, blueprint.object);
       } else {
         appendTo.append(document.createTextNode(child.toString()));
@@ -315,11 +315,11 @@ var htmlhammer = (function (exports) {
       if (attributeValue === null || attributeValue === undefined) {
         return true;
       } else {
-        return typeof attributeValue === "function" ? attributeValue(callbackInput) : !!attributeValue;
+        return typeof attributeValue === 'function' ? attributeValue(callbackInput) : !!attributeValue;
       }
     },
     $ref: function $ref(attributeValue, callbackInput, element) {
-      if (typeof attributeValue === "function") {
+      if (typeof attributeValue === 'function') {
         if (callbackInput) {
           attributeValue(callbackInput)(element);
         } else {
@@ -346,7 +346,7 @@ var htmlhammer = (function (exports) {
     var is = attributes.is;
 
     if (is) {
-      options["is"] = is;
+      options['is'] = is;
     }
 
     return options;
@@ -370,7 +370,7 @@ var htmlhammer = (function (exports) {
     }
 
     if (parts && parts.length > 0) {
-      var isObject = parts[0].constructor.name === "Object";
+      var isObject = parts[0].constructor.name === 'Object';
 
       if (parts.length > 1) {
         if (isObject) {
@@ -424,20 +424,20 @@ var htmlhammer = (function (exports) {
   var HTML = (function () {
     var tags = {};
     [// Main root
-    "html", // Document metadata
-    "base", "head", "link", "meta", "style", "title", // Sectioning root
-    "body", // Content sectioning
-    "address", "article", "aside", "footer", "header", "h1", "h2", "h3", "h4", "h5", "h6", "hggroup", "main", "nav", "section", // Text content
-    "blockquote", "dd", "div", "dl", "dt", "figcaption", "figure", "hr", "li", "ol", "p", "pre", "ul", // Inline text semantics
-    "a", "abbr", "b", "bdi", "bdo", "br", "cite", "code", "data", "dfn", "em", "i", "kbd", "mark", "q", "rb", "rp", "rt", "rtc", "ruby", "s", "samp", "small", "span", "strong", "sub", "sup", "time", "u", "variable", "wbr", // Image and multimedia
-    "area", "audio", "img", "map", "track", "video", // Embedded content
-    "embed", "iframe", "object", "param", "picture", "source", // Scripting
-    "canvas", "noscript", "script", // Demarcating edits
-    "del", "ins", // Table content
-    "caption", "col", "colgroup", "table", "tbody", "td", "tfoot", "th", "thead", "tr", // Forms
-    "button", "datalist", "fieldset", "form", "input", "label", "legend", "meter", "oprgroup", "option", "output", "progress", "select", "textarea", // Interactive elements
-    "details", "dialog", "menu", "summary", // Web Components
-    "slot", "template"].forEach(function (tag) {
+    'html', // Document metadata
+    'base', 'head', 'link', 'meta', 'style', 'title', // Sectioning root
+    'body', // Content sectioning
+    'address', 'article', 'aside', 'footer', 'header', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'hggroup', 'main', 'nav', 'section', // Text content
+    'blockquote', 'dd', 'div', 'dl', 'dt', 'figcaption', 'figure', 'hr', 'li', 'ol', 'p', 'pre', 'ul', // Inline text semantics
+    'a', 'abbr', 'b', 'bdi', 'bdo', 'br', 'cite', 'code', 'data', 'dfn', 'em', 'i', 'kbd', 'mark', 'q', 'rb', 'rp', 'rt', 'rtc', 'ruby', 's', 'samp', 'small', 'span', 'strong', 'sub', 'sup', 'time', 'u', 'variable', 'wbr', // Image and multimedia
+    'area', 'audio', 'img', 'map', 'track', 'video', // Embedded content
+    'embed', 'iframe', 'object', 'param', 'picture', 'source', // Scripting
+    'canvas', 'noscript', 'script', // Demarcating edits
+    'del', 'ins', // Table content
+    'caption', 'col', 'colgroup', 'table', 'tbody', 'td', 'tfoot', 'th', 'thead', 'tr', // Forms
+    'button', 'datalist', 'fieldset', 'form', 'input', 'label', 'legend', 'meter', 'oprgroup', 'option', 'output', 'progress', 'select', 'textarea', // Interactive elements
+    'details', 'dialog', 'menu', 'summary', // Web Components
+    'slot', 'template'].forEach(function (tag) {
       tags[tag] = define(tag);
     });
     return tags;
@@ -445,14 +445,18 @@ var htmlhammer = (function (exports) {
 
   var defineProperty = Object.defineProperty,
       defineProperties = Object.defineProperties;
-  var reserved = ["postConstruct", "connectedCallback", "disconnectedCallback", "attributeChangedCallback", "adoptedCallback", "observedAttributes"];
+  var reserved = ['postConstruct', 'connectedCallback', 'disconnectedCallback', 'attributeChangedCallback', 'adoptedCallback', 'observedAttributes'];
 
   var isUppercase = function isUppercase(member) {
     return /[A-Z]/.test(member.charAt(0));
   };
 
   var isFunction = function isFunction(member) {
-    return typeof member === "function";
+    return typeof member === 'function';
+  };
+
+  var isClass = function isClass(member) {
+    return member.constructor && member.constructor.toString().startsWith('class ');
   };
 
   var isProperty = function isProperty(member) {
@@ -482,7 +486,7 @@ var htmlhammer = (function (exports) {
       return !reserved.includes(member);
     }).forEach(function (member) {
       switch (true) {
-        case isFunction(provider[member]):
+        case isFunction(provider[member]) || isClass(provider[member]):
           defineProperty(instance, member, {
             value: provider[member],
             writable: isUppercase(member)
@@ -563,7 +567,7 @@ var htmlhammer = (function (exports) {
 
     var prototype = {};
     reserved.filter(function (member) {
-      return member !== "observedAttributes";
+      return member !== 'observedAttributes';
     }).forEach(function (member) {
       return prototype[member] = {
         value: provider[member]

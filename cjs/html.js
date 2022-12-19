@@ -29,7 +29,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var PropertyTypes = ["Function", "Object", "Array"];
+var PropertyTypes = ['Function', 'Object', 'Array'];
 
 var Blueprint = /*#__PURE__*/_createClass(function Blueprint() {
   var tag = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
@@ -53,7 +53,7 @@ var attachAttribute = function attachAttribute(name, value, element) {
     case Object.keys(AttributeHandler).includes(name):
       break;
 
-    case name === "shadowRoot":
+    case name === 'shadowRoot':
       element.attachShadow(value);
 
       if (value.stylesheets) {
@@ -64,13 +64,13 @@ var attachAttribute = function attachAttribute(name, value, element) {
 
       break;
 
-    case name === "style":
+    case name === 'style':
       Object.keys(value).forEach(function (key) {
         element.style[key] = value[key];
       });
       break;
 
-    case value.constructor.toString().startsWith("class"):
+    case value.constructor.toString().startsWith('class '):
     case PropertyTypes.includes(value.constructor.name):
       element[name] = value;
       break;
@@ -92,7 +92,7 @@ var appendChild = function appendChild(child, element, blueprint) {
   if (child !== null && child !== undefined) {
     var appendTo = element;
 
-    if (element.shadowRoot && element.shadowRoot.mode === "open") {
+    if (element.shadowRoot && element.shadowRoot.mode === 'open') {
       appendTo = element.shadowRoot;
     }
 
@@ -100,11 +100,11 @@ var appendChild = function appendChild(child, element, blueprint) {
       child.forEach(function (_) {
         return appendChild(_, appendTo, blueprint);
       });
-    } else if (child instanceof HTMLElement || child.constructor.name === "Comment") {
+    } else if (child instanceof HTMLElement || child.constructor.name === 'Comment') {
       appendTo.append(child);
     } else if (child instanceof _appenders.ChildAppender) {
       child.append(appendTo);
-    } else if (typeof child === "function") {
+    } else if (typeof child === 'function') {
       appendChild(blueprint.object ? child(blueprint.object, blueprint.index) : child(), appendTo, blueprint.object);
     } else {
       appendTo.append(document.createTextNode(child.toString()));
@@ -133,11 +133,11 @@ var AttributeHandler = Object.freeze({
     if (attributeValue === null || attributeValue === undefined) {
       return true;
     } else {
-      return typeof attributeValue === "function" ? attributeValue(callbackInput) : !!attributeValue;
+      return typeof attributeValue === 'function' ? attributeValue(callbackInput) : !!attributeValue;
     }
   },
   $ref: function $ref(attributeValue, callbackInput, element) {
-    if (typeof attributeValue === "function") {
+    if (typeof attributeValue === 'function') {
       if (callbackInput) {
         attributeValue(callbackInput)(element);
       } else {
@@ -166,7 +166,7 @@ var elementOptions = function elementOptions(attributes) {
   var is = attributes.is;
 
   if (is) {
-    options["is"] = is;
+    options['is'] = is;
   }
 
   return options;
@@ -196,7 +196,7 @@ var extract = function extract() {
   }
 
   if (parts && parts.length > 0) {
-    var isObject = parts[0].constructor.name === "Object";
+    var isObject = parts[0].constructor.name === 'Object';
 
     if (parts.length > 1) {
       if (isObject) {
@@ -256,20 +256,20 @@ exports.define = define;
 var _default = function () {
   var tags = {};
   [// Main root
-  "html", // Document metadata
-  "base", "head", "link", "meta", "style", "title", // Sectioning root
-  "body", // Content sectioning
-  "address", "article", "aside", "footer", "header", "h1", "h2", "h3", "h4", "h5", "h6", "hggroup", "main", "nav", "section", // Text content
-  "blockquote", "dd", "div", "dl", "dt", "figcaption", "figure", "hr", "li", "ol", "p", "pre", "ul", // Inline text semantics
-  "a", "abbr", "b", "bdi", "bdo", "br", "cite", "code", "data", "dfn", "em", "i", "kbd", "mark", "q", "rb", "rp", "rt", "rtc", "ruby", "s", "samp", "small", "span", "strong", "sub", "sup", "time", "u", "variable", "wbr", // Image and multimedia
-  "area", "audio", "img", "map", "track", "video", // Embedded content
-  "embed", "iframe", "object", "param", "picture", "source", // Scripting
-  "canvas", "noscript", "script", // Demarcating edits
-  "del", "ins", // Table content
-  "caption", "col", "colgroup", "table", "tbody", "td", "tfoot", "th", "thead", "tr", // Forms
-  "button", "datalist", "fieldset", "form", "input", "label", "legend", "meter", "oprgroup", "option", "output", "progress", "select", "textarea", // Interactive elements
-  "details", "dialog", "menu", "summary", // Web Components
-  "slot", "template"].forEach(function (tag) {
+  'html', // Document metadata
+  'base', 'head', 'link', 'meta', 'style', 'title', // Sectioning root
+  'body', // Content sectioning
+  'address', 'article', 'aside', 'footer', 'header', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'hggroup', 'main', 'nav', 'section', // Text content
+  'blockquote', 'dd', 'div', 'dl', 'dt', 'figcaption', 'figure', 'hr', 'li', 'ol', 'p', 'pre', 'ul', // Inline text semantics
+  'a', 'abbr', 'b', 'bdi', 'bdo', 'br', 'cite', 'code', 'data', 'dfn', 'em', 'i', 'kbd', 'mark', 'q', 'rb', 'rp', 'rt', 'rtc', 'ruby', 's', 'samp', 'small', 'span', 'strong', 'sub', 'sup', 'time', 'u', 'variable', 'wbr', // Image and multimedia
+  'area', 'audio', 'img', 'map', 'track', 'video', // Embedded content
+  'embed', 'iframe', 'object', 'param', 'picture', 'source', // Scripting
+  'canvas', 'noscript', 'script', // Demarcating edits
+  'del', 'ins', // Table content
+  'caption', 'col', 'colgroup', 'table', 'tbody', 'td', 'tfoot', 'th', 'thead', 'tr', // Forms
+  'button', 'datalist', 'fieldset', 'form', 'input', 'label', 'legend', 'meter', 'oprgroup', 'option', 'output', 'progress', 'select', 'textarea', // Interactive elements
+  'details', 'dialog', 'menu', 'summary', // Web Components
+  'slot', 'template'].forEach(function (tag) {
     tags[tag] = define(tag);
   });
   return tags;
