@@ -12,6 +12,7 @@ const reserved = [
 const isUppercase = member => /[A-Z]/.test(member.charAt(0));
 const isFunction = member => typeof member === 'function';
 const isClass = member =>
+  member &&
   member.constructor &&
   member.constructor.toString().startsWith('class ');
 const isProperty = member => !isFunction(member);
