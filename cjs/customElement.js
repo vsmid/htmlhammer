@@ -42,7 +42,7 @@ var isFunction = function isFunction(member) {
 };
 
 var isClass = function isClass(member) {
-  return member.constructor && member.constructor.toString().startsWith('class ');
+  return member && member.constructor && member.constructor.toString().startsWith('class ');
 };
 
 var isProperty = function isProperty(member) {

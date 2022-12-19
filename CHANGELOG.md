@@ -1,3 +1,6 @@
+## 3.6.1
+* Added check for null when checking whether member is a class
+
 ## 3.6.0
 * AttributeHandler can now handle data attributes
 
