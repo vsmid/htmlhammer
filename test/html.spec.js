@@ -517,6 +517,12 @@ o.spec('HTML', () => {
       o(element.getAttribute('speed')).equals('10');
     });
 
+    o('Data attributes are attached as custom data attributes', () => {
+      attachAttribute('dataDummy', 'dummy', element);
+
+      o(element.dataset.dummy).equals('dummy');
+    });
+
     o('Should set checked of radio', () => {
       let radio = document.createElement('input');
       radio.type = 'radio';
