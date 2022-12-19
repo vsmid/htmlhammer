@@ -54,4 +54,32 @@ o.spec('CustomElement', () => {
       o(instance.CountState()).equals(3);
     }
   );
+
+  o(
+    'Should assign primitive, function, class or object correctly',
+    () => {
+      const elHammer = customElement('el-hammer3', {
+        postConstruct: function () {
+          class A {
+            constructor() {
+              this.id = 1;
+            }
+          }
+          this.p = 1;
+          this.o = { id: 1 };
+          this.c = new A();
+          this.f = () => 1;
+        },
+        connectedCallback() {}
+      });
+
+      let instance = elHammer({});
+      document.body.append(instance);
+
+      o(instance.p).equals(1);
+      o(instance.o.id).equals(1);
+      o(instance.c.id).equals(1);
+      o(instance.f()).equals(1);
+    }
+  );
 });

@@ -35,7 +35,7 @@ export const attachAttribute = (name, value, element) => {
         element.style[key] = value[key];
       });
       break;
-    case value.constructor.toString().startsWith('class'):
+    case value.constructor.toString().startsWith('class '):
     case PropertyTypes.includes(value.constructor.name):
       element[name] = value;
       break;

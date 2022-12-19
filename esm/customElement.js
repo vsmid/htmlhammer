@@ -11,6 +11,9 @@ const reserved = [
 ];
 const isUppercase = member => /[A-Z]/.test(member.charAt(0));
 const isFunction = member => typeof member === 'function';
+const isClass = member =>
+  member.constructor &&
+  member.constructor.toString().startsWith('class ');
 const isProperty = member => !isFunction(member);
 const isObserved = (member, observed) =>
   observed.includes(member.toLowerCase());
@@ -35,7 +38,8 @@ const assignMembers = (provider, instance) => {
     .filter(member => !reserved.includes(member))
     .forEach(member => {
       switch (true) {
-        case isFunction(provider[member]):
+        case isFunction(provider[member]) ||
+          isClass(provider[member]):
           defineProperty(instance, member, {
             value: provider[member],
             writable: isUppercase(member)
