@@ -11,11 +11,6 @@ const reserved = [
 ];
 const isUppercase = member => /[A-Z]/.test(member.charAt(0));
 const isFunction = member => typeof member === 'function';
-const isClass = member =>
-  member &&
-  member.constructor &&
-  member.constructor.toString().startsWith('class ');
-const isProperty = member => !isFunction(member);
 const isObserved = (member, observed) =>
   observed.includes(member.toLowerCase());
 const members = provider =>
@@ -38,57 +33,41 @@ const assignMembers = (provider, instance) => {
   members(provider)
     .filter(member => !reserved.includes(member))
     .forEach(member => {
+      let propertyValue = provider[member];
       switch (true) {
-        case isFunction(provider[member]) ||
-          isClass(provider[member]):
+        case isObserved(
+          member,
+          provider.observedAttributes || []
+        ):
           defineProperty(instance, member, {
-            value: provider[member],
-            writable: isUppercase(member)
+            get() {
+              let attributeValue = this.getAttribute(member);
+              // If there is no attribute value yet, try property value
+              return attributeValue
+                ? attributeValue
+                : propertyValue;
+            },
+            set(newVal) {
+              this.setAttribute(member, newVal);
+            }
           });
           break;
-        case isProperty(provider[member]):
-          // Optimize this
-          let propertyValue = JSON.parse(
-            JSON.stringify(provider[member])
-          );
-          switch (true) {
-            case isObserved(
-              member,
-              provider.observedAttributes || []
-            ):
-              defineProperty(instance, member, {
-                get() {
-                  let attributeValue = this.getAttribute(member);
-                  // If there is no attribute value yet, try property value
-                  return attributeValue
-                    ? attributeValue
-                    : propertyValue;
-                },
-                set(newVal) {
-                  this.setAttribute(member, newVal);
-                }
-              });
-              break;
-            case isUppercase(member):
-              defineProperty(instance, member, {
-                get() {
-                  return propertyValue;
-                },
-                set(newVal) {
-                  propertyValue = newVal;
-                }
-              });
-              break;
-            case !isUppercase(member):
-              defineProperty(instance, member, {
-                get() {
-                  return propertyValue;
-                }
-              });
-              break;
-            default:
-              break;
-          }
+        case isUppercase(member):
+          defineProperty(instance, member, {
+            get() {
+              return propertyValue;
+            },
+            set(newVal) {
+              propertyValue = newVal;
+            }
+          });
+          break;
+        case !isUppercase(member):
+          defineProperty(instance, member, {
+            get() {
+              return propertyValue;
+            }
+          });
           break;
         default:
           break;

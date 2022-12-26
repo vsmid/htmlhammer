@@ -66,6 +66,7 @@ o.spec('CustomElement', () => {
             }
           }
           this.p = 1;
+          this.s = 's';
           this.o = { id: 1 };
           this.c = new A();
           this.f = () => 1;
@@ -77,9 +78,29 @@ o.spec('CustomElement', () => {
       document.body.append(instance);
 
       o(instance.p).equals(1);
+      o(instance.s).equals('s');
       o(instance.o.id).equals(1);
       o(instance.c.id).equals(1);
       o(instance.f()).equals(1);
+    }
+  );
+
+  o(
+    'Should prioritize provided observed attribute value when setting initial observed attribute value',
+    () => {
+      const elHammer = customElement('el-hammer4', {
+        count: 1,
+        observedAttributes: ['count'],
+        connectedCallback: function () {},
+        CountState() {
+          return this.count;
+        }
+      });
+
+      let instance = elHammer({ count: 6 });
+      document.body.append(instance);
+
+      o(instance.CountState()).equals(6);
     }
   );
 });
