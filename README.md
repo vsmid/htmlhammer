@@ -16,26 +16,26 @@
 
 # htmlhammer
 
--   Write HTML with JavaScript using real HTML tag names.
--   Unique way of writing WebComponents
+- Write HTML with JavaScript using real HTML tag names.
+- Unique way of writing WebComponents
 
 ## Why?
 
--   String literals tend to get messy and unreadable
--   Maybe you don't want or need JSX
--   HyperScript is ok, but you would like to avoid manually writing HTML tag names
--   Make writing HTML in JavaScript feel almost like writing it in .html file
--   Make writing HTML in JavaScript dead simple and intuitive but keeping all the JavaScript's power
+- String literals tend to get messy and unreadable
+- Maybe you don't want or need JSX
+- HyperScript is ok, but you would like to avoid manually writing HTML tag names
+- Make writing HTML in JavaScript feel almost like writing it in .html file
+- Make writing HTML in JavaScript dead simple and intuitive but keeping all the JavaScript's power
 
 ## Install
 
 ### github
 
--   Latest version:
-    `npm install git+https://github.com/vsmid/htmlhammer.git --save`
+- Latest version:
+  `npm install git+https://github.com/vsmid/htmlhammer.git --save`
 
--   Specific version:
-    `npm install git+https://github.com/vsmid/htmlhammer.git\#1.0.0 --save`
+- Specific version:
+  `npm install git+https://github.com/vsmid/htmlhammer.git\#1.0.0 --save`
 
 ### npmjs
 
@@ -52,7 +52,7 @@
 
 <!-- Latest version ESM -->
 <script type="module">
-    import { div } from "https://unpkg.com/htmlhammer?module";
+  import { div } from 'https://unpkg.com/htmlhammer?module';
 </script>
 
 <!-- Latest version single file IIFE -->
@@ -72,8 +72,8 @@ For specific versions use url format: unpkg.com/:package@:version/:file. See [UN
 const { div } = htmlhammer;
 
 // In modules
-const { div, a, h1 } = require("htmlhammer").default;
-import { div, a, h1 } from "htmlhammer";
+const { div, a, h1 } = require('htmlhammer').default;
+import { div, a, h1 } from 'htmlhammer';
 ```
 
 ## Using htmlhammer
@@ -93,13 +93,13 @@ htmltagname((attributesAndProperties = {}), ...children);
 
 Parameters:
 
--   attributesAndProperties - JSON object where key is the name of the element's attribute/property (e.g. id, name, style, onclick, or custom attribute/property etc. ) and value is the new attribute/property value.
-    Difference between defining an attribute and property is that property value must always be one of function, instance of class, array or json object. This rule does not apply to [reserved element attributes/properties](#reserved-element-attributesproperties) and `style`.
--   children - element or elements to be appended to parent element. Can be string, number, another HTMLElement created regularly or by **htmlhammer**, function returning one of the previously stated types etc.
+- attributesAndProperties - JSON object where key is the name of the element's attribute/property (e.g. id, name, style, onclick, or custom attribute/property etc. ) and value is the new attribute/property value.
+  Difference between defining an attribute and property is that property value must always be one of function, instance of class, array or json object. This rule does not apply to [reserved element attributes/properties](#reserved-element-attributesproperties) and `style`.
+- children - element or elements to be appended to parent element. Can be string, number, another HTMLElement created regularly or by **htmlhammer**, function returning one of the previously stated types etc.
 
 Returns:
 
--   An array of HTMLElement or a single HTMLElement.
+- An array of HTMLElement or a single HTMLElement.
 
 ### Code sample
 
@@ -107,12 +107,12 @@ Returns:
 let items = [{ value: 1 }, { value: 2 }];
 
 document.body.append(
-    div(
-        { style: { color: "red" } },
-        h1("I am the title"),
-        a({ href: "#" }, "Click me!"),
-        table(tr({ $for: items }, (item) => td(item.value)))
-    )
+  div(
+    { style: { color: 'red' } },
+    h1('I am the title'),
+    a({ href: '#' }, 'Click me!'),
+    table(tr({ $for: items }, item => td(item.value)))
+  )
 );
 ```
 
@@ -123,21 +123,23 @@ in `HtmlString` class. This is useful when you want to inject an already generat
 e.g. HTML content received from REST service).
 
 ```javascript
-import { div, HtmlString } from "./esm/index.js";
+import { div, HtmlString } from './esm/index.js';
 
-const html = "<h1>Hello World!</h1>";
+const html = '<h1>Hello World!</h1>';
 
 document.body.append(
-    div(new HtmlString(html)) // Without HTMLString wrapper, html content would be treated as text content hence text node would be created
+  div(new HtmlString(html)) // Without HTMLString wrapper, html content would be treated as text content hence text node would be created
 );
 ```
 
 Version 2.1.0 introduced a new attribute handler `$apply` which allows you to create inline element in any way you like.
 
 ```javascript
-const RawHtml = (data) => (el) => (el.innerHTML = data);
+const RawHtml = data => el => (el.innerHTML = data);
 
-document.body.append(div(span({ $apply: RawHtml("<h1>Hello World!</h1>") })));
+document.body.append(
+  div(span({ $apply: RawHtml('<h1>Hello World!</h1>') }))
+);
 ```
 
 For more complex and complete examples see [demo](https://github.com/vsmid/htmlhammer/tree/master/demo).
@@ -158,11 +160,11 @@ div({ $for: [1, 2, 3] }, (item, index) => item);
 #### `$if` - conditionally create element
 
 ```javascript
-div({ $if: true }, "I am created");
-div({ $if: () => true }, "I am created");
+div({ $if: true }, 'I am created');
+div({ $if: () => true }, 'I am created');
 
 // Create only items with value > 2
-div({ $for: [1, 2, 3], $if: (item) => item > 2 }, (item) => item);
+div({ $for: [1, 2, 3], $if: item => item > 2 }, item => item);
 ```
 
 #### `$ref` - reference created element
@@ -176,26 +178,26 @@ const { div, ref, setRef } = htmlhammer;
 let obj = {};
 
 // Prior to 2.2.0
-let element = div({ $ref: setRef(obj) }, "Hello World!");
+let element = div({ $ref: setRef(obj) }, 'Hello World!');
 
 // Version 2.2.0 allows ref to be set just by passing an object reference
-let element = div({ $ref: obj }, "Hello World!");
+let element = div({ $ref: obj }, 'Hello World!');
 
 console.log(ref(obj) === element);
 
 // Manually assigning id if the same object is used for multiple references
-let person = new Person("Lena", 0);
+let person = new Person('Lena', 0);
 
-div({ $ref: setRef(person, "name") }, person.name);
-div({ $ref: setRef(person, "age") }, person.age);
+div({ $ref: setRef(person, 'name') }, person.name);
+div({ $ref: setRef(person, 'age') }, person.age);
 
-console.log(ref(person, "name"));
-console.log(ref(person, "age"));
+console.log(ref(person, 'name'));
+console.log(ref(person, 'age'));
 
 // If used in combination with $for do not set object reference manually because it will automatically be set to the list item value
 element = div(
-    { $for: [{ v: 1 }, { v: 2 }, { v: 3 }], $ref: setRef },
-    "Hello World!"
+  { $for: [{ v: 1 }, { v: 2 }, { v: 3 }], $ref: setRef },
+  'Hello World!'
 );
 ```
 
@@ -207,14 +209,14 @@ across multiple components/elements. $apply can be given as a function which rec
 functions.
 
 ```javascript
-const RedText = (el) => (el.style.color = "red");
+const RedText = el => (el.style.color = 'red');
 
 // Function which can replace new HtmlString("<h1>Hello</h1>")
-const HTMLContent = (data) => (el) => (el.innerHTML = data);
+const HTMLContent = data => el => (el.innerHTML = data);
 
 // Valid usages
 div({ $apply: RedText });
-div({ $apply: [RedText, HTMLContent("<h1>Hello</h1>")] });
+div({ $apply: [RedText, HTMLContent('<h1>Hello</h1>')] });
 ```
 
 ### Setting on-event actions
@@ -223,9 +225,9 @@ Event names are case-sensitive. For each event use corresponding element's event
 
 ```javascript
 // Defines element's onclick event function
-a({ onclick: (e) => alert("Clicked!") }, "Click me");
+a({ onclick: e => alert('Clicked!') }, 'Click me');
 // Defines plain function on element, will not trigger on click
-a({ onClick: (e) => alert("Clicked!") }, "Click me");
+a({ onClick: e => alert('Clicked!') }, 'Click me');
 ```
 
 ### Setting CSS
@@ -236,14 +238,17 @@ style.
 ```javascript
 // Global, using HTMLStyleElement
 document.head.append(
-    style(`
+  style(`
       body {
         font-size: 12px;
       }`)
 );
 
 // Inline, using style attribute
-div({ style: { color: "red", fontSize: "12px" } }, "Hello World!");
+div(
+  { style: { color: 'red', fontSize: '12px' } },
+  'Hello World!'
+);
 ```
 
 When setting style attribute values, use corresponding JavaScript CSS property names.
@@ -262,52 +267,52 @@ appender is implemented in [appenders.js](https://github.com/vsmid/htmlhammer/bl
 
 `customElement(tagName, provider, type)`
 
--   `tagName` - custom element tag name
--   `provider` - plain JS object with lifecycle functions and props implementations. See under [Lifecycle and reserved props](#lifecycle-and-reserved-props).
--   `type` - optional, function reference to one of htmlhammer's functions (e.q. div, a, table etc.). Use when you want to
-    extend existing html element, e.q. HTMLDivElement.
+- `tagName` - custom element tag name
+- `provider` - plain JS object with lifecycle functions and props implementations. See under [Lifecycle and reserved props](#lifecycle-and-reserved-props).
+- `type` - optional, function reference to one of htmlhammer's functions (e.q. div, a, table etc.). Use when you want to
+  extend existing html element, e.q. HTMLDivElement.
 
 ### Lifecycle and reserved props
 
--   postConstruct
--   connectedCallback
--   disconnectedCallback
--   attributeChangedCallback
--   adoptedCallback
--   observedAttributes
+- postConstruct
+- connectedCallback
+- disconnectedCallback
+- attributeChangedCallback
+- adoptedCallback
+- observedAttributes
 
 Differences to the specification:
 
--   `postConstruct` - think of it as a constructor.
--   `observedAttributes` - an array of strings (names of the observed attributes)
+- `postConstruct` - think of it as a constructor.
+- `observedAttributes` - an array of strings (names of the observed attributes)
 
 ### Create generic custom element
 
--   Using only htmlhammer
+- Using only htmlhammer
 
 ```javascript
 const { customElement } = htmlhammer; // or use ES6 import
 
-const yetiCustom = customElement("yeti-custom", {
-    connectedCallback() {
-        console.log("Generic custom element created!");
-    },
+const yetiCustom = customElement('yeti-custom', {
+  connectedCallback() {
+    console.log('Generic custom element created!');
+  }
 });
 
 document.body.append(yetiCustom());
 ```
 
--   Using htmlhammer and html
+- Using htmlhammer and html
 
 ```html
 <script>
-    const { customElement } = htmlhammer; // or use ES6 import
+  const { customElement } = htmlhammer; // or use ES6 import
 
-    const yetiCustom = customElement("yeti-custom", {
-        connectedCallback() {
-            console.log("Generic custom element created!");
-        },
-    });
+  const yetiCustom = customElement('yeti-custom', {
+    connectedCallback() {
+      console.log('Generic custom element created!');
+    }
+  });
 </script>
 
 <yeti-custom></yeti-custom>
@@ -317,39 +322,39 @@ document.body.append(yetiCustom());
 
 Examples below show how to extend existing [HTMLDivElement](https://developer.mozilla.org/en-US/docs/Web/API/HTMLDivElement)
 
--   Using only htmlhammer
+- Using only htmlhammer
 
 ```javascript
 const { div, customElement } = htmlhammer; // or use ES6 import
 
 const yetiDiv = customElement(
-    "yeti-div",
-    {
-        connectedCallback() {
-            console.log("Generic custom element created!");
-        },
-    },
-    div
+  'yeti-div',
+  {
+    connectedCallback() {
+      console.log('Generic custom element created!');
+    }
+  },
+  div
 );
 
-document.body.append(div({ is: "yeti-div" }));
+document.body.append(div({ is: 'yeti-div' }));
 ```
 
--   Using htmlhammer and html
+- Using htmlhammer and html
 
 ```html
 <script>
-    const { div, customElement } = htmlhammer; // or use ES6 import
+  const { div, customElement } = htmlhammer; // or use ES6 import
 
-    const yetiDiv = customElement(
-        "yeti-div",
-        {
-            connectedCallback() {
-                console.log("Generic custom element created!");
-            },
-        },
-        div
-    );
+  const yetiDiv = customElement(
+    'yeti-div',
+    {
+      connectedCallback() {
+        console.log('Generic custom element created!');
+      }
+    },
+    div
+  );
 </script>
 
 <div is="yeti-div"></div>
@@ -357,53 +362,86 @@ document.body.append(div({ is: "yeti-div" }));
 
 ### Setting shadow dom
 
--   Inside custom element
+- Inside custom element
 
 ```javascript
 const { customElement } = htmlhammer; // or use ES6 import
 
-const yetiCustom = customElement("yeti-custom", {
-    connectedCallback() {
-        this.attachShadow({ mode: "open" });
-    },
+const yetiCustom = customElement('yeti-custom', {
+  connectedCallback() {
+    this.attachShadow({ mode: 'open' });
+  }
 });
 ```
 
--   As htmlhammer attribute
+- As htmlhammer attribute
 
 ```javascript
 yetiCustom(
-    { shadowRoot: { mode: "open" } },
-    "Hello from Generic CustomElement"
+  { shadowRoot: { mode: 'open' } },
+  'Hello from Generic CustomElement'
 );
 ```
 
 ### Setting styles
 
--   Inside custom element
+- Inside custom element
 
 ```javascript
 const { style, customElement } = htmlhammer; // or use ES6 import
 
-const yetiCustom = customElement("yeti-custom", {
-    connectedCallback() {
-        this.attachShadow({ mode: "open" });
-        this.shadowRoot.append(style(`:host { font-weight: bold;}`));
-    },
+const yetiCustom = customElement('yeti-custom', {
+  connectedCallback() {
+    this.attachShadow({ mode: 'open' });
+    this.shadowRoot.append(style(`:host { font-weight: bold;}`));
+  }
 });
 ```
 
--   As htmlhammer attribute
+- As htmlhammer attribute
 
 ```javascript
 yetiCustom(
-    {
-        shadowRoot: {
-            mode: "open",
-            stylesheets: [style(`:host {color: red;}`)],
-        },
-    },
-    "Hello from Generic CustomElement"
+  {
+    shadowRoot: {
+      mode: 'open',
+      stylesheets: [style(`:host {color: red;}`)]
+    }
+  },
+  'Hello from Generic CustomElement'
+);
+```
+
+### Passing properties
+
+You can pass objects, arrays, functions,class instances and existing dom element references from parent to child element as properties. Numbers, strings dates etc. are treated as attributes. Note that by 'passing' htmlhammer actually creates properties on the object.
+
+```javascript
+// Custom element
+let element = customElement('my-element', {
+  connectedCallback() {
+    console.log(
+        this.o,
+        this.fn(),
+        this.p,
+        this.a,
+        this.getAttribute('v'),
+        this.el()
+    );
+  }
+});
+
+class Person {}
+
+document.body.append(
+  element({
+    o: { id: 1 }, // object
+    a: [1], // array
+    fn: () => 1, // function
+    p: new Person() // class
+    el: () => document.getElementById('id') // dom element reference (pass it as a function)
+    v: 1 // number
+  })
 );
 ```
 
@@ -411,10 +449,10 @@ yetiCustom(
 
 Conventions apply only to the provider(see under [Method signature](#method-signature)).
 
--   Function starting with capital letter - binds function to context (custom element instance)
--   Property starting with capital letter - receives get/set methods
--   Property not starting with capital letter - receives only get method
--   Property is named the same as observed attribute - property will reflect attribute
+- Function starting with capital letter - binds function to context (custom element instance)
+- Property starting with capital letter - receives get/set methods
+- Property not starting with capital letter - receives only get method
+- Property is named the same as observed attribute - property will reflect attribute
 
 ### Counter web component example
 
@@ -422,29 +460,29 @@ This example demonstrates how you can use this library to build web component wi
 
 ```javascript
 // Simplified counter component example
-export const Counter = customElement("yeti-counter", {
-    Count: 0,
-    connectedCallback() {
-        this.append(
-            button({ id: "dec", onclick: this.Dec }, "-"),
-            (this.CounterDisplay = span(this.Count)), // Cool way to set and assign html element
-            button({ id: "inc", onclick: this.Inc }, "+")
-        );
-    },
-    observedAttributes: ["count"],
-    attributeChangedCallback(n, ov, nv) {
-        // Each time Count changes a new console log is written
-        console.log(`Counter change: ${ov} -> ${nv}`);
-    },
-    Inc() {
-        this.Update(++this.Count);
-    },
-    Dec() {
-        this.Update(--this.Count);
-    },
-    Update(count) {
-        this.CounterDisplay.textContent = count; // Assigned html element referenced
-    },
+export const Counter = customElement('yeti-counter', {
+  Count: 0,
+  connectedCallback() {
+    this.append(
+      button({ id: 'dec', onclick: this.Dec }, '-'),
+      (this.CounterDisplay = span(this.Count)), // Cool way to set and assign html element
+      button({ id: 'inc', onclick: this.Inc }, '+')
+    );
+  },
+  observedAttributes: ['count'],
+  attributeChangedCallback(n, ov, nv) {
+    // Each time Count changes a new console log is written
+    console.log(`Counter change: ${ov} -> ${nv}`);
+  },
+  Inc() {
+    this.Update(++this.Count);
+  },
+  Dec() {
+    this.Update(--this.Count);
+  },
+  Update(count) {
+    this.CounterDisplay.textContent = count; // Assigned html element referenced
+  }
 });
 ```
 
@@ -485,6 +523,7 @@ npm run build
 ## [Current version test coverage report](https://github.com/vsmid/htmlhammer/blob/master/test-coverage-report.txt)
 
 ## Special thanks
+
 Big thanks to [JetBrains](https://www.jetbrains.com/) for granting me a free license :)
 
 ![JetBrains Logo (Main) logo](https://resources.jetbrains.com/storage/products/company/brand/logos/jb_beam.svg)
