@@ -1,3 +1,8 @@
+## 3.7.0
+* attributeChangedCallback is now auto generated when using observed attributes without providing it
+* simplified property creation for custom elements
+* updated docs on passing properties
+
 ## 3.6.1
 * Added check for null when checking whether member is a class
 

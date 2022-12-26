@@ -1,7 +1,7 @@
 {
   "name": "htmlhammer",
-  "version": "3.6.1",
-  "description": "Write HTML with JavaScript using real HTML tag names.",
+  "version": "3.7.0",
+  "description": "Write HTML and CustomElements with JavaScript using real HTML tags",
   "main": "cjs/index.js",
   "module": "esm/index.js",
   "scripts": {
@@ -14,11 +14,13 @@
     "html",
     "javascript",
     "template",
-    "custom",
-    "elements"
+    "customelements",
+    "web",
+    "components",
+    "webcomponents"
   ],
   "author": "vedransmid@yeti-it.hr",
-  "license": "MIT",
+  "license": "ISC",
   "devDependencies": {
     "@babel/cli": "^7.15.7",
     "@babel/compat-data": "^7.15.0",

@@ -459,14 +459,6 @@ var htmlhammer = (function (exports) {
     return typeof member === 'function';
   };
 
-  var isClass = function isClass(member) {
-    return member && member.constructor && member.constructor.toString().startsWith('class ');
-  };
-
-  var isProperty = function isProperty(member) {
-    return !isFunction(member);
-  };
-
   var isObserved = function isObserved(member, observed) {
     return observed.includes(member.toLowerCase());
   };
@@ -489,59 +481,56 @@ var htmlhammer = (function (exports) {
     members(provider).filter(function (member) {
       return !reserved.includes(member);
     }).forEach(function (member) {
+      var propertyValue = provider[member];
+
       switch (true) {
-        case isFunction(provider[member]) || isClass(provider[member]):
+        case isObserved(member, provider.observedAttributes || []):
           defineProperty(instance, member, {
-            value: provider[member],
-            writable: isUppercase(member)
+            get: function get() {
+              var attributeValue = this.getAttribute(member); // If there is no attribute value yet, try property value
+
+              return attributeValue ? attributeValue : propertyValue;
+            },
+            set: function set(newVal) {
+              this.setAttribute(member, newVal);
+            }
           });
           break;
 
-        case isProperty(provider[member]):
-          // Optimize this
-          var propertyValue = JSON.parse(JSON.stringify(provider[member]));
+        case isUppercase(member):
+          defineProperty(instance, member, {
+            get: function get() {
+              return propertyValue;
+            },
+            set: function set(newVal) {
+              propertyValue = newVal;
+            }
+          });
+          break;
 
-          switch (true) {
-            case isObserved(member, provider.observedAttributes || []):
-              defineProperty(instance, member, {
-                get: function get() {
-                  var attributeValue = this.getAttribute(member); // If there is no attribute value yet, try property value
-
-                  return attributeValue ? attributeValue : propertyValue;
-                },
-                set: function set(newVal) {
-                  this.setAttribute(member, newVal);
-                }
-              });
-              break;
-
-            case isUppercase(member):
-              defineProperty(instance, member, {
-                get: function get() {
-                  return propertyValue;
-                },
-                set: function set(newVal) {
-                  propertyValue = newVal;
-                }
-              });
-              break;
-
-            case !isUppercase(member):
-              defineProperty(instance, member, {
-                get: function get() {
-                  return propertyValue;
-                }
-              });
-              break;
-          }
-
+        case !isUppercase(member):
+          defineProperty(instance, member, {
+            get: function get() {
+              return propertyValue;
+            }
+          });
           break;
       }
     });
   };
 
   var build = function build(provider, type) {
-    var htmlElement = type ? type().constructor : HTMLElement;
+    var htmlElement = type ? type().constructor : HTMLElement; // Provide default attributeChangedCallback function if not set by the provider
+    // to prevent 'el.attributeChangedCallback is not a function' error
+    // when observedAtrtibutes are defined
+
+    if (provider.observedAttributes) {
+      var _provider$attributeCh;
+
+      defineProperty(provider, 'attributeChangedCallback', {
+        value: (_provider$attributeCh = provider.attributeChangedCallback) !== null && _provider$attributeCh !== void 0 ? _provider$attributeCh : function (a, b, c) {}
+      });
+    }
 
     var CustomElement = /*#__PURE__*/function (_htmlElement) {
       _inherits(CustomElement, _htmlElement);
