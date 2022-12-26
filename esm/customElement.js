@@ -99,6 +99,17 @@ const assignMembers = (provider, instance) => {
 const build = (provider, type) => {
   let htmlElement = type ? type().constructor : HTMLElement;
 
+  // Provide default attributeChangedCallback function if not set by the provider
+  // to prevent 'el.attributeChangedCallback is not a function' error
+  // when observedAtrtibutes are defined
+  if (provider.observedAttributes) {
+    defineProperty(provider, 'attributeChangedCallback', {
+      value:
+        provider.attributeChangedCallback ??
+        function (a, b, c) {}
+    });
+  }
+
   const CustomElement = class extends htmlElement {
     constructor() {
       super();
