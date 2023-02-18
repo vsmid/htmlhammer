@@ -268,11 +268,11 @@ appender is implemented in [appenders.js](https://github.com/vsmid/htmlhammer/bl
 `customElement(tagName, provider, type)`
 
 - `tagName` - custom element tag name
-- `provider` - plain JS object with lifecycle functions and props implementations. See under [Lifecycle and reserved props](#lifecycle-and-reserved-props).
+- `provider` - plain JS object with lifecycle functions and properties. See under [Lifecycle and reserved properties](#lifecycle-and-reserved-properties).
 - `type` - optional, function reference to one of htmlhammer's functions (e.q. div, a, table etc.). Use when you want to
   extend existing html element, e.q. HTMLDivElement.
 
-### Lifecycle and reserved props
+### Lifecycle and reserved properties
 
 - postConstruct
 - connectedCallback
@@ -286,19 +286,21 @@ Differences to the specification:
 - `postConstruct` - think of it as a constructor.
 - `observedAttributes` - an array of strings (names of the observed attributes)
 
-### Create generic custom element
+### Define custom element
 
 - Using only htmlhammer
 
 ```javascript
 const { customElement } = htmlhammer; // or use ES6 import
 
+// Definition
 const yetiCustom = customElement('yeti-custom', {
   connectedCallback() {
     console.log('Generic custom element created!');
   }
 });
 
+// Usage
 document.body.append(yetiCustom());
 ```
 
@@ -308,6 +310,7 @@ document.body.append(yetiCustom());
 <script>
   const { customElement } = htmlhammer; // or use ES6 import
 
+  // Definition
   const yetiCustom = customElement('yeti-custom', {
     connectedCallback() {
       console.log('Generic custom element created!');
@@ -315,6 +318,7 @@ document.body.append(yetiCustom());
   });
 </script>
 
+<!-- Usage -->
 <yeti-custom></yeti-custom>
 ```
 
@@ -327,6 +331,7 @@ Examples below show how to extend existing [HTMLDivElement](https://developer.mo
 ```javascript
 const { div, customElement } = htmlhammer; // or use ES6 import
 
+// Definition
 const yetiDiv = customElement(
   'yeti-div',
   {
@@ -337,6 +342,7 @@ const yetiDiv = customElement(
   div
 );
 
+// Usage
 document.body.append(div({ is: 'yeti-div' }));
 ```
 
@@ -346,6 +352,7 @@ document.body.append(div({ is: 'yeti-div' }));
 <script>
   const { div, customElement } = htmlhammer; // or use ES6 import
 
+  // Definition
   const yetiDiv = customElement(
     'yeti-div',
     {
@@ -357,6 +364,7 @@ document.body.append(div({ is: 'yeti-div' }));
   );
 </script>
 
+<!-- Usage -->
 <div is="yeti-div"></div>
 ```
 
@@ -412,21 +420,28 @@ yetiCustom(
 );
 ```
 
+### Provider's properties and structured cloning
+
+Properties of `provider` object(see under [Method signature](#method-signature)) will be created on each new custom element instance using `structuredClone` method to ensure that there is no object reference sharing between custom element instances of the same type. 
+
+Structured cloning is skipped for functions.
+
 ### Passing properties
 
-You can pass objects, arrays, functions,class instances and existing dom element references from parent to child element as properties. Numbers, strings dates etc. are treated as attributes. Note that by 'passing' htmlhammer actually creates properties on the object.
+You can pass objects, arrays, functions, class instances and existing dom element references from parent to child element as properties. Numbers, strings dates etc. are treated as attributes. Note that by 'passing' htmlhammer actually creates properties on the object.
 
 ```javascript
 // Custom element
 let element = customElement('my-element', {
   connectedCallback() {
     console.log(
-        this.o,
-        this.fn(),
-        this.p,
-        this.a,
-        this.getAttribute('v'),
-        this.el()
+      this.o,
+      this.a,
+      this.fn(),
+      this.p,
+      this.el(),
+      this.getAttribute('v'),
+      this.s
     );
   }
 });
@@ -438,9 +453,10 @@ document.body.append(
     o: { id: 1 }, // object
     a: [1], // array
     fn: () => 1, // function
-    p: new Person() // class
-    el: () => document.getElementById('id') // dom element reference (pass it as a function)
-    v: 1 // number
+    p: new Person(), // instance of class
+    el: () => document.getElementById('id'), // dom element reference (pass it as a function)
+    v: 1, // number
+    s: 'string' // string
   })
 );
 ```
