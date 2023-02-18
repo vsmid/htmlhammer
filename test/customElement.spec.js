@@ -103,4 +103,41 @@ o.spec('CustomElement', () => {
       o(instance.CountState()).equals(6);
     }
   );
+
+  o(
+    'Should create a new customElement instance with cloned properties (structuredClone)',
+    () => {
+      class P {}
+      const elHammer = customElement('el-hammer5', {
+        State: { v: 1 },
+        Fn: function () {
+          return this.State.v;
+        },
+        S1: new String('s'),
+        S2: 's',
+        N1: new Number(1),
+        N2: 1,
+        P: new P(),
+        A: [1, 2, 3],
+        connectedCallback: function () {}
+      });
+
+      let instance1 = elHammer({});
+      let instance2 = elHammer({});
+
+      o(instance1.State).notEquals(instance2.State);
+      instance2.State.v += 1;
+      o(instance1.Fn()).notEquals(instance2.Fn());
+
+      o(instance1.S1).notEquals(instance2.S1);
+      o(instance1.S2).equals(instance2.S2);
+
+      o(instance1.N1).notEquals(instance2.N1);
+      o(instance1.N2).equals(instance2.N2);
+
+      o(instance1.P).notEquals(instance2.P);
+
+      o(instance1.A).notEquals(instance2.A);
+    }
+  );
 });

@@ -33,7 +33,9 @@ const assignMembers = (provider, instance) => {
   members(provider)
     .filter(member => !reserved.includes(member))
     .forEach(member => {
-      let propertyValue = provider[member];
+      let propertyValue = isFunction(provider[member])
+        ? provider[member]
+        : structuredClone(provider[member]);
       switch (true) {
         case isObserved(
           member,
