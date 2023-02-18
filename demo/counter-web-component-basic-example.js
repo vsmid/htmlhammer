@@ -29,7 +29,7 @@ button {
 `
 );
 
-export const Counter = customElement('yeti-counter', {
+export const Counter = customElement('my-counter', {
   Count: 0,
   connectedCallback() {
     this.attachShadow({ mode: 'open' });

@@ -422,7 +422,7 @@ yetiCustom(
 
 ### Provider's properties and structured cloning
 
-Properties of `provider` object(see under [Method signature](#method-signature)) will be created on each new custom element instance using `structuredClone` method to ensure that there is no object reference sharing between custom element instances of the same type. 
+Properties of `provider` object(see under [Method signature](#method-signature)) will be created on each new custom element instance using `structuredClone` method to ensure that there is no object reference sharing between custom element instances of the same type.
 
 Structured cloning is skipped for functions.
 
@@ -441,7 +441,7 @@ let element = customElement('my-element', {
       this.p,
       this.el(),
       this.getAttribute('v'),
-      this.s
+      this.getAttribute('s')
     );
   }
 });
@@ -472,11 +472,14 @@ Conventions apply only to the provider(see under [Method signature](#method-sign
 
 ### Counter web component example
 
-This example demonstrates how you can use this library to build web component with simple state management and a few action buttons. It also shows you a cool way of how you can set and assign any node you would like to reference at any time during component's life. This feature is basically a consequence of building html with javascript which htmlhammer is all about.
+These examples demonstrate how you can use this library to build web component with simple state management and a few action buttons. It also shows you a cool way of how you can set and assign any node you would like to reference at any time during component's life. This feature is basically a consequence of building html with javascript which htmlhammer is all about.
+
+#### Basic implementation
+
+This example shows how you can create counter web component using dedicated action buttons to change counter's state.
 
 ```javascript
-// Simplified counter component example
-export const Counter = customElement('yeti-counter', {
+const Counter = customElement('my-counter', {
   Count: 0,
   connectedCallback() {
     this.append(
@@ -502,13 +505,38 @@ export const Counter = customElement('yeti-counter', {
 });
 ```
 
-See [complete counter web component example](https://github.com/vsmid/htmlhammer/blob/master/demo/counter-web-component-example.js).
+#### Advanced implementation
 
-### Demo
+This example shows how you can create the same counter web component using
+`attributeChangedCallback` function to change counter's state.
+
+```javascript
+const Counter = customElement('my-counter-advanced', {
+  Count: 0,
+  observedAttributes: ['count'],
+  attributeChangedCallback(attrName, ov, nv) {
+    if (attrName === 'count') {
+      this.CounterDisplay.textContent = this.Count;
+    }
+  },
+  connectedCallback() {
+    this.attachShadow({ mode: 'open' });
+    this.shadowRoot.append(
+      button({ id: 'dec', onclick: () => --this.Count }, '-'),
+      (this.CounterDisplay = span(this.Count)),
+      button({ id: 'inc', onclick: () => ++this.Count }, '+')
+    );
+  }
+});
+```
+
+See both counter web component examples in action by checking [live demo](https://vsmid.github.io/htmlhammer/).
+
+### Live demo
 
 Demo is basically `index.html` file found in the root of the project served as a github page.
 
-[Live demo](https://vsmid.github.io/htmlhammer/)
+[live demo](https://vsmid.github.io/htmlhammer/)
 
 ## Project's NPM scripts
 
