@@ -63,7 +63,7 @@ var assignMembers = function assignMembers(provider, instance) {
   members(provider).filter(function (member) {
     return !reserved.includes(member);
   }).forEach(function (member) {
-    var propertyValue = provider[member];
+    var propertyValue = isFunction(provider[member]) ? provider[member] : structuredClone(provider[member]);
 
     switch (true) {
       case isObserved(member, provider.observedAttributes || []):

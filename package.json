@@ -1,6 +1,6 @@
 {
   "name": "htmlhammer",
-  "version": "3.7.0",
+  "version": "3.8.0",
   "description": "Write HTML and CustomElements with JavaScript using real HTML tags",
   "main": "cjs/index.js",
   "module": "esm/index.js",

@@ -1,3 +1,8 @@
+## 3.8.0
+* Using `structuredClone` when creating a new instance of customElement
+* Updated some dependencies
+* Updated docs
+
 ## 3.7.0
 * attributeChangedCallback is now auto generated when using observed attributes without providing it
 * simplified property creation for custom elements
