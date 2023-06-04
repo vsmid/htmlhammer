@@ -1,8 +1,8 @@
+<p>
+  <h1 align="center">h t m l h a m m e r</h1>
+</p>
 <p align="center">
-  <a href="https://badge.fury.io/js/htmlhammer.svg"><img src="https://badge.fury.io/js/htmlhammer.svg"/></a>
-  <a href="https://github.com/vsmid/htmlhammer/blob/master/LICENSE">
-    <img src="https://img.shields.io/badge/license-ISC-green.svg" alt="htmlhammer is released under the ISC license." />
-  </a>
+   <label><i>JavaScript HTML template engine and a WebComponents library.</i></label>
 </p>
 <p align="center">
   <img alt="logo" src="https://github.com/vsmid/htmlhammer/blob/master/htmlhammer.png" height="100" width="200">
@@ -13,12 +13,16 @@
   <a href="https://sonarcloud.io/dashboard?id=vsmid_htmlhammer"><img src="https://sonarcloud.io/api/project_badges/measure?project=vsmid_htmlhammer&metric=sqale_rating"/></a>
   <a href="https://sonarcloud.io/dashboard?id=vsmid_htmlhammer"><img src="https://sonarcloud.io/api/project_badges/measure?project=vsmid_htmlhammer&metric=reliability_rating"/></a>
   <a href="https://sonarcloud.io/dashboard?id=vsmid_htmlhammer"><img src="https://sonarcloud.io/api/project_badges/measure?project=vsmid_htmlhammer&metric=vulnerabilities"/></a>
+  <a href="https://badge.fury.io/js/htmlhammer.svg"><img src="https://badge.fury.io/js/htmlhammer.svg"/></a>
+  <a href="https://github.com/vsmid/htmlhammer/blob/master/LICENSE">
+    <img src="https://img.shields.io/badge/license-ISC-green.svg" alt="htmlhammer is released under the ISC license." />
+  </a>
 </p>
 
-# htmlhammer
+# Features
 
 - Write HTML with JavaScript using real HTML tag names.
-- Unique way of writing WebComponents
+- Unique way of building WebComponents
 
 ## Why?
 
