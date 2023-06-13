@@ -523,6 +523,12 @@ o.spec('HTML', () => {
       o(element.dataset.dummy).equals('dummy');
     });
 
+    o('Aria attributes are attached as custom aria attributes', () => {
+      attachAttribute('ariaLevel', 'level', element);
+
+      o(element.getAttribute("aria-level")).equals('level');
+    });
+
     o('Should set checked of radio', () => {
       let radio = document.createElement('input');
       radio.type = 'radio';

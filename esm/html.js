@@ -40,6 +40,14 @@ export const attachAttribute = (name, value, element) => {
       name[4].toUpperCase() === name[4]:
       element.dataset[name.substring(4).toLowerCase()] = value;
       break;
+    case name.startsWith('aria') &&
+      name.length > 4 &&
+      name[4].toUpperCase() === name[4]:
+      element.setAttribute(
+        'aria-' + name.substring(4).toLowerCase(),
+        value
+      );
+      break;
     case value.constructor.toString().startsWith('class '):
     case PropertyTypes.includes(value.constructor.name):
       element[name] = value;
