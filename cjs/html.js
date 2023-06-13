@@ -74,6 +74,10 @@ var attachAttribute = function attachAttribute(name, value, element) {
       element.dataset[name.substring(4).toLowerCase()] = value;
       break;
 
+    case name.startsWith('aria') && name.length > 4 && name[4].toUpperCase() === name[4]:
+      element.setAttribute('aria-' + name.substring(4).toLowerCase(), value);
+      break;
+
     case value.constructor.toString().startsWith('class '):
     case PropertyTypes.includes(value.constructor.name):
       element[name] = value;
@@ -263,7 +267,7 @@ var _default = function () {
   'html', // Document metadata
   'base', 'head', 'link', 'meta', 'style', 'title', // Sectioning root
   'body', // Content sectioning
-  'address', 'article', 'aside', 'footer', 'header', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'hggroup', 'main', 'nav', 'section', // Text content
+  'address', 'article', 'aside', 'footer', 'header', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'hgroup', 'main', 'nav', 'section', // Text content
   'blockquote', 'dd', 'div', 'dl', 'dt', 'figcaption', 'figure', 'hr', 'li', 'ol', 'p', 'pre', 'ul', // Inline text semantics
   'a', 'abbr', 'b', 'bdi', 'bdo', 'br', 'cite', 'code', 'data', 'dfn', 'em', 'i', 'kbd', 'mark', 'q', 'rb', 'rp', 'rt', 'rtc', 'ruby', 's', 'samp', 'small', 'span', 'strong', 'sub', 'sup', 'time', 'u', 'variable', 'wbr', // Image and multimedia
   'area', 'audio', 'img', 'map', 'track', 'video', // Embedded content

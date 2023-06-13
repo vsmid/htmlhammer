@@ -1,3 +1,7 @@
+## 3.8.1
+* Fixed issue where aria attributes were not correctly attached to the element
+* Fixed invalid HTML tag name, hgroup instead hggroup
+
 ## 3.8.0
 * Using `structuredClone` when creating a new instance of customElement
 * Updated some dependencies

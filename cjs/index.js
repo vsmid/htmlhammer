@@ -23,7 +23,7 @@ var _exportNames = {
   h4: true,
   h5: true,
   h6: true,
-  hggroup: true,
+  hgroup: true,
   main: true,
   nav: true,
   section: true,
@@ -129,7 +129,7 @@ Object.defineProperty(exports, "customElement", {
     return _customElement.customElement;
   }
 });
-exports.sup = exports.summary = exports.sub = exports.style = exports.strong = exports.span = exports.source = exports.small = exports.slot = exports.setRef = exports.select = exports.section = exports.script = exports.samp = exports.s = exports.ruby = exports.rtc = exports.rt = exports.rp = exports.ref = exports.rb = exports.q = exports.progress = exports.pre = exports.picture = exports.param = exports.p = exports.output = exports.option = exports.oprgroup = exports.ol = exports.object = exports.noscript = exports.nav = exports.meter = exports.meta = exports.menu = exports.mark = exports.map = exports.main = exports.link = exports.li = exports.legend = exports.label = exports.kbd = exports.ins = exports.input = exports.img = exports.iframe = exports.i = exports.html = exports.hr = exports.hggroup = exports.header = exports.head = exports.h6 = exports.h5 = exports.h4 = exports.h3 = exports.h2 = exports.h1 = exports.form = exports.footer = exports.figure = exports.figcaption = exports.fieldset = exports.embed = exports.em = exports.dt = exports.dl = exports.div = exports.dialog = exports.dfn = exports.details = exports.del = exports.dd = exports.datalist = exports.data = void 0;
+exports.sup = exports.summary = exports.sub = exports.style = exports.strong = exports.span = exports.source = exports.small = exports.slot = exports.setRef = exports.select = exports.section = exports.script = exports.samp = exports.s = exports.ruby = exports.rtc = exports.rt = exports.rp = exports.ref = exports.rb = exports.q = exports.progress = exports.pre = exports.picture = exports.param = exports.p = exports.output = exports.option = exports.oprgroup = exports.ol = exports.object = exports.noscript = exports.nav = exports.meter = exports.meta = exports.menu = exports.mark = exports.map = exports.main = exports.link = exports.li = exports.legend = exports.label = exports.kbd = exports.ins = exports.input = exports.img = exports.iframe = exports.i = exports.html = exports.hr = exports.hgroup = exports.header = exports.head = exports.h6 = exports.h5 = exports.h4 = exports.h3 = exports.h2 = exports.h1 = exports.form = exports.footer = exports.figure = exports.figcaption = exports.fieldset = exports.embed = exports.em = exports.dt = exports.dl = exports.div = exports.dialog = exports.dfn = exports.details = exports.del = exports.dd = exports.datalist = exports.data = void 0;
 exports.wbr = exports.video = exports.variable = exports.ul = exports.u = exports.track = exports.tr = exports.title = exports.time = exports.thead = exports.th = exports.tfoot = exports.textarea = exports.template = exports.td = exports.tbody = exports.table = void 0;
 
 var _html = _interopRequireDefault(require("./html.js"));
@@ -173,7 +173,7 @@ var html = _html["default"].html,
     h4 = _html["default"].h4,
     h5 = _html["default"].h5,
     h6 = _html["default"].h6,
-    hggroup = _html["default"].hggroup,
+    hgroup = _html["default"].hgroup,
     main = _html["default"].main,
     nav = _html["default"].nav,
     section = _html["default"].section,
@@ -362,7 +362,7 @@ exports.blockquote = blockquote;
 exports.section = section;
 exports.nav = nav;
 exports.main = main;
-exports.hggroup = hggroup;
+exports.hgroup = hgroup;
 exports.h6 = h6;
 exports.h5 = h5;
 exports.h4 = h4;
