@@ -21,7 +21,7 @@ export const {
   h4,
   h5,
   h6,
-  hggroup,
+  hgroup,
   main,
   nav,
   section,

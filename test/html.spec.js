@@ -83,8 +83,8 @@ o.spec('HTML', () => {
         o('h6', () => {
           o(html.h6().nodeName).equals('h6');
         });
-        o('hggroup', () => {
-          o(html.hggroup().nodeName).equals('hggroup');
+        o('hgroup', () => {
+          o(html.hgroup().nodeName).equals('hgroup');
         });
         o('main', () => {
           o(html.main().nodeName).equals('main');
