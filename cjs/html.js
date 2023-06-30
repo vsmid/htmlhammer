@@ -183,7 +183,7 @@ var elementOptions = function elementOptions(attributes) {
 exports.elementOptions = elementOptions;
 
 var createElement = function createElement(blueprint) {
-  var element = document.createElement(blueprint.tag, elementOptions(blueprint.attributes));
+  var element = blueprint.tag === 'fragment' ? document.createDocumentFragment() : document.createElement(blueprint.tag, elementOptions(blueprint.attributes));
   Object.keys(blueprint.attributes).forEach(function (name) {
     return attachAttribute(name, blueprint.attributes[name], element);
   });
@@ -204,20 +204,26 @@ var extract = function extract() {
   }
 
   if (parts && parts.length > 0) {
-    var isObject = parts[0].constructor.name === 'Object';
-
     if (parts.length > 1) {
-      if (isObject) {
-        attributes = parts[0];
-        children = parts.slice(1);
-      } else {
-        children = parts;
+      if (parts[0] && parts[1]) {
+        var isObject = parts[0].constructor.name === 'Object';
+
+        if (isObject) {
+          attributes = parts[0];
+          children = parts.slice(1);
+        } else {
+          children = parts;
+        }
       }
     } else if (parts.length === 1) {
-      if (!isObject) {
-        children = parts;
-      } else {
-        attributes = parts[0];
+      if (parts[0]) {
+        var _isObject = parts[0].constructor.name === 'Object';
+
+        if (!_isObject) {
+          children = parts;
+        } else {
+          attributes = parts[0];
+        }
       }
     }
   }
@@ -277,7 +283,8 @@ var _default = function () {
   'caption', 'col', 'colgroup', 'table', 'tbody', 'td', 'tfoot', 'th', 'thead', 'tr', // Forms
   'button', 'datalist', 'fieldset', 'form', 'input', 'label', 'legend', 'meter', 'oprgroup', 'option', 'output', 'progress', 'select', 'textarea', // Interactive elements
   'details', 'dialog', 'menu', 'summary', // Web Components
-  'slot', 'template'].forEach(function (tag) {
+  'slot', 'template', // Fragment, not a true HTML tag
+  'fragment'].forEach(function (tag) {
     tags[tag] = define(tag);
   });
   return tags;

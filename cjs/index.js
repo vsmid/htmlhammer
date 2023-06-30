@@ -118,9 +118,11 @@ var _exportNames = {
   summary: true,
   slot: true,
   template: true,
+  fragment: true,
   ref: true,
   setRef: true,
-  customElement: true
+  customElement: true,
+  hhjsx: true
 };
 exports.colgroup = exports.col = exports.code = exports.cite = exports.caption = exports.canvas = exports.button = exports.br = exports.body = exports.blockquote = exports.bdo = exports.bdi = exports.base = exports.b = exports.audio = exports.aside = exports.article = exports.area = exports.address = exports.abbr = exports.a = void 0;
 Object.defineProperty(exports, "customElement", {
@@ -129,8 +131,15 @@ Object.defineProperty(exports, "customElement", {
     return _customElement.customElement;
   }
 });
-exports.sup = exports.summary = exports.sub = exports.style = exports.strong = exports.span = exports.source = exports.small = exports.slot = exports.setRef = exports.select = exports.section = exports.script = exports.samp = exports.s = exports.ruby = exports.rtc = exports.rt = exports.rp = exports.ref = exports.rb = exports.q = exports.progress = exports.pre = exports.picture = exports.param = exports.p = exports.output = exports.option = exports.oprgroup = exports.ol = exports.object = exports.noscript = exports.nav = exports.meter = exports.meta = exports.menu = exports.mark = exports.map = exports.main = exports.link = exports.li = exports.legend = exports.label = exports.kbd = exports.ins = exports.input = exports.img = exports.iframe = exports.i = exports.html = exports.hr = exports.hgroup = exports.header = exports.head = exports.h6 = exports.h5 = exports.h4 = exports.h3 = exports.h2 = exports.h1 = exports.form = exports.footer = exports.figure = exports.figcaption = exports.fieldset = exports.embed = exports.em = exports.dt = exports.dl = exports.div = exports.dialog = exports.dfn = exports.details = exports.del = exports.dd = exports.datalist = exports.data = void 0;
-exports.wbr = exports.video = exports.variable = exports.ul = exports.u = exports.track = exports.tr = exports.title = exports.time = exports.thead = exports.th = exports.tfoot = exports.textarea = exports.template = exports.td = exports.tbody = exports.table = void 0;
+exports.hgroup = exports.header = exports.head = exports.h6 = exports.h5 = exports.h4 = exports.h3 = exports.h2 = exports.h1 = exports.fragment = exports.form = exports.footer = exports.figure = exports.figcaption = exports.fieldset = exports.embed = exports.em = exports.dt = exports.dl = exports.div = exports.dialog = exports.dfn = exports.details = exports.del = exports.dd = exports.datalist = exports.data = void 0;
+Object.defineProperty(exports, "hhjsx", {
+  enumerable: true,
+  get: function get() {
+    return _jsx.hhjsx;
+  }
+});
+exports.sub = exports.style = exports.strong = exports.span = exports.source = exports.small = exports.slot = exports.setRef = exports.select = exports.section = exports.script = exports.samp = exports.s = exports.ruby = exports.rtc = exports.rt = exports.rp = exports.ref = exports.rb = exports.q = exports.progress = exports.pre = exports.picture = exports.param = exports.p = exports.output = exports.option = exports.oprgroup = exports.ol = exports.object = exports.noscript = exports.nav = exports.meter = exports.meta = exports.menu = exports.mark = exports.map = exports.main = exports.link = exports.li = exports.legend = exports.label = exports.kbd = exports.ins = exports.input = exports.img = exports.iframe = exports.i = exports.html = exports.hr = void 0;
+exports.wbr = exports.video = exports.variable = exports.ul = exports.u = exports.track = exports.tr = exports.title = exports.time = exports.thead = exports.th = exports.tfoot = exports.textarea = exports.template = exports.td = exports.tbody = exports.table = exports.sup = exports.summary = void 0;
 
 var _html = _interopRequireDefault(require("./html.js"));
 
@@ -151,6 +160,8 @@ Object.keys(_appenders).forEach(function (key) {
     }
   });
 });
+
+var _jsx = require("./jsx.js");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
@@ -267,7 +278,9 @@ var html = _html["default"].html,
     menu = _html["default"].menu,
     summary = _html["default"].summary,
     slot = _html["default"].slot,
-    template = _html["default"].template;
+    template = _html["default"].template,
+    fragment = _html["default"].fragment;
+exports.fragment = fragment;
 exports.template = template;
 exports.slot = slot;
 exports.summary = summary;

@@ -1,3 +1,7 @@
+## 4.0.0
+* Added support for incline creation of DocumentFragment
+* Added experimental support for JSX
+
 ## 3.8.1
 * Fixed issue where aria attributes were not correctly attached to the element
 * Fixed invalid HTML tag name, hgroup instead hggroup

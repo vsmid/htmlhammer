@@ -360,7 +360,7 @@ var htmlhammer = (function (exports) {
     return options;
   };
   var createElement = function createElement(blueprint) {
-    var element = document.createElement(blueprint.tag, elementOptions(blueprint.attributes));
+    var element = blueprint.tag === 'fragment' ? document.createDocumentFragment() : document.createElement(blueprint.tag, elementOptions(blueprint.attributes));
     Object.keys(blueprint.attributes).forEach(function (name) {
       return attachAttribute(name, blueprint.attributes[name], element);
     });
@@ -378,20 +378,26 @@ var htmlhammer = (function (exports) {
     }
 
     if (parts && parts.length > 0) {
-      var isObject = parts[0].constructor.name === 'Object';
-
       if (parts.length > 1) {
-        if (isObject) {
-          attributes = parts[0];
-          children = parts.slice(1);
-        } else {
-          children = parts;
+        if (parts[0] && parts[1]) {
+          var isObject = parts[0].constructor.name === 'Object';
+
+          if (isObject) {
+            attributes = parts[0];
+            children = parts.slice(1);
+          } else {
+            children = parts;
+          }
         }
       } else if (parts.length === 1) {
-        if (!isObject) {
-          children = parts;
-        } else {
-          attributes = parts[0];
+        if (parts[0]) {
+          var _isObject = parts[0].constructor.name === 'Object';
+
+          if (!_isObject) {
+            children = parts;
+          } else {
+            attributes = parts[0];
+          }
         }
       }
     }
@@ -445,7 +451,8 @@ var htmlhammer = (function (exports) {
     'caption', 'col', 'colgroup', 'table', 'tbody', 'td', 'tfoot', 'th', 'thead', 'tr', // Forms
     'button', 'datalist', 'fieldset', 'form', 'input', 'label', 'legend', 'meter', 'oprgroup', 'option', 'output', 'progress', 'select', 'textarea', // Interactive elements
     'details', 'dialog', 'menu', 'summary', // Web Components
-    'slot', 'template'].forEach(function (tag) {
+    'slot', 'template', // Fragment, not a true HTML tag
+    'fragment'].forEach(function (tag) {
       tags[tag] = define(tag);
     });
     return tags;
@@ -588,6 +595,18 @@ var htmlhammer = (function (exports) {
     return define(name);
   };
 
+  function hhjsx(tag, props) {
+    for (var _len = arguments.length, children = new Array(_len > 2 ? _len - 2 : 0), _key = 2; _key < _len; _key++) {
+      children[_key - 2] = arguments[_key];
+    }
+
+    if (typeof tag === 'function') {
+      return tag(tag !== null && tag !== void 0 ? tag : '', props, children);
+    } else {
+      return define(tag)(props !== null && props !== void 0 ? props : {}, children);
+    }
+  }
+
   var html = HTML.html,
       base = HTML.base,
       head = HTML.head,
@@ -701,7 +720,8 @@ var htmlhammer = (function (exports) {
       menu = HTML.menu,
       summary = HTML.summary,
       slot = HTML.slot,
-      template = HTML.template;
+      template = HTML.template,
+      fragment = HTML.fragment;
   var ref = REF.ref,
       setRef = REF.setRef;
 
@@ -746,6 +766,7 @@ var htmlhammer = (function (exports) {
   exports.figure = figure;
   exports.footer = footer;
   exports.form = form;
+  exports.fragment = fragment;
   exports.h1 = h1;
   exports.h2 = h2;
   exports.h3 = h3;
@@ -755,6 +776,7 @@ var htmlhammer = (function (exports) {
   exports.head = head;
   exports.header = header;
   exports.hgroup = hgroup;
+  exports.hhjsx = hhjsx;
   exports.hr = hr;
   exports.html = html;
   exports.i = i;
