@@ -115,7 +115,8 @@ export const {
   menu,
   summary,
   slot,
-  template
+  template,
+  fragment
 } = HTML;
 export const { ref, setRef } = REF;
 export { customElement } from './customElement.js';

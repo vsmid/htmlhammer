@@ -430,6 +430,15 @@ o.spec('HTML', () => {
         });
       }
     );
+
+    o.spec(
+      'Convenient fragment tag',
+      () => {
+        o('fragment', () => {
+          o(html.fragment().nodeName).equals('#document-fragment');
+        });
+      }
+    );
   });
 
   o.spec('Blueprint', () => {

@@ -152,10 +152,13 @@ export const elementOptions = attributes => {
 };
 
 export const createElement = blueprint => {
-  let element = document.createElement(
-    blueprint.tag,
-    elementOptions(blueprint.attributes)
-  );
+  let element =
+    blueprint.tag === 'fragment'
+      ? document.createDocumentFragment()
+      : document.createElement(
+          blueprint.tag,
+          elementOptions(blueprint.attributes)
+        );
   Object.keys(blueprint.attributes).forEach(name =>
     attachAttribute(name, blueprint.attributes[name], element)
   );
@@ -170,22 +173,28 @@ export const extract = (...parts) => {
   let children = [];
 
   if (parts && parts.length > 0) {
-    let isObject = parts[0].constructor.name === 'Object';
     if (parts.length > 1) {
-      if (isObject) {
-        attributes = parts[0];
-        children = parts.slice(1);
-      } else {
-        children = parts;
+      if (parts[0] && parts[1]) {
+        let isObject = parts[0].constructor.name === 'Object';
+        if (isObject) {
+          attributes = parts[0];
+          children = parts.slice(1);
+        } else {
+          children = parts;
+        }
       }
     } else if (parts.length === 1) {
-      if (!isObject) {
-        children = parts;
-      } else {
-        attributes = parts[0];
+      if (parts[0]) {
+        let isObject = parts[0].constructor.name === 'Object';
+        if (!isObject) {
+          children = parts;
+        } else {
+          attributes = parts[0];
+        }
       }
     }
   }
+  
   return { attributes, children };
 };
 
@@ -342,7 +351,9 @@ export default (() => {
     'summary',
     // Web Components
     'slot',
-    'template'
+    'template',
+    // Fragment, not a true HTML tag
+    'fragment'
   ].forEach(tag => {
     tags[tag] = define(tag);
   });
