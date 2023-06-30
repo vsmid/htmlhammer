@@ -1,0 +1,17 @@
+{
+    "presets": [
+        [
+            "@babel/preset-react",
+            {
+                "pragma": "hhjsx",
+                "runtime": "classic"
+            }
+        ],
+        [
+            "@babel/preset-env",
+            {
+                "modules": false
+            }
+        ]
+    ]
+}

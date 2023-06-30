@@ -266,6 +266,18 @@ this can be seen in `HtmlString` appender where raw html in the form of string n
 this to happen, element's `insertAdjacentHTML` method is used instead of default `append` method. See how HtmlString
 appender is implemented in [appenders.js](https://github.com/vsmid/htmlhammer/blob/master/esm/appenders.js).
 
+### DocumentFragment
+
+`htmlhammer` provides support for creating `DocumentFragment` object by simply using `fragment` function just like any other html tag function already provided. Even though it is not a true html tag it is here as a convenience function.
+
+[See how it relates to fragment used by JSX](#relation-of-jsx--fragment-to-htmlhammers-fragment-function)
+
+```js
+import { fragment, div } from './esm/index.js';
+
+fragment(div('1'), div('2'));
+```
+
 ## Custom elements
 
 ### Method signature
@@ -543,6 +555,101 @@ Demo is basically `index.html` file found in the root of the project served as a
 
 [live demo](https://vsmid.github.io/htmlhammer/)
 
+## JSX & htmlhammer
+
+As of version 4.0.0 `htmlhammer` provides experimental `JSX` support.
+
+### hhjsx function
+
+`htmlhammer` provides `hhjsx` function which will be used by the compiler to replace `JSX` elements.
+
+```js Example
+// Below JSX snippet will be replaced by the compiler with hhjsx('a', {anchor: 'anchor'})
+<a name="anchor"></a>
+```
+
+`hhjsx` function can be imported from `index.js`.
+
+Do note that `hhjsx` needs to be available to each `.js(x)` module. Either attach this function to the `window` when the application is started or import it to each `.js(x)` module.
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0"
+    />
+    <title>HtmlHammer JSX</title>
+  </head>
+
+  <body>
+    <script type="module">
+      import { hhjsx } from './esm/index.js';
+      // Globally available hhjsx function
+      // No need for imports in other .js modules using JSX
+      window['hhjsx'] = hhjsx;
+    </script>
+  </body>
+</html>
+```
+
+### Compiling JSX
+
+In order to use `JSX` with `htmlhammer` you need to use a compiler that is able to transform `JSX` syntax into a function calls. Here, we are using `Babel`.
+
+#### Adding `Babel` support to your project
+
+```bash
+npm install --save-dev @babel/core @babel/cli @babel/preset-env @babel/preset-react
+```
+
+#### Adding `babel.config.json` file to your project
+
+```json
+{
+  "presets": [
+    [
+      "@babel/preset-react",
+      {
+        "pragma": "hhjsx",
+        "runtime": "classic"
+      }
+    ],
+    [
+      "@babel/preset-env",
+      {
+        "modules": false
+      }
+    ]
+  ]
+}
+```
+
+Example of babel command which compiles all files in the `src` directory uusing `react` and `env` presets.
+
+```bash
+# Run compiler from the root of the project
+`./node_modules/.bin/babel src --out-dir target`
+```
+
+### Relation of `JSX` <> (fragment) to `htmlhammer's` fragment function
+
+Currently, `htmlhammer` uses \<fragment> instead <>.
+
+```js
+<fragment>
+  <div />
+  <div />
+</fragment>
+```
+
+### Example
+You can find an implementation of the working example in the project's [demo/jsx](https://github.com/vsmid/htmlhammer/blob/master/demo/jsx) directory.
+
+See [live demo](https://vsmid.github.io/htmlhammer/).
+
 ## CoffeeScript & htmlhammer
 
 Using [CoffeeScript](https://coffeescript.org/) and `htmlhammer` for creating HTML templates is a great match. If offers visually very expressive form. HTML-like syntax at a reduced cost.
@@ -595,6 +702,12 @@ npm run coverage:file
 
 ```script
 npm run build
+```
+
+### `jsx` - compile jsx
+
+```script
+npm run jsx
 ```
 
 ## [Current version test coverage report](https://github.com/vsmid/htmlhammer/blob/master/test-coverage-report.txt)

@@ -121,3 +121,4 @@ export const {
 export const { ref, setRef } = REF;
 export { customElement } from './customElement.js';
 export * from './appenders.js';
+export { hhjsx } from './jsx.js';
