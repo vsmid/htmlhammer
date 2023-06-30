@@ -631,7 +631,7 @@ Example of babel command which compiles all files in the `src` directory uusing 
 
 ```bash
 # Run compiler from the root of the project
-`./node_modules/.bin/babel src --out-dir target`
+./node_modules/.bin/babel src --out-dir target
 ```
 
 ### Relation of `JSX` <> (fragment) to `htmlhammer's` fragment function
