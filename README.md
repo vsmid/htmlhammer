@@ -555,7 +555,7 @@ Demo is basically `index.html` file found in the root of the project served as a
 
 [live demo](https://vsmid.github.io/htmlhammer/)
 
-## JSX & htmlhammer
+## JSX
 
 As of version 4.0.0 `htmlhammer` provides experimental `JSX` support.
 
@@ -627,7 +627,7 @@ npm install --save-dev @babel/core @babel/cli @babel/preset-env @babel/preset-re
 }
 ```
 
-Example of babel command which compiles all files in the `src` directory uusing `react` and `env` presets.
+Example of babel command which compiles all files in the `src` directory using `react` and `env` presets.
 
 ```bash
 # Run compiler from the root of the project
@@ -643,6 +643,13 @@ Currently, `htmlhammer` uses \<fragment> instead <>.
   <div />
   <div />
 </fragment>
+
+// is equivalent to
+
+fragment(
+  div(),
+  div()
+)
 ```
 
 ### Example
