@@ -601,7 +601,7 @@ var htmlhammer = (function (exports) {
     }
 
     if (typeof tag === 'function') {
-      return tag(tag !== null && tag !== void 0 ? tag : '', props, children);
+      return tag(props !== null && props !== void 0 ? props : {}, children);
     } else {
       return define(tag)(props !== null && props !== void 0 ? props : {}, children);
     }

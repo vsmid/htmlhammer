@@ -1,3 +1,6 @@
+## 4.0.1
+* Function hhjsx no longer passes tag in first if block
+
 ## 4.0.0
 * Added support for incline creation of DocumentFragment
 * Added experimental support for JSX
